@@ -10,7 +10,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "sunday"
+    open-pull-requests-limit: 10
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
       interval: "daily"
+    open-pull-requests-limit: 10
+#    ignore:
+#    - dependency-name: foo
+#      versions:
+#      - ">= 2.a, < 3"
