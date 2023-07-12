@@ -67,10 +67,10 @@ func SortCommitsByLogSpec(commits map[string][]convention.Commit, logSpec conven
 		if typeDef.Hidden {
 			continue
 		}
-		if typeDef.Sort <= keyEl {
+		if int(typeDef.Sort) <= keyEl {
 			keySort.PushFront(typeDef.Type)
 		} else {
-			keyEl = typeDef.Sort
+			keyEl = int(typeDef.Sort)
 			keySort.PushBack(typeDef.Type)
 		}
 	}
