@@ -1,0 +1,14 @@
+{
+  "types": [
+    {
+      "type": "feat",
+      "section": "✨ Features",
+      "sort": 1
+    },
+    {
+      "type": "fix",
+      "section": "🐛 Bug Fixes",
+      "sort": 2
+    }
+  ]
+}

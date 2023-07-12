@@ -1,0 +1,64 @@
+{
+  "types": [
+    {
+      "type": "feat",
+      "section": "✨ Features",
+      "sort": 1
+    },
+    {
+      "type": "fix",
+      "section": "🐛 Bug Fixes",
+      "sort": 2
+    },
+    {
+      "type": "docs",
+      "section": "📝 Documentation",
+      "hidden": true,
+      "sort": 3
+    },
+    {
+      "type": "style",
+      "section": "💄 Styles",
+      "hidden": true,
+      "sort": 4
+    },
+    {
+      "type": "refactor",
+      "section": "♻ Refactor",
+      "sort": 5
+    },
+    {
+      "type": "perf",
+      "section": "⚡ Performance Improvements",
+      "sort": 6
+    },
+    {
+      "type": "test",
+      "section": "✅ Tests",
+      "hidden": true,
+      "sort": 7
+    },
+    {
+      "type": "build",
+      "section": "👷‍ Build System",
+      "sort": 8
+    },
+    {
+      "type": "ci",
+      "section": "🔧 Continuous Integration",
+      "hidden": true,
+      "sort": 9
+    },
+    {
+      "type": "chore",
+      "section": "📦 Chores",
+      "hidden": true,
+      "sort": 10
+    },
+    {
+      "type": "revert",
+      "section": "⏪ Reverts",
+      "sort": 11
+    }
+  ]
+}
