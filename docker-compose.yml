@@ -1,0 +1,26 @@
+# copy right
+# Licenses http://www.apache.org/licenses/LICENSE-2.0
+# more info see https://docs.docker.com/compose/compose-file/
+version: '3.8'
+
+networks:
+  default:
+#volumes:
+#  web-data:
+services:
+  convention-change-log:
+    container_name: '${ROOT_DOCKER_CONTAINER}'
+    image: '${ROOT_DOCKER_IMAGE_NAME}:${ROOT_DOCKER_IMAGE_TAG}' # see local docker file
+#    ports:
+#      - "38080:38080"
+    volumes:
+      - "$PWD:/app"
+    environment:
+      - ENV_WEB_HTTPS_ENABLE=false
+      - ENV_WEB_AUTO_HOST=false
+#      - ENV_WEB_HOST=${ENV_WEB_HOST}:38080
+#      - ENV_WEB_HOST=0.0.0.0:38080
+    entrypoint:
+      - "/app/convention-change-log"
+#    working_dir: "/app"
+#    command: ["make", "dep", "test"]

@@ -1,0 +1,136 @@
+# https://docs.drone.io/pipeline/docker/examples/languages/golang/
+kind: pipeline
+type: docker
+name: golang-docker
+
+# platform: # https://docs.drone.io/yaml/docker/#the-platform-object
+#   os: windows
+#   arch: amd64
+
+# node: # https://docs.drone.io/yaml/docker/#the-node-attribute
+#   # DRONE_RUNNER_LABELS https://docs.drone.io/runner/docker/configuration/reference/drone-runner-labels/
+#   role: xxxx # Specify the runner DRONE_RUNNER_LABELS labeled `role:xxxx` to execute the pipeline
+
+# https://docs.drone.io/pipeline/environment/syntax/#per-pipeline
+environment:
+#  GOPROXY: 'https://goproxy.cn,direct'
+  GOPRIVATE: '*.gitlab.com,*.gitee.com'
+  GO111MODULE: on
+  CGO_ENABLED: 0
+  GOOS: linux
+  GOARCH: amd64
+
+steps:
+  - name: env-init
+    image: sinlov/drone-env-printer:1.1.0
+    pull: if-not-exists
+    settings:
+      debug: false
+      # env_printer_padding_left_max: 42
+      env_printer_print_keys:
+        - GOPATH
+        - GOBIN
+  - name: go-init
+    image: golang:1.18.10-buster
+    pull: if-not-exists
+    volumes:
+      - name: go_cache
+        path: /go
+    environment:
+      GOPATH: /go
+    commands:
+      - go version
+      - go mod verify
+      - go mod download -x
+      - go mod tidy -v
+    when:
+      event:
+        - push
+  - name: go-test
+    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
+      - go-init
+
+    image: golang:1.18.10-buster
+    pull: if-not-exists
+    volumes:
+      - name: go_cache
+        path: /go
+    environment:
+      GOPATH: /go
+    commands:
+      - go get -t -v ./...
+      - go build -v ./...
+      - go test -v ./...
+    when:
+      event:
+        - push
+  - name: go-test-benchmark
+    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
+      - go-test
+
+    image: golang:1.18.10-buster
+    pull: if-not-exists
+    volumes:
+      - name: go_cache
+        path: /go
+    environment:
+      GOPATH: /go
+    commands:
+      - go test -run none -bench . -benchmem -v ./...
+    when:
+      event:
+        - push
+  - name: notification-failure-feishu-group-robot
+    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
+      - env-init
+      - go-init
+      - go-test
+      - go-test-benchmark
+
+    image: sinlov/drone-feishu-group-robot:1.11.0-alpine
+    pull: if-not-exists
+    settings:
+      debug: false
+#      ntp_target: "pool.ntp.org" # if not set will not sync
+      timeout_second: 10 # default 10
+      feishu_webhook:
+        # https://docs.drone.io/pipeline/environment/syntax/#from-secrets
+        from_secret: feishu_group_bot_token
+      feishu_secret:
+        from_secret: feishu_group_secret_bot
+      feishu_msg_title: "Drone CI Notification" # default [Drone CI Notification]
+      # let notification card change more info see https://open.feishu.cn/document/ukTMukTMukTM/uAjNwUjLwYDM14CM2ATN
+      feishu_enable_forward: true
+    when:
+      event: # https://docs.drone.io/pipeline/exec/syntax/conditions/#by-event
+        - promote
+        - rollback
+        - push
+        - pull_request
+        - tag
+      status: # only support failure/success,  both open will send anything
+        - failure
+       # - success
+
+trigger: # https://docs.drone.io/pipeline/triggers/
+  # branch:
+  #   - main
+  event:
+    - cron
+    - custom
+    - push
+    - pull_request
+    - tag
+    - promote
+    - rollback
+
+volumes: # need admin open Trusted
+  - name: go_cache
+    host:
+      path: /tmp/cache/go
+  - name: go_dist_test
+    host:
+      path: /tmp/cache/dist/test/go
+  - name: go_dist_release
+    host:
+      path: /tmp/cache/dist/release/go
