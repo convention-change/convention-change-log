@@ -31,17 +31,45 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 					Type:      convention.FixType,
 				},
 				{
+					RawHeader: "commit sample 1",
+				},
+				{
+					RawHeader: "commit sample 2\nmore info",
+				},
+			},
+			logSpec: convention.DefaultConventionalChangeLogSpec(),
+			changelogDesc: ConventionalChangeLogDesc{
+				Version:      "v1.0.0",
+				When:         time.Date(2020, 1, 18, 0, 1, 23, 45, time.UTC),
+				Location:     time.UTC,
+				ToolsKitName: "convention-change-log",
+				ToolsKitURL:  "https://github.com/sinlov-go/convention-change-log",
+			},
+		},
+		{
+			name: "version notes url",
+			commits: []convention.Commit{
+				{
+					RawHeader: "feat: new feature",
+					Type:      convention.FeatType,
+				},
+				{
+					RawHeader: "fix: new fix",
+					Type:      convention.FixType,
+				},
+				{
 					RawHeader: "chore: new build",
 					Type:      convention.ChoreType,
 				},
 			},
 			logSpec: convention.DefaultConventionalChangeLogSpec(),
 			changelogDesc: ConventionalChangeLogDesc{
-				Version:      "v1.0.0",
-				When:         time.Date(2020, 1, 18, 0, 0, 0, 0, time.UTC),
-				Location:     time.UTC,
-				ToolsKitName: "convention-change-log",
-				ToolsKitURL:  "https://github.com/sinlov-go/convention-change-log",
+				Version:         "v1.0.0",
+				VersionNotesUrl: "https://github.com/sinlov-go/convention-change-log/compare/v1.0.1...v1.1.0",
+				When:            time.Date(2020, 1, 18, 0, 1, 23, 45, time.UTC),
+				Location:        time.UTC,
+				ToolsKitName:    "convention-change-log",
+				ToolsKitURL:     "https://github.com/sinlov-go/convention-change-log",
 			},
 		},
 		{

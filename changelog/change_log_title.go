@@ -3,9 +3,10 @@ package changelog
 import "time"
 
 type ConventionalChangeLogDesc struct {
-	Version  string
-	When     time.Time
-	Location *time.Location
+	Version         string
+	VersionNotesUrl string
+	When            time.Time
+	Location        *time.Location
 
 	ToolsKitName string
 	ToolsKitURL  string

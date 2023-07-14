@@ -104,5 +104,8 @@ func generateVersionHeaderValue(
 	if spec.TagPrefix != "" {
 		versionTxt = strings.Replace(changelogDesc.Version, spec.TagPrefix, "", 1)
 	}
-	return fmt.Sprintf("%s (%s)", versionTxt, date.FormatDateByDefault(changelogDesc.When, changelogDesc.Location))
+	if changelogDesc.VersionNotesUrl == "" {
+		return fmt.Sprintf("%s (%s)", versionTxt, date.FormatDateByDefault(changelogDesc.When, changelogDesc.Location))
+	}
+	return fmt.Sprintf("[%s](%s) (%s)", versionTxt, changelogDesc.VersionNotesUrl, date.FormatDateByDefault(changelogDesc.When, changelogDesc.Location))
 }
