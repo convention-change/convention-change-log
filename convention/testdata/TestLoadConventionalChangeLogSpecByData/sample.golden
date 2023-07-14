@@ -11,5 +11,6 @@
       "sort": 2
     }
   ],
-  "tag-prefix": "v"
+  "tag-prefix": "v",
+  "hash-length": 8
 }

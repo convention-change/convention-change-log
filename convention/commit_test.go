@@ -2,6 +2,7 @@ package convention
 
 import (
 	"encoding/json"
+	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/sebdah/goldie/v2"
 	"github.com/sinlov-go/go-git-tools/git"
 	"github.com/stretchr/testify/assert"
@@ -15,9 +16,10 @@ func TestNewCommitWithOutType(t *testing.T) {
 	// mock NewCommitWithLogSpec
 
 	tests := []struct {
-		name    string
-		c       git.Commit
-		wantErr error
+		name       string
+		c          git.Commit
+		gitRepoUrl string
+		wantErr    error
 	}{
 		{
 			name: "sample",
@@ -27,12 +29,22 @@ func TestNewCommitWithOutType(t *testing.T) {
 					When: time.Date(2020, 4, 1, 0, 0, 0, 0, time.Local),
 				},
 			},
+			gitRepoUrl: "https://github.com/sinlov-go/convention-change-log",
 		},
 		{
 			name: "Commit message with scope",
 			c: git.Commit{
 				Message: "feat(lang): add polish language",
 			},
+			gitRepoUrl: "https://github.com/sinlov-go/convention-change-log",
+		},
+		{
+			name: "Commit message with hash",
+			c: git.Commit{
+				Message: "feat: add polish hash",
+				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
+			},
+			gitRepoUrl: "https://github.com/sinlov-go/convention-change-log",
 		},
 	}
 
@@ -53,7 +65,7 @@ func TestNewCommitWithOutType(t *testing.T) {
 			}
 
 			// do NewCommitWithLogSpec
-			gotResult, gotErr := NewCommitWithLogSpec(tc.c, logSpec)
+			gotResult, gotErr := NewCommitWithLogSpec(tc.c, logSpec, tc.gitRepoUrl)
 			assert.Equal(t, tc.wantErr, gotErr)
 			if tc.wantErr != nil {
 				return

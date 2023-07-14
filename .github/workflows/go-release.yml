@@ -5,7 +5,7 @@ on:
     inputs:
       upload_artifact_name:
         description: 'upload artifact name'
-        default: 'go-release'
+        default: ''
         required: false
         type: string
 
@@ -34,7 +34,7 @@ jobs:
 
       - name: upload-artifact
         uses: actions/upload-artifact@v3
-        if: ${{ inputs.tag_name != null }}
+        if: ${{ inputs.upload_artifact_name != null }}
         with:
           name: ${{ inputs.upload_artifact_name }}
           retention-days: 5

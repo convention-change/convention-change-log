@@ -13,6 +13,7 @@
     {"type": "revert", "section":"⏪ Reverts", "hidden": false}
   ],
   "tag-prefix": "",
+  "hash-length": 8,
   "skip": {
     "bump": false,
     "changelog": false,

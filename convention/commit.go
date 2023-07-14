@@ -20,8 +20,13 @@ type Commit struct {
 	Scope string
 }
 
-// NewCommitWithLogSpec return conventional commit from git commit
-func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec) (Commit, error) {
+// NewCommitWithLogSpec
+//
+//	c git.Commit
+//	spec ConventionalChangeLogSpec
+//	gitRepoUrl git repo url if not set will not contain hash link
+//	return conventional commit from git commit
+func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec, gitRepoUrl string) (Commit, error) {
 	result, err := NewCommitWithOptions(
 		GetRawHeader(c),
 		GetTypeAndScope(c),
@@ -41,7 +46,13 @@ func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec) (Commit,
 		}
 
 	}
-	return result, err
+	if !c.Hash.IsZero() && gitRepoUrl != "" {
+		hashFull := c.Hash.String()
+		hashShort := c.Hash.String()[:spec.HashLength]
+		result.RawHeader = fmt.Sprintf("%s [%s](%s/commit/%s)", result.RawHeader, hashShort, gitRepoUrl, hashFull)
+	}
+
+	return result, nil
 }
 
 // NewCommit return conventional commit from git commit
