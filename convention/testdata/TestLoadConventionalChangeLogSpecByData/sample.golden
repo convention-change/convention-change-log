@@ -10,5 +10,6 @@
       "section": "🐛 Bug Fixes",
       "sort": 2
     }
-  ]
+  ],
+  "tag-prefix": "v"
 }

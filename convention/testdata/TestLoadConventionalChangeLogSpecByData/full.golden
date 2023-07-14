@@ -60,5 +60,6 @@
       "section": "⏪ Reverts",
       "sort": 11
     }
-  ]
+  ],
+  "tag-prefix": "v"
 }

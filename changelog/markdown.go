@@ -2,6 +2,7 @@ package changelog
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/elliotchance/orderedmap/v2"
@@ -68,14 +69,14 @@ func GenerateMarkdownNodes(
 
 	// Adding each type
 	for el := markDownNodes.Front(); el != nil; el = el.Next() {
-		fmt.Println(el.Key, el.Value)
+		//fmt.Println(el.Key, el.Value)
 		sectionFromType := convention.ParseSectionFromType(logSpec, el.Key)
 		nodes = append(nodes, sample_mk.NewHeader(thirdLevel, sectionFromType))
 		nodes = append(nodes, el.Value...)
 	}
 
 	// Adding title
-	versionHeader := generateVersionHeaderValue(changelogDesc.Version, changelogDesc.When, changelogDesc.Location)
+	versionHeader := generateVersionHeaderValue(logSpec, changelogDesc)
 	nodes = append([]sample_mk.Node{
 		sample_mk.NewHeader(firstLevel, title),
 		sample_mk.NewBasicItem(fmt.Sprintf(titleDesc, changelogDesc.ToolsKitName, changelogDesc.ToolsKitURL)),
@@ -95,6 +96,13 @@ func convertToListMarkdownNodes(commits []convention.Commit) []sample_mk.Node {
 	return result
 }
 
-func generateVersionHeaderValue(version string, when time.Time, location *time.Location) string {
-	return fmt.Sprintf("%s (%s)", version, date.FormatDateByDefault(when, location))
+func generateVersionHeaderValue(
+	spec convention.ConventionalChangeLogSpec,
+	changelogDesc ConventionalChangeLogDesc,
+) string {
+	versionTxt := changelogDesc.Version
+	if spec.TagPrefix != "" {
+		versionTxt = strings.Replace(changelogDesc.Version, spec.TagPrefix, "", 1)
+	}
+	return fmt.Sprintf("%s (%s)", versionTxt, date.FormatDateByDefault(changelogDesc.When, changelogDesc.Location))
 }

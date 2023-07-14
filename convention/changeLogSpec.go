@@ -12,6 +12,10 @@ type ConventionalChangeLogSpec struct {
 	// Types
 	//
 	Types []Types `json:"types,omitempty"`
+
+	// TagPrefix
+	//	default is v
+	TagPrefix string `json:"tag-prefix,omitempty"`
 }
 
 var (
@@ -26,6 +30,9 @@ func DefaultConventionalChangeLogSpec() ConventionalChangeLogSpec {
 		defaultConventionalChangeLogSpec = &ConventionalChangeLogSpec{
 			Types: defaultType,
 		}
+	}
+	if defaultConventionalChangeLogSpec.TagPrefix == "" {
+		defaultConventionalChangeLogSpec.TagPrefix = "v"
 	}
 
 	return *defaultConventionalChangeLogSpec
@@ -72,6 +79,10 @@ func LoadConventionalChangeLogSpecByData(logSpec []byte) (*ConventionalChangeLog
 		newType = append(newType, t)
 	}
 	spec.Types = newType
+
+	if spec.TagPrefix == "" {
+		spec.TagPrefix = "v"
+	}
 
 	return &spec, nil
 }
