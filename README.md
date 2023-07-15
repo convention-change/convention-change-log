@@ -1,4 +1,4 @@
-[![golang-ci](https://github.com/sinlov-go/convention-change-log/actions/workflows/golang-ci.yml/badge.svg)](https://github.com/sinlov-go/convention-change-log/actions/workflows/golang-ci.yml)
+[![ci](https://github.com/sinlov-go/convention-change-log/actions/workflows/ci.yml/badge.svg)](https://github.com/sinlov-go/convention-change-log/actions/workflows/ci.yml)
 [![license](https://img.shields.io/github/license/sinlov-go/convention-change-log)](https://github.com/sinlov-go/convention-change-log)
 [![go mod version](https://img.shields.io/github/go-mod/go-version/sinlov-go/convention-change-log?label=go.mod)](https://github.com/sinlov-go/convention-change-log)
 [![GoDoc](https://godoc.org/github.com/sinlov-go/convention-change-log?status.png)](https://godoc.org/github.com/sinlov-go/convention-change-log/)
@@ -67,12 +67,18 @@ $ echo "go mod vendor"
 | https://github.com/stretchr/testify | v1.8.4  |
 | https://github.com/sebdah/goldie    | v2.5.3  |
 
+- more libs see [go.mod](https://github.com/sinlov-go/convention-change-log/blob/main/go.mod)
+
 ## usage
 
-- use this template, replace list below
-    - `github.com/sinlov-go/convention-change-log` to your package name
-    - `sinlov-go` to your owner name
-    - `convention-change-log` to your project name
+### cli
+
+```bash
+# install at $(GO_PATH)/bin
+$ go install -v github.com/sinlov-go/convention-change-log/cmd/convention-change-log@latest
+# install version v1.0.0
+$ go install -v github.com/sinlov-go/convention-change-log/cmd/convention-change-log@v1.0.0
+````
 
 # dev
 

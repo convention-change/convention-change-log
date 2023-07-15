@@ -1,0 +1,25 @@
+{
+  "name": "convention-change-log",
+  "version": "1.0.0",
+  "description": "generate changelog from conventional commits",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sinlov-go/convention-change-log.git"
+  },
+  "keywords": [
+    "go",
+    "make",
+    "docker",
+    "action"
+  ],
+  "author": {
+    "name": "sinlov",
+    "email": "sinlovppt@gmail.com",
+    "url": "https://github.com/sinlov-go/convention-change-log"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/sinlov-go/convention-change-log/issues"
+  },
+  "homepage": "https://github.com/sinlov-go/convention-change-log#readme"
+}
