@@ -103,7 +103,7 @@ type Types struct {
 
 	// Type
 	//
-	Type string `json:"type,omitempty"`
+	Type string `json:"type"`
 
 	// Section
 	//
@@ -111,7 +111,7 @@ type Types struct {
 
 	// Hidden
 	//
-	Hidden bool `json:"hidden,omitempty"`
+	Hidden bool `json:"hidden"`
 
 	// Sort
 	Sort uint `json:"sort,omitempty"`
