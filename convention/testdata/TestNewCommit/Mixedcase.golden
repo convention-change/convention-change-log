@@ -1,5 +1,11 @@
 {
   "RawHeader": "Docs: correct spelling of CHANGELOG (0001-01-01)",
   "Type": "docs",
-  "Scope": ""
+  "Scope": "",
+  "BreakingChanges": {
+    "Describe": "",
+    "IssueReference": "",
+    "IssuePrefix": "",
+    "IssueReferencesNum": 0
+  }
 }

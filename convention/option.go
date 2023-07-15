@@ -6,13 +6,15 @@ import (
 	"github.com/sinlov-go/go-common-lib/pkg/date"
 	"github.com/sinlov-go/go-git-tools/git"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
 
 const (
-	leftScope  = "("
-	rightScope = ")"
+	leftScope       = "("
+	rightScope      = ")"
+	breakingChanges = "BREAKING CHANGE: "
 )
 
 var (
@@ -46,9 +48,9 @@ func GetTypeAndScope(gitCommit git.Commit) OptionFn {
 			return nil
 		}
 
-		headerSubmatches := headerRegex.FindStringSubmatch(c.RawHeader)
-		c.Type = strings.ToLower(headerSubmatches[1])
-		c.Scope = strings.ToLower(headerSubmatches[2])
+		headerSubMatches := headerRegex.FindStringSubmatch(c.RawHeader)
+		c.Type = strings.ToLower(headerSubMatches[1])
+		c.Scope = strings.ToLower(headerSubMatches[2])
 		c.Scope = strings.TrimLeft(c.Scope, leftScope)
 		c.Scope = strings.TrimRight(c.Scope, rightScope)
 
@@ -59,6 +61,56 @@ func GetTypeAndScope(gitCommit git.Commit) OptionFn {
 func AddAuthorDate(gitCommit git.Commit) OptionFn {
 	return func(c *Commit) error {
 		c.RawHeader = fmt.Sprintf("%s (%s)", c.RawHeader, date.FormatDateByDefault(gitCommit.Author.When, time.Local))
+
+		return nil
+	}
+}
+
+func GetBreakChanges(gitCommit git.Commit, spec ConventionalChangeLogSpec) OptionFn {
+	return func(c *Commit) error {
+		if gitCommit.Message == "" {
+			return nil
+		}
+		message := strings.TrimSpace(gitCommit.Message)
+		messages := strings.Split(message, "\n")
+		breakingChangesDesc := ""
+		issuePrefix := ""
+		issueReference := ""
+		var issueNum uint64
+		for _, line := range messages {
+			if strings.Index(line, breakingChanges) == 0 {
+				breakingChangesDesc = strings.Replace(line, breakingChanges, "", 1)
+				continue
+			}
+			lineSplitSpace := strings.SplitN(line, " ", 2)
+			if len(lineSplitSpace) > 1 {
+				issueNumCheck := lineSplitSpace[1]
+				if len(spec.IssuePrefixes) > 0 {
+					for _, prefix := range spec.IssuePrefixes {
+						if strings.Index(issueNumCheck, prefix) == 0 {
+							issueNumStr := strings.Replace(issueNumCheck, prefix, "", 1)
+							num, err := strconv.Atoi(issueNumStr)
+							if err != nil {
+								continue
+							}
+							issueReference = lineSplitSpace[0]
+							issuePrefix = prefix
+							issueNum = uint64(num)
+							break
+						}
+					}
+				}
+			}
+		}
+		if breakingChangesDesc != "" {
+			bc := BreakingChanges{
+				Describe:           breakingChangesDesc,
+				IssueReference:     issueReference,
+				IssuePrefix:        issuePrefix,
+				IssueReferencesNum: issueNum,
+			}
+			c.BreakingChanges = bc
+		}
 
 		return nil
 	}

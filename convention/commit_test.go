@@ -1,7 +1,6 @@
 package convention
 
 import (
-	"encoding/json"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/sebdah/goldie/v2"
 	"github.com/sinlov-go/go-git-tools/git"
@@ -46,26 +45,33 @@ func TestNewCommitWithOutType(t *testing.T) {
 			},
 			gitRepoUrl: "https://github.com/sinlov-go/convention-change-log",
 		},
+		{
+			name: "Commit message with hash and breaking change",
+			c: git.Commit{
+				Message: "feat: new api\n\nBREAKING CHANGE: this is describe of new api breaking changes\n\nfix #1",
+				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
+			},
+			gitRepoUrl: "https://github.com/sinlov-go/convention-change-log",
+		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			g := goldie.New(t,
-				goldie.WithDiffEngine(goldie.ClassicDiff),
+				goldie.WithDiffEngine(goldie.ColoredDiff),
 			)
 			versionRcPath := filepath.Join(filepath.Dir(g.GoldenFileName(t, tc.name)), ".versionrc")
 			data, err := os.ReadFile(versionRcPath)
 			if err != nil {
 				t.Fatal(err)
 			}
-			var logSpec ConventionalChangeLogSpec
-			err = json.Unmarshal(data, &logSpec)
+			logSpecByData, err := LoadConventionalChangeLogSpecByData(data)
 			if err != nil {
 				t.Fatal(err)
 			}
 
 			// do NewCommitWithLogSpec
-			gotResult, gotErr := NewCommitWithLogSpec(tc.c, logSpec, tc.gitRepoUrl)
+			gotResult, gotErr := NewCommitWithLogSpec(tc.c, *logSpecByData, tc.gitRepoUrl)
 			assert.Equal(t, tc.wantErr, gotErr)
 			if tc.wantErr != nil {
 				return

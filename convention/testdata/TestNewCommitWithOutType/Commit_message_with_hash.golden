@@ -1,5 +1,11 @@
 {
   "RawHeader": "add polish hash (0001-01-01) [a1b2c3d4](https://github.com/sinlov-go/convention-change-log/commit/a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2)",
   "Type": "feat",
-  "Scope": ""
+  "Scope": "",
+  "BreakingChanges": {
+    "Describe": "",
+    "IssueReference": "",
+    "IssuePrefix": "",
+    "IssueReferencesNum": 0
+  }
 }

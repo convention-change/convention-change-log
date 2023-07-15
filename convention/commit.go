@@ -10,6 +10,15 @@ import (
 // <type>[optional scope]: <description>
 // [optional body]
 // [optional footer(s)]
+// BREAKING CHANGE: <breaking change description>
+// [issueReference] [issuePrefix]<issueNum>
+
+type BreakingChanges struct {
+	Describe           string
+	IssueReference     string
+	IssuePrefix        string
+	IssueReferencesNum uint64
+}
 
 // Commit conventional commit
 type Commit struct {
@@ -18,6 +27,8 @@ type Commit struct {
 
 	Type  string
 	Scope string
+
+	BreakingChanges BreakingChanges
 }
 
 // NewCommitWithLogSpec
@@ -31,6 +42,7 @@ func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec, gitRepoU
 		GetRawHeader(c),
 		GetTypeAndScope(c),
 		AddAuthorDate(c),
+		GetBreakChanges(c, spec),
 	)
 	if err != nil {
 		return result, err

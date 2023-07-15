@@ -3,11 +3,13 @@
     {
       "type": "feat",
       "section": "✨ Features",
+      "hidden": false,
       "sort": 1
     },
     {
       "type": "fix",
       "section": "🐛 Bug Fixes",
+      "hidden": false,
       "sort": 2
     },
     {
@@ -25,11 +27,13 @@
     {
       "type": "refactor",
       "section": "♻ Refactor",
+      "hidden": false,
       "sort": 5
     },
     {
       "type": "perf",
       "section": "⚡ Performance Improvements",
+      "hidden": false,
       "sort": 6
     },
     {
@@ -41,6 +45,7 @@
     {
       "type": "build",
       "section": "👷‍ Build System",
+      "hidden": false,
       "sort": 8
     },
     {
@@ -58,9 +63,13 @@
     {
       "type": "revert",
       "section": "⏪ Reverts",
+      "hidden": false,
       "sort": 11
     }
   ],
   "tag-prefix": "v",
-  "hash-length": 8
+  "hash-length": 8,
+  "issuePrefixes": [
+    "#"
+  ]
 }

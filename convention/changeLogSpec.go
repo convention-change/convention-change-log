@@ -20,11 +20,24 @@ type ConventionalChangeLogSpec struct {
 	// HashLength
 	//	default is 8
 	HashLength uint `json:"hash-length,omitempty"`
+
+	// IssuePrefixes
+	// default is ["#"]
+	IssuePrefixes []string `json:"issuePrefixes,omitempty"`
 }
 
 var (
 	defaultConventionalChangeLogSpec *ConventionalChangeLogSpec
 )
+
+// SimplifyConventionalChangeLogSpec
+// return simplify ConventionalChangeLogSpec
+func SimplifyConventionalChangeLogSpec() *ConventionalChangeLogSpec {
+	spec := &ConventionalChangeLogSpec{
+		Types: defaultType,
+	}
+	return spec
+}
 
 // DefaultConventionalChangeLogSpec
 //
@@ -39,6 +52,7 @@ func DefaultConventionalChangeLogSpec() ConventionalChangeLogSpec {
 		defaultConventionalChangeLogSpec.TagPrefix = "v"
 	}
 	defaultConventionalChangeLogSpec.HashLength = 8
+	defaultConventionalChangeLogSpec.IssuePrefixes = []string{"#"}
 
 	return *defaultConventionalChangeLogSpec
 }
@@ -91,6 +105,10 @@ func LoadConventionalChangeLogSpecByData(logSpec []byte) (*ConventionalChangeLog
 
 	if spec.HashLength == 0 {
 		spec.HashLength = 8
+	}
+
+	if spec.IssuePrefixes == nil || len(spec.IssuePrefixes) == 0 {
+		spec.IssuePrefixes = []string{"#"}
 	}
 
 	return &spec, nil

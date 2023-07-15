@@ -1,5 +1,11 @@
 {
   "RawHeader": "add commit convention (2020-04-01)",
   "Type": "feat",
-  "Scope": ""
+  "Scope": "",
+  "BreakingChanges": {
+    "Describe": "",
+    "IssueReference": "",
+    "IssuePrefix": "",
+    "IssueReferencesNum": 0
+  }
 }

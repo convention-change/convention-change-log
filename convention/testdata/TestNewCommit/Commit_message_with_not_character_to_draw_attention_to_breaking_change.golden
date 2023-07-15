@@ -1,5 +1,11 @@
 {
   "RawHeader": "refactor!: drop support for Node 6 (0001-01-01)",
   "Type": "refactor",
-  "Scope": ""
+  "Scope": "",
+  "BreakingChanges": {
+    "Describe": "",
+    "IssueReference": "",
+    "IssuePrefix": "",
+    "IssueReferencesNum": 0
+  }
 }

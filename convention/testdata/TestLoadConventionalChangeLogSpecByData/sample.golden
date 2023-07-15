@@ -3,14 +3,19 @@
     {
       "type": "feat",
       "section": "✨ Features",
+      "hidden": false,
       "sort": 1
     },
     {
       "type": "fix",
       "section": "🐛 Bug Fixes",
+      "hidden": false,
       "sort": 2
     }
   ],
   "tag-prefix": "v",
-  "hash-length": 8
+  "hash-length": 8,
+  "issuePrefixes": [
+    "#"
+  ]
 }

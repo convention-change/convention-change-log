@@ -1,5 +1,11 @@
 {
   "RawHeader": "random git message (0001-01-01)",
   "Type": "misc",
-  "Scope": ""
+  "Scope": "",
+  "BreakingChanges": {
+    "Describe": "",
+    "IssueReference": "",
+    "IssuePrefix": "",
+    "IssueReferencesNum": 0
+  }
 }
