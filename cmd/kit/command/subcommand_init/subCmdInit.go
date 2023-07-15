@@ -25,11 +25,9 @@ var commandEntry *NewCommand
 type NewCommand struct {
 	isDebug bool
 
-	GitRootPath        string
-	Remote             string
-	LocalGitRemoteInfo *git_info.GitRemoteInfo
-	LocalGitBranch     string
-	TargetFile         string
+	GitRootPath string
+
+	TargetFile string
 }
 
 func (n *NewCommand) Exec() error {
@@ -47,19 +45,11 @@ func (n *NewCommand) Exec() error {
 }
 
 func flag() []cli.Flag {
-	return []cli.Flag{
-		&cli.StringFlag{
-			Name:  "remote",
-			Usage: "set git remote name, defaults is origin",
-			Value: "origin",
-		},
-	}
+	return []cli.Flag{}
 }
 
 func withEntry(c *cli.Context) (*NewCommand, error) {
 	globalEntry := command2.CmdGlobalEntry()
-
-	remote := c.String("remote")
 
 	dir, err := os.Getwd()
 	if err != nil {
@@ -70,26 +60,13 @@ func withEntry(c *cli.Context) (*NewCommand, error) {
 	if err != nil {
 		return nil, err
 	}
-	fistRemoteInfo, err := git_info.RepositoryFistRemoteInfo(gitRootFolder, remote)
-	if err != nil {
-		return nil, err
-	}
-	branchByPath, err := git_info.RepositoryNowBranchByPath(gitRootFolder)
-	if err != nil {
-		return nil, err
-	}
 
 	targetFile := filepath.Join(gitRootFolder, versionRcFile)
 
 	return &NewCommand{
-		isDebug: globalEntry.Verbose,
-
-		GitRootPath:        gitRootFolder,
-		Remote:             remote,
-		LocalGitRemoteInfo: fistRemoteInfo,
-		LocalGitBranch:     branchByPath,
-
-		TargetFile: targetFile,
+		isDebug:     globalEntry.Verbose,
+		GitRootPath: gitRootFolder,
+		TargetFile:  targetFile,
 	}, nil
 }
 
