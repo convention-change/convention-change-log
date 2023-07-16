@@ -39,15 +39,15 @@ func TestNewCommitWithOutType(t *testing.T) {
 			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
 		},
 		{
-			name: "Commit message with Hash",
+			name: "Commit message with hash",
 			c: git.Commit{
-				Message: "feat: add polish Hash",
+				Message: "feat: add polish hash",
 				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
 			},
 			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
 		},
 		{
-			name: "Commit message with Hash and breaking change",
+			name: "Commit message with hash and breaking change",
 			c: git.Commit{
 				Message: "feat: new api\n\nBREAKING CHANGE: this is describe of new api breaking changes\n\nfix #1",
 				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
