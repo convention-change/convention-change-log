@@ -6,6 +6,6 @@
     "Describe": "this is describe of new api breaking changes",
     "IssueReference": "fix",
     "IssuePrefix": "#",
-    "IssueReferencesNum": 1
+    "IssueReferencesId": 1
   }
 }

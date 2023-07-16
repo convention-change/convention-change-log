@@ -12,13 +12,13 @@ import (
 // [optional body]
 // [optional footer(s)]
 // BREAKING CHANGE: <breaking change description>
-// [issueReference] [issuePrefix]<issueNum>
+// [issueReference] [issuePrefix]<issueId>
 
 type BreakingChanges struct {
-	Describe           string
-	IssueReference     string
-	IssuePrefix        string
-	IssueReferencesNum uint64
+	Describe          string
+	IssueReference    string
+	IssuePrefix       string
+	IssueReferencesId uint64
 }
 
 // Commit conventional commit
@@ -91,12 +91,11 @@ func NewCommitWithOptions(opts ...OptionFn) (result Commit, err error) {
 // AppendMarkdownCommitLink
 // will append [shortHash](RaymondRender(commitUrlFormat)) by {{Host}}/{{Owner}}/{{Repository}}/commit/{{Hash}}
 func (c *Commit) AppendMarkdownCommitLink(commitUrlFormat string, shortHash, hash string, gitHost, gitOwner, gitRepo string) error {
-	commitRt := CommitRenderTemplate{
-		Host:       gitHost,
-		Owner:      gitOwner,
-		Repository: gitRepo,
-		Hash:       hash,
-	}
+	commitRt := new(CommitRenderTemplate)
+	commitRt.Host = gitHost
+	commitRt.Owner = gitOwner
+	commitRt.Repository = gitRepo
+	commitRt.Hash = hash
 	commitUrl, err := RaymondRender(commitUrlFormat, commitRt)
 	if err != nil {
 		return err

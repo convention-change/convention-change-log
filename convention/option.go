@@ -105,10 +105,10 @@ func GetBreakChanges(gitCommit git.Commit, spec ConventionalChangeLogSpec) Optio
 		}
 		if breakingChangesDesc != "" {
 			bc := BreakingChanges{
-				Describe:           breakingChangesDesc,
-				IssueReference:     issueReference,
-				IssuePrefix:        issuePrefix,
-				IssueReferencesNum: issueNum,
+				Describe:          breakingChangesDesc,
+				IssueReference:    issueReference,
+				IssuePrefix:       issuePrefix,
+				IssueReferencesId: issueNum,
 			}
 			c.BreakingChanges = bc
 		}
