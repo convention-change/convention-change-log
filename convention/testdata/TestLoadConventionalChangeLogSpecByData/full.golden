@@ -73,9 +73,9 @@
     "#"
   ],
   "header": "Changelog",
-  "commitUrlFormat": "{{host}}/{{owner}}/{{repository}}/commit/{{hash}}",
-  "compareUrlFormat": "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
-  "issueUrlFormat": "{{host}}/{{owner}}/{{repository}}/issues/{{id}}",
-  "userUrlFormat": "{{host}}/{{user}}",
+  "commitUrlFormat": "https://{{host}}/{{owner}}/{{repository}}/commit/{{hash}}",
+  "compareUrlFormat": "https://{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "https://{{host}}/{{owner}}/{{repository}}/issues/{{id}}",
+  "userUrlFormat": "https://{{host}}/{{user}}",
   "releaseCommitMessageFormat": "chore(release): {{currentTag}}"
 }

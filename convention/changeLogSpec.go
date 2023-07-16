@@ -7,10 +7,10 @@ import (
 
 const (
 	DefaultHeader                     = "Changelog"
-	DefaultCommitUrlFormat            = "{{host}}/{{owner}}/{{repository}}/commit/{{hash}}"
-	DefaultCompareUrlFormat           = "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}"
-	DefaultIssueUrlFormat             = "{{host}}/{{owner}}/{{repository}}/issues/{{id}}"
-	DefaultUserUrlFormat              = "{{host}}/{{user}}"
+	DefaultCommitUrlFormat            = "https://{{host}}/{{owner}}/{{repository}}/commit/{{hash}}"
+	DefaultCompareUrlFormat           = "https://{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}"
+	DefaultIssueUrlFormat             = "https://{{host}}/{{owner}}/{{repository}}/issues/{{id}}"
+	DefaultUserUrlFormat              = "https://{{host}}/{{user}}"
 	DefaultReleaseCommitMessageFormat = "chore(release): {{currentTag}}"
 )
 
@@ -41,7 +41,7 @@ type ConventionalChangeLogSpec struct {
 	Header string `json:"header,omitempty"`
 
 	// CommitUrlFormat
-	//	A URL representing a specific commit at a hash
+	//	A URL representing a specific commit at a Hash
 	// default DefaultCommitUrlFormat
 	CommitUrlFormat string `json:"commitUrlFormat,omitempty"`
 

@@ -3,6 +3,7 @@ module github.com/convention-change/convention-change-log
 go 1.18
 
 require (
+	github.com/aymerick/raymond v2.0.2+incompatible
 	github.com/bar-counter/slog v1.4.0
 	github.com/elliotchance/orderedmap/v2 v2.2.0
 	github.com/go-git/go-git/v5 v5.7.0

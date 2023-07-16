@@ -36,7 +36,7 @@ type Commit struct {
 //
 //	c git.Commit
 //	spec ConventionalChangeLogSpec
-//	gitRepoUrl git repo url if not set will not contain hash link
+//	gitRepoUrl git repo url if not set will not contain Hash link
 //	return conventional commit from git commit
 func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec, gitRepoUrl string) (Commit, error) {
 	result, err := NewCommitWithOptions(
@@ -88,10 +88,21 @@ func NewCommitWithOptions(opts ...OptionFn) (result Commit, err error) {
 	return
 }
 
-// AppendMarkdownLink
-// will append [shortHash](gitHost/gitOwner/gitRepo/commit/hash)
-func (c *Commit) AppendMarkdownLink(shortHash, hash string, gitHost, gitOwner, gitRepo string) {
-	c.RawHeader = fmt.Sprintf("%s [%s](https://%s/%s/%s/commit/%s)", c.RawHeader, shortHash, gitHost, gitOwner, gitRepo, hash)
+// AppendMarkdownCommitLink
+// will append [shortHash](RaymondRender(commitUrlFormat)) by {{Host}}/{{Owner}}/{{Repository}}/commit/{{Hash}}
+func (c *Commit) AppendMarkdownCommitLink(commitUrlFormat string, shortHash, hash string, gitHost, gitOwner, gitRepo string) error {
+	commitRt := CommitRenderTemplate{
+		Host:       gitHost,
+		Owner:      gitOwner,
+		Repository: gitRepo,
+		Hash:       hash,
+	}
+	commitUrl, err := RaymondRender(commitUrlFormat, commitRt)
+	if err != nil {
+		return err
+	}
+	c.RawHeader = fmt.Sprintf("%s [%s](%s)", c.RawHeader, shortHash, commitUrl)
+	return nil
 }
 
 func (c *Commit) String() string {

@@ -78,7 +78,7 @@ func TestLoadConventionalChangeLogSpecByData(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			g := goldie.New(t,
-				goldie.WithDiffEngine(goldie.Simple),
+				goldie.WithDiffEngine(goldie.ColoredDiff),
 			)
 
 			// do LoadConventionalChangeLogSpecByData

@@ -39,15 +39,15 @@ func TestNewCommitWithOutType(t *testing.T) {
 			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
 		},
 		{
-			name: "Commit message with hash",
+			name: "Commit message with Hash",
 			c: git.Commit{
-				Message: "feat: add polish hash",
+				Message: "feat: add polish Hash",
 				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
 			},
 			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
 		},
 		{
-			name: "Commit message with hash and breaking change",
+			name: "Commit message with Hash and breaking change",
 			c: git.Commit{
 				Message: "feat: new api\n\nBREAKING CHANGE: this is describe of new api breaking changes\n\nfix #1",
 				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
@@ -155,7 +155,7 @@ func TestNewCommit(t *testing.T) {
 }
 
 func TestAppendMarkdownLink(t *testing.T) {
-	// mock AppendMarkdownLink
+	// mock AppendMarkdownCommitLink
 	type gitInfo struct {
 		shortHash string
 		hash      string
@@ -186,6 +186,7 @@ func TestAppendMarkdownLink(t *testing.T) {
 			},
 		},
 	}
+	spec := DefaultConventionalChangeLogSpec()
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			g := goldie.New(t,
@@ -196,13 +197,13 @@ func TestAppendMarkdownLink(t *testing.T) {
 			if gotCommitErr != nil {
 				t.Fatal(gotCommitErr)
 			}
-			// do AppendMarkdownLink
-			gotResult.AppendMarkdownLink(tc.gitInfo.shortHash, tc.gitInfo.hash, tc.gitInfo.host, tc.gitInfo.owner, tc.gitInfo.repo)
-			//assert.Equal(t, tc.wantErr, gotErr)
+			// do AppendMarkdownCommitLink
+			gotErr := gotResult.AppendMarkdownCommitLink(spec.CommitUrlFormat, tc.gitInfo.shortHash, tc.gitInfo.hash, tc.gitInfo.host, tc.gitInfo.owner, tc.gitInfo.repo)
+			assert.Equal(t, tc.wantErr, gotErr)
 			if tc.wantErr != nil {
 				return
 			}
-			// verify AppendMarkdownLink
+			// verify AppendMarkdownCommitLink
 			g.AssertJson(t, t.Name(), gotResult)
 		})
 	}
