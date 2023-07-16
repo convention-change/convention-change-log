@@ -3,20 +3,20 @@
 # Please see the documentation for all configuration options:
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
-# version: 2
-# updates:
-#   - package-ecosystem: "github-actions"
-#     directory: "/"
-#     schedule:
-#       interval: "weekly"
-#       day: "sunday"
-#     open-pull-requests-limit: 10
-#   - package-ecosystem: "gomod"
-#     directory: "/"
-#     schedule:
-#       interval: "daily"
-#     open-pull-requests-limit: 10
-# #    ignore:
-# #    - dependency-name: foo
-# #      versions:
-# #      - ">= 2.a, < 3"
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+#    ignore:
+#    - dependency-name: foo
+#      versions:
+#      - ">= 2.a, < 3"
