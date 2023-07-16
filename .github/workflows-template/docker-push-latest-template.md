@@ -18,7 +18,7 @@ on:
 
 env:
   # name of docker image
-  DOCKER_HUB_USER: sinlov-go
+  DOCKER_HUB_USER: convention-change
   IMAGE_NAME: convention-change-log
   DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64,linux/arm/v7
 
@@ -130,7 +130,7 @@ on:
 
 env:
   # name of docker image
-  DOCKER_HUB_USER: sinlov-go
+  DOCKER_HUB_USER: convention-change
   IMAGE_NAME: convention-change-log
 
 jobs:
@@ -179,7 +179,7 @@ on:
 
 env:
   # name of docker image
-  DOCKER_HUB_USER: sinlov-go
+  DOCKER_HUB_USER: convention-change
   IMAGE_NAME: convention-change-log
 
 jobs:

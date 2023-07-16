@@ -3,8 +3,8 @@ package command
 import (
 	"fmt"
 	"github.com/bar-counter/slog"
-	"github.com/sinlov-go/convention-change-log/internal/log"
-	"github.com/sinlov-go/convention-change-log/internal/pkgJson"
+	"github.com/convention-change/convention-change-log/internal/log"
+	"github.com/convention-change/convention-change-log/internal/pkgJson"
 	"github.com/urfave/cli/v2"
 )
 

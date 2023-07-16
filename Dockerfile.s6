@@ -1,11 +1,11 @@
-# This dockerfile uses extends image https://hub.docker.com/sinlov-go/convention-change-log
+# This dockerfile uses extends image https://hub.docker.com/convention-change/convention-change-log
 # VERSION 1
 # Author: sinlov
 # dockerfile offical document https://docs.docker.com/engine/reference/builder/
 # https://hub.docker.com/_/golang
 FROM golang:1.18.10-buster as builder
 
-ARG GO_ENV_PACKAGE_NAME=github.com/sinlov-go/convention-change-log
+ARG GO_ENV_PACKAGE_NAME=github.com/convention-change/convention-change-log
 ARG GO_ENV_ROOT_BUILD_BIN_NAME=convention-change-log
 ARG GO_ENV_ROOT_BUILD_BIN_PATH=build/${GO_ENV_ROOT_BUILD_BIN_NAME}
 ARG GO_ENV_ROOT_BUILD_ENTRANCE=cmd/convention-change-log/main.go
@@ -37,7 +37,7 @@ RUN  cd ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME} && \
 FROM alpine:3.17
 
 ARG DOCKER_CLI_VERSION=${DOCKER_CLI_VERSION}
-ARG GO_ENV_PACKAGE_NAME=github.com/sinlov-go/convention-change-log
+ARG GO_ENV_PACKAGE_NAME=github.com/convention-change/convention-change-log
 ARG GO_ENV_ROOT_BUILD_BIN_NAME=convention-change-log
 ARG GO_ENV_ROOT_BUILD_BIN_PATH=build/${GO_ENV_ROOT_BUILD_BIN_NAME}
 

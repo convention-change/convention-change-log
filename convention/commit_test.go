@@ -1,14 +1,15 @@
 package convention
 
 import (
-	"github.com/go-git/go-git/v5/plumbing"
-	"github.com/sebdah/goldie/v2"
-	"github.com/sinlov-go/go-git-tools/git"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
+
+	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/sebdah/goldie/v2"
+	"github.com/sinlov-go/go-git-tools/git"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewCommitWithOutType(t *testing.T) {
@@ -28,14 +29,14 @@ func TestNewCommitWithOutType(t *testing.T) {
 					When: time.Date(2020, 4, 1, 0, 0, 0, 0, time.Local),
 				},
 			},
-			gitRepoUrl: "https://github.com/sinlov-go/convention-change-log",
+			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
 		},
 		{
 			name: "Commit message with scope",
 			c: git.Commit{
 				Message: "feat(lang): add polish language",
 			},
-			gitRepoUrl: "https://github.com/sinlov-go/convention-change-log",
+			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
 		},
 		{
 			name: "Commit message with hash",
@@ -43,7 +44,7 @@ func TestNewCommitWithOutType(t *testing.T) {
 				Message: "feat: add polish hash",
 				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
 			},
-			gitRepoUrl: "https://github.com/sinlov-go/convention-change-log",
+			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
 		},
 		{
 			name: "Commit message with hash and breaking change",
@@ -51,7 +52,7 @@ func TestNewCommitWithOutType(t *testing.T) {
 				Message: "feat: new api\n\nBREAKING CHANGE: this is describe of new api breaking changes\n\nfix #1",
 				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
 			},
-			gitRepoUrl: "https://github.com/sinlov-go/convention-change-log",
+			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
 		},
 	}
 
@@ -169,7 +170,7 @@ func TestAppendMarkdownLink(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "sample", // TODO: testData/TestAppendMarkdownLink/sample.golden
+			name: "sample", // testdata/TestAppendMarkdownLink/sample.golden
 			c: git.Commit{
 				Message: "feat: add commit convention",
 				Author: git.Author{
@@ -180,8 +181,8 @@ func TestAppendMarkdownLink(t *testing.T) {
 				shortHash: "a1b2c3d",
 				hash:      "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0",
 				host:      "github.com",
-				owner:     "sinlov-go",
-				repo:      "go-git-tools",
+				owner:     "convention-change",
+				repo:      "convention-change-log",
 			},
 		},
 	}

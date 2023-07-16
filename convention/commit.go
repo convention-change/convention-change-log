@@ -2,8 +2,9 @@ package convention
 
 import (
 	"fmt"
-	"github.com/sinlov-go/go-git-tools/git"
 	"strings"
+
+	"github.com/sinlov-go/go-git-tools/git"
 )
 
 // https://www.conventionalcommits.org/en/v1.0.0/
@@ -90,7 +91,7 @@ func NewCommitWithOptions(opts ...OptionFn) (result Commit, err error) {
 // AppendMarkdownLink
 // will append [shortHash](gitHost/gitOwner/gitRepo/commit/hash)
 func (c *Commit) AppendMarkdownLink(shortHash, hash string, gitHost, gitOwner, gitRepo string) {
-	c.RawHeader = fmt.Sprintf("%s [%s](%s/%s/%s/commit/%s)", c.RawHeader, shortHash, gitHost, gitOwner, gitRepo, hash)
+	c.RawHeader = fmt.Sprintf("%s [%s](https://%s/%s/%s/commit/%s)", c.RawHeader, shortHash, gitHost, gitOwner, gitRepo, hash)
 }
 
 func (c *Commit) String() string {

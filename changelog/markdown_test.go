@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/convention-change/convention-change-log/convention"
 	"github.com/sebdah/goldie/v2"
-	"github.com/sinlov-go/convention-change-log/convention"
 	"github.com/sinlov-go/sample-markdown/sample_mk"
 	"github.com/stretchr/testify/assert"
 )
@@ -43,7 +43,7 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 				When:         time.Date(2020, 1, 18, 0, 1, 23, 45, time.UTC),
 				Location:     time.UTC,
 				ToolsKitName: "convention-change-log",
-				ToolsKitURL:  "https://github.com/sinlov-go/convention-change-log",
+				ToolsKitURL:  "https://github.com/convention-change/convention-change-log",
 			},
 		},
 		{
@@ -65,11 +65,11 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 			logSpec: convention.DefaultConventionalChangeLogSpec(),
 			changelogDesc: ConventionalChangeLogDesc{
 				Version:         "v1.0.0",
-				VersionNotesUrl: "https://github.com/sinlov-go/convention-change-log/compare/v1.0.1...v1.1.0",
+				VersionNotesUrl: "https://github.com/convention-change/convention-change-log/compare/v1.0.1...v1.1.0",
 				When:            time.Date(2020, 1, 18, 0, 1, 23, 45, time.UTC),
 				Location:        time.UTC,
 				ToolsKitName:    "convention-change-log",
-				ToolsKitURL:     "https://github.com/sinlov-go/convention-change-log",
+				ToolsKitURL:     "https://github.com/convention-change/convention-change-log",
 			},
 		},
 		{
@@ -114,7 +114,7 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 				When:         time.Date(2020, 1, 18, 0, 0, 0, 0, time.UTC),
 				Location:     time.UTC,
 				ToolsKitName: "convention-change-log",
-				ToolsKitURL:  "https://github.com/sinlov-go/convention-change-log",
+				ToolsKitURL:  "https://github.com/convention-change/convention-change-log",
 			},
 		},
 	}

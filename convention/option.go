@@ -3,12 +3,13 @@ package convention
 import (
 	"errors"
 	"fmt"
-	"github.com/sinlov-go/go-common-lib/pkg/date"
-	"github.com/sinlov-go/go-git-tools/git"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/sinlov-go/go-common-lib/pkg/date"
+	"github.com/sinlov-go/go-git-tools/git"
 )
 
 const (

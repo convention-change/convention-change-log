@@ -2,12 +2,12 @@ package cli
 
 import (
 	"fmt"
-	"github.com/sinlov-go/convention-change-log"
-	command2 "github.com/sinlov-go/convention-change-log/cmd/kit/command"
-	"github.com/sinlov-go/convention-change-log/cmd/kit/command/subcommand_init"
-	"github.com/sinlov-go/convention-change-log/cmd/kit/constant"
-	"github.com/sinlov-go/convention-change-log/internal/pkgJson"
-	"github.com/sinlov-go/convention-change-log/internal/urfave_cli"
+	"github.com/convention-change/convention-change-log"
+	command2 "github.com/convention-change/convention-change-log/cmd/kit/command"
+	"github.com/convention-change/convention-change-log/cmd/kit/command/subcommand_init"
+	"github.com/convention-change/convention-change-log/cmd/kit/constant"
+	"github.com/convention-change/convention-change-log/internal/pkgJson"
+	"github.com/convention-change/convention-change-log/internal/urfave_cli"
 	"github.com/urfave/cli/v2"
 	"time"
 )

@@ -4,7 +4,7 @@
   "description": "generate changelog from conventional commits",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sinlov-go/convention-change-log.git"
+    "url": "git+https://github.com/convention-change/convention-change-log.git"
   },
   "keywords": [
     "go",
@@ -15,11 +15,11 @@
   "author": {
     "name": "sinlov",
     "email": "sinlovppt@gmail.com",
-    "url": "https://github.com/sinlov-go/convention-change-log"
+    "url": "https://github.com/convention-change/convention-change-log"
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/sinlov-go/convention-change-log/issues"
+    "url": "https://github.com/convention-change/convention-change-log/issues"
   },
-  "homepage": "https://github.com/sinlov-go/convention-change-log#readme"
+  "homepage": "https://github.com/convention-change/convention-change-log#readme"
 }

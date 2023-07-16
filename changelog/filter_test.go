@@ -1,7 +1,7 @@
 package changelog
 
 import (
-	"github.com/sinlov-go/convention-change-log/convention"
+	"github.com/convention-change/convention-change-log/convention"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

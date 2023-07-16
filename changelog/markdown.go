@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/convention-change/convention-change-log/convention"
 	"github.com/elliotchance/orderedmap/v2"
-	"github.com/sinlov-go/convention-change-log/convention"
 	"github.com/sinlov-go/go-common-lib/pkg/date"
 	"github.com/sinlov-go/sample-markdown/sample_mk"
 )

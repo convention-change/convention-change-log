@@ -7,7 +7,7 @@ ENV_DIST_MARK=
 ROOT_NAME?=convention-change-log
 
 ## MakeDocker.mk settings start
-ROOT_OWNER?=sinlov-go
+ROOT_OWNER?=convention-change
 ROOT_PARENT_SWITCH_TAG=1.18.10-buster
 # for image local build
 INFO_TEST_BUILD_DOCKER_PARENT_IMAGE=golang

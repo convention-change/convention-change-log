@@ -1,4 +1,4 @@
-module github.com/sinlov-go/convention-change-log
+module github.com/convention-change/convention-change-log
 
 go 1.18
 

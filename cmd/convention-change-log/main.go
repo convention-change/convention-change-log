@@ -4,8 +4,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/convention-change/convention-change-log/cmd/kit/cli"
 	"github.com/gookit/color"
-	"github.com/sinlov-go/convention-change-log/cmd/kit/cli"
 	"os"
 )
 

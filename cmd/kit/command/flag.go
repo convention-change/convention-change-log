@@ -1,7 +1,7 @@
 package command
 
 import (
-	"github.com/sinlov-go/convention-change-log/cmd/kit/constant"
+	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/urfave/cli/v2"
 )
 

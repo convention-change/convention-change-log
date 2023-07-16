@@ -2,16 +2,17 @@ package subcommand_init
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/bar-counter/slog"
+	command2 "github.com/convention-change/convention-change-log/cmd/kit/command"
+	"github.com/convention-change/convention-change-log/convention"
+	"github.com/convention-change/convention-change-log/internal/urfave_cli"
 	"github.com/gookit/color"
-	command2 "github.com/sinlov-go/convention-change-log/cmd/kit/command"
-	"github.com/sinlov-go/convention-change-log/convention"
-	"github.com/sinlov-go/convention-change-log/internal/urfave_cli"
 	"github.com/sinlov-go/go-common-lib/pkg/filepath_plus"
 	"github.com/sinlov-go/go-git-tools/git_info"
 	"github.com/urfave/cli/v2"
-	"os"
-	"path/filepath"
 )
 
 const (
