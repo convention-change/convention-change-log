@@ -13,7 +13,7 @@ require (
 	github.com/sinlov-go/sample-markdown v1.0.0
 	github.com/sinlov/gh-conventional-kit v1.2.0
 	github.com/stretchr/testify v1.8.4
-	github.com/urfave/cli/v2 v2.23.7
+	github.com/urfave/cli/v2 v2.25.7
 )
 
 require (
