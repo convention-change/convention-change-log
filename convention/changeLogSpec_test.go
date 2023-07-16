@@ -139,3 +139,28 @@ func TestParseSectionFromType(t *testing.T) {
 		})
 	}
 }
+
+func TestSimplifyConventionalChangeLogSpec(t *testing.T) {
+	// mock SimplifyConventionalChangeLogSpec
+	tests := []struct {
+		name    string
+		wantErr error
+	}{
+		{
+			name: "simplify", // testdata/TestSimplifyConventionalChangeLogSpec/simplify.golden
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			g := goldie.New(t,
+				goldie.WithDiffEngine(goldie.ColoredDiff),
+			)
+
+			// do SimplifyConventionalChangeLogSpec
+			gotResult := SimplifyConventionalChangeLogSpec()
+
+			// verify SimplifyConventionalChangeLogSpec
+			g.AssertJson(t, t.Name(), &gotResult)
+		})
+	}
+}

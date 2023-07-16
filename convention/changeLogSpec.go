@@ -5,8 +5,18 @@ import (
 	"fmt"
 )
 
+const (
+	DefaultHeader                     = "Changelog"
+	DefaultCommitUrlFormat            = "{{host}}/{{owner}}/{{repository}}/commit/{{hash}}"
+	DefaultCompareUrlFormat           = "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}"
+	DefaultIssueUrlFormat             = "{{host}}/{{owner}}/{{repository}}/issues/{{id}}"
+	DefaultUserUrlFormat              = "{{host}}/{{user}}"
+	DefaultReleaseCommitMessageFormat = "chore(release): {{currentTag}}"
+)
+
 // ConventionalChangeLogSpec
 // struct
+// scheme See: https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.2.0/schema.json
 type ConventionalChangeLogSpec struct {
 
 	// Types
@@ -24,6 +34,36 @@ type ConventionalChangeLogSpec struct {
 	// IssuePrefixes
 	// default is ["#"]
 	IssuePrefixes []string `json:"issuePrefixes,omitempty"`
+
+	// Header
+	//	A string to be used as the main header of the CHANGELOG
+	// default DefaultHeader
+	Header string `json:"header,omitempty"`
+
+	// CommitUrlFormat
+	//	A URL representing a specific commit at a hash
+	// default DefaultCommitUrlFormat
+	CommitUrlFormat string `json:"commitUrlFormat,omitempty"`
+
+	// CompareUrlFormat
+	//	A URL representing the comparison between two git shas
+	// default DefaultCompareUrlFormat
+	CompareUrlFormat string `json:"compareUrlFormat,omitempty"`
+
+	// IssueUrlFormat
+	//	A URL representing the issue format (allowing a different URL format to be swapped in for Gitlab, Bitbucket, etc)
+	// default DefaultIssueUrlFormat
+	IssueUrlFormat string `json:"issueUrlFormat,omitempty"`
+
+	// UserUrlFormat
+	//	A URL representing a user's profile URL on GitHub, Gitlab, etc. This URL is used for substituting @bcoe with https://github.com/bcoe in commit messages.
+	// default DefaultUserUrlFormat
+	UserUrlFormat string `json:"userUrlFormat,omitempty"`
+
+	// ReleaseCommitMessageFormat
+	//	A string to be used to format the auto-generated release commit message
+	// default DefaultReleaseCommitMessageFormat
+	ReleaseCommitMessageFormat string `json:"releaseCommitMessageFormat,omitempty"`
 }
 
 var (
@@ -34,7 +74,50 @@ var (
 // return simplify ConventionalChangeLogSpec
 func SimplifyConventionalChangeLogSpec() *ConventionalChangeLogSpec {
 	spec := &ConventionalChangeLogSpec{
-		Types: defaultType,
+		Types: []Types{
+			{
+				Type:    FeatType,
+				Section: "Features",
+				Hidden:  false,
+				Sort:    1,
+			},
+			{
+				Type:    FixType,
+				Section: "Bug Fixes",
+				Hidden:  false,
+				Sort:    2,
+			},
+			{
+				Type:    DocsType,
+				Section: "Documentation",
+				Hidden:  true,
+				Sort:    3,
+			},
+			{
+				Type:    StyleType,
+				Section: "Styles",
+				Hidden:  true,
+				Sort:    4,
+			},
+			{
+				Type:    RefactorType,
+				Section: "Refactor",
+				Hidden:  false,
+				Sort:    5,
+			},
+			{
+				Type:    PerfType,
+				Section: "Performance Improvements",
+				Hidden:  false,
+				Sort:    6,
+			},
+			{
+				Type:    TestType,
+				Section: "Tests",
+				Hidden:  true,
+				Sort:    7,
+			},
+		},
 	}
 	return spec
 }
@@ -53,6 +136,12 @@ func DefaultConventionalChangeLogSpec() ConventionalChangeLogSpec {
 	}
 	defaultConventionalChangeLogSpec.HashLength = 8
 	defaultConventionalChangeLogSpec.IssuePrefixes = []string{"#"}
+	defaultConventionalChangeLogSpec.Header = DefaultHeader
+	defaultConventionalChangeLogSpec.CommitUrlFormat = DefaultCommitUrlFormat
+	defaultConventionalChangeLogSpec.CompareUrlFormat = DefaultCompareUrlFormat
+	defaultConventionalChangeLogSpec.IssueUrlFormat = DefaultIssueUrlFormat
+	defaultConventionalChangeLogSpec.UserUrlFormat = DefaultUserUrlFormat
+	defaultConventionalChangeLogSpec.ReleaseCommitMessageFormat = DefaultReleaseCommitMessageFormat
 
 	return *defaultConventionalChangeLogSpec
 }
@@ -109,6 +198,30 @@ func LoadConventionalChangeLogSpecByData(logSpec []byte) (*ConventionalChangeLog
 
 	if spec.IssuePrefixes == nil || len(spec.IssuePrefixes) == 0 {
 		spec.IssuePrefixes = []string{"#"}
+	}
+
+	if spec.Header == "" {
+		spec.Header = DefaultHeader
+	}
+
+	if spec.CommitUrlFormat == "" {
+		spec.CommitUrlFormat = DefaultCommitUrlFormat
+	}
+
+	if spec.CompareUrlFormat == "" {
+		spec.CompareUrlFormat = DefaultCompareUrlFormat
+	}
+
+	if spec.IssueUrlFormat == "" {
+		spec.IssueUrlFormat = DefaultIssueUrlFormat
+	}
+
+	if spec.UserUrlFormat == "" {
+		spec.UserUrlFormat = DefaultUserUrlFormat
+	}
+
+	if spec.ReleaseCommitMessageFormat == "" {
+		spec.ReleaseCommitMessageFormat = DefaultReleaseCommitMessageFormat
 	}
 
 	return &spec, nil

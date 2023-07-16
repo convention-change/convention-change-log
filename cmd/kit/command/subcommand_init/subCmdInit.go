@@ -35,7 +35,7 @@ func (n *NewCommand) Exec() error {
 	if filepath_plus.PathExistsFast(n.TargetFile) {
 		color.Yellowf("init versionrc file is exists, file: %s", n.TargetFile)
 	} else {
-		err := filepath_plus.WriteFileAsJsonBeauty(n.TargetFile, convention.DefaultConventionalChangeLogSpec(), false)
+		err := filepath_plus.WriteFileAsJsonBeauty(n.TargetFile, convention.SimplifyConventionalChangeLogSpec(), false)
 		if err != nil {
 			return fmt.Errorf("write file %s err: %v", n.TargetFile, err)
 		}
