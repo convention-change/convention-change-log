@@ -12,7 +12,7 @@ import (
 
 func TestGenerateMarkdownNodes(t *testing.T) {
 
-	gitRepoInfoDefault := convention.GitRepositoryInfo{
+	gitHttpInfoDefault := convention.GitRepositoryHttpInfo{
 		Scheme:     "https",
 		Host:       "github.com",
 		Owner:      "convention-change",
@@ -22,7 +22,7 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 	// mock GenerateMarkdownNodes
 	tests := []struct {
 		name              string
-		gitRepositoryInfo convention.GitRepositoryInfo
+		gitRepositoryInfo convention.GitRepositoryHttpInfo
 		changelogDesc     ConventionalChangeLogDesc
 		commits           []convention.Commit
 		logSpec           convention.ConventionalChangeLogSpec
@@ -30,7 +30,7 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 	}{
 		{
 			name:              "empty old data",
-			gitRepositoryInfo: gitRepoInfoDefault,
+			gitRepositoryInfo: gitHttpInfoDefault,
 			changelogDesc: ConventionalChangeLogDesc{
 				Version:      "v1.0.0",
 				When:         time.Date(2020, 1, 18, 0, 1, 23, 45, time.UTC),
@@ -58,7 +58,7 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 		},
 		{
 			name:              "version notes url",
-			gitRepositoryInfo: gitRepoInfoDefault,
+			gitRepositoryInfo: gitHttpInfoDefault,
 			changelogDesc: ConventionalChangeLogDesc{
 				Version:      "v1.1.0",
 				PreviousTag:  "v1.0.0",
@@ -85,7 +85,7 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 		},
 		{
 			name:              "many commits",
-			gitRepositoryInfo: gitRepoInfoDefault,
+			gitRepositoryInfo: gitHttpInfoDefault,
 			changelogDesc: ConventionalChangeLogDesc{
 				Version:      "v1.0.0",
 				When:         time.Date(2020, 1, 18, 0, 0, 0, 0, time.UTC),

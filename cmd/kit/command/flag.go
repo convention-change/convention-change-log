@@ -21,6 +21,11 @@ func MainFlag() []cli.Flag {
 			Value:   "v",
 		},
 		&cli.StringFlag{
+			Name:  "clone-url",
+			Usage: "Set git url to use by clone, if not set will use local repository",
+			Value: "",
+		},
+		&cli.StringFlag{
 			Name:    "infile",
 			Aliases: []string{"i"},
 			Usage:   "Read the CHANGELOG from this file",
@@ -70,6 +75,12 @@ func HideGlobalFlag() []cli.Flag {
 			Hidden:  true,
 			Value:   10,
 			EnvVars: []string{constant.EnvKeyCliTimeoutSecond},
+		},
+		&cli.StringFlag{
+			Name:   "git-remote",
+			Usage:  "change git remote name. default origin",
+			Value:  "origin",
+			Hidden: true,
 		},
 	}
 }

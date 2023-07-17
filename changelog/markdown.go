@@ -19,7 +19,7 @@ const (
 
 // GenerateMarkdownNodes
 //
-// gitRepoInfo: git repo info by convention.GitRepositoryInfo
+// gitHttpInfo: git repo info by convention.GitRepositoryHttpInfo
 //
 // changelogDesc: changelog desc by ConventionalChangeLogDesc
 //
@@ -27,7 +27,7 @@ const (
 //
 // logSpec: log spec by convention.ConventionalChangeLogSpec
 func GenerateMarkdownNodes(
-	gitRepoInfo convention.GitRepositoryInfo,
+	gitHttpInfo convention.GitRepositoryHttpInfo,
 	changelogDesc ConventionalChangeLogDesc,
 	commits []convention.Commit,
 	logSpec convention.ConventionalChangeLogSpec,
@@ -86,7 +86,7 @@ func GenerateMarkdownNodes(
 	}
 
 	// Adding title
-	versionHeader := generateVersionHeaderValue(gitRepoInfo, logSpec, changelogDesc)
+	versionHeader := generateVersionHeaderValue(gitHttpInfo, logSpec, changelogDesc)
 	nodes = append([]sample_mk.Node{
 		sample_mk.NewHeader(firstLevel, logSpec.Header),
 		sample_mk.NewBasicItem(fmt.Sprintf(titleDesc, changelogDesc.ToolsKitName, changelogDesc.ToolsKitURL)),
@@ -109,7 +109,7 @@ func convertToListMarkdownNodes(commits []convention.Commit) []sample_mk.Node {
 // generateVersionHeaderValue
 // if generate compareUrl error will return sample
 func generateVersionHeaderValue(
-	gitRepoInfo convention.GitRepositoryInfo,
+	gitRepoInfo convention.GitRepositoryHttpInfo,
 	spec convention.ConventionalChangeLogSpec,
 	changelogDesc ConventionalChangeLogDesc,
 ) string {

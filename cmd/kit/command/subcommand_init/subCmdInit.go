@@ -1,8 +1,8 @@
 package subcommand_init
 
 import (
-	"fmt"
 	"github.com/convention-change/convention-change-log/cmd/kit/command"
+	"github.com/convention-change/convention-change-log/cmd/kit/command/exit_cli"
 	"github.com/convention-change/convention-change-log/convention"
 	"path/filepath"
 
@@ -46,7 +46,7 @@ func (n *NewCommand) Exec() error {
 
 	err := filepath_plus.WriteFileAsJsonBeauty(n.TargetFile, spec, false)
 	if err != nil {
-		return fmt.Errorf("write file %s err: %v", n.TargetFile, err)
+		return exit_cli.Format("write file %s err: %v", n.TargetFile, err)
 	}
 	color.Greenf("init .versionrc file success, file: %s", n.TargetFile)
 	return nil

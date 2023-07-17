@@ -1,7 +1,8 @@
 package convention
 
-type GitRepositoryInfo struct {
-	// Scheme is the protocol scheme of the remote host. like https or http
+type GitRepositoryHttpInfo struct {
+	// Scheme is the protocol scheme of the remote host. https or http.
+	// do not use git+ssh, it will be some error
 	Scheme string
 
 	// Host is the hostname:port of the remote host.

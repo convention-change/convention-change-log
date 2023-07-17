@@ -34,11 +34,14 @@ type Commit struct {
 
 // NewCommitWithLogSpec
 //
-//	c git.Commit
-//	spec ConventionalChangeLogSpec
-//	gitRepoUrl git repo url if not set will not contain Hash link
-//	return conventional commit from git commit
-func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec, gitRepoUrl string) (Commit, error) {
+// c git.Commit
+//
+// spec ConventionalChangeLogSpec
+//
+// gitHttpInfo git info by GitRepositoryHttpInfo
+//
+// return conventional commit from git commit
+func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec, gitHttpInfo GitRepositoryHttpInfo) (Commit, error) {
 	result, err := NewCommitWithOptions(
 		GetRawHeader(c),
 		GetTypeAndScope(c),
@@ -59,7 +62,8 @@ func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec, gitRepoU
 		}
 
 	}
-	if !c.Hash.IsZero() && gitRepoUrl != "" {
+	if !c.Hash.IsZero() && gitHttpInfo.Host != "" {
+		gitRepoUrl := fmt.Sprintf("%s://%s/%s/%s", gitHttpInfo.Scheme, gitHttpInfo.Host, gitHttpInfo.Owner, gitHttpInfo.Repository)
 		hashFull := c.Hash.String()
 		hashShort := c.Hash.String()[:spec.HashLength]
 		result.RawHeader = fmt.Sprintf("%s [%s](%s/commit/%s)", result.RawHeader, hashShort, gitRepoUrl, hashFull)
@@ -90,12 +94,12 @@ func NewCommitWithOptions(opts ...OptionFn) (result Commit, err error) {
 
 // AppendMarkdownCommitLink
 // will append [shortHash](RaymondRender(commitUrlFormat)) by {{scheme}}://{{Host}}/{{Owner}}/{{Repository}}/commit/{{Hash}}
-func (c *Commit) AppendMarkdownCommitLink(commitUrlFormat string, shortHash, hash string, gitRepositoryInfo GitRepositoryInfo) error {
+func (c *Commit) AppendMarkdownCommitLink(commitUrlFormat string, shortHash, hash string, gitHttpInfo GitRepositoryHttpInfo) error {
 	commitRt := new(CommitRenderTemplate)
-	commitRt.Scheme = gitRepositoryInfo.Scheme
-	commitRt.Host = gitRepositoryInfo.Host
-	commitRt.Owner = gitRepositoryInfo.Owner
-	commitRt.Repository = gitRepositoryInfo.Repository
+	commitRt.Scheme = gitHttpInfo.Scheme
+	commitRt.Host = gitHttpInfo.Host
+	commitRt.Owner = gitHttpInfo.Owner
+	commitRt.Repository = gitHttpInfo.Repository
 	commitRt.Hash = hash
 	commitUrl, err := RaymondRender(commitUrlFormat, commitRt)
 	if err != nil {

@@ -14,12 +14,18 @@ import (
 
 func TestNewCommitWithOutType(t *testing.T) {
 	// mock NewCommitWithLogSpec
+	gitHttpInfoDefault := GitRepositoryHttpInfo{
+		Scheme:     "https",
+		Host:       "github.com",
+		Owner:      "convention-change",
+		Repository: "convention-change-log",
+	}
 
 	tests := []struct {
-		name       string
-		c          git.Commit
-		gitRepoUrl string
-		wantErr    error
+		name        string
+		c           git.Commit
+		gitHttpInfo GitRepositoryHttpInfo
+		wantErr     error
 	}{
 		{
 			name: "sample",
@@ -29,14 +35,14 @@ func TestNewCommitWithOutType(t *testing.T) {
 					When: time.Date(2020, 4, 1, 0, 0, 0, 0, time.Local),
 				},
 			},
-			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
+			gitHttpInfo: gitHttpInfoDefault,
 		},
 		{
 			name: "Commit message with scope",
 			c: git.Commit{
 				Message: "feat(lang): add polish language",
 			},
-			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
+			gitHttpInfo: gitHttpInfoDefault,
 		},
 		{
 			name: "Commit message with hash",
@@ -44,7 +50,7 @@ func TestNewCommitWithOutType(t *testing.T) {
 				Message: "feat: add polish hash",
 				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
 			},
-			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
+			gitHttpInfo: gitHttpInfoDefault,
 		},
 		{
 			name: "Commit message with hash and breaking change",
@@ -52,7 +58,7 @@ func TestNewCommitWithOutType(t *testing.T) {
 				Message: "feat: new api\n\nBREAKING CHANGE: this is describe of new api breaking changes\n\nfix #1",
 				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
 			},
-			gitRepoUrl: "https://github.com/convention-change/convention-change-log",
+			gitHttpInfo: gitHttpInfoDefault,
 		},
 	}
 
@@ -72,7 +78,7 @@ func TestNewCommitWithOutType(t *testing.T) {
 			}
 
 			// do NewCommitWithLogSpec
-			gotResult, gotErr := NewCommitWithLogSpec(tc.c, *logSpecByData, tc.gitRepoUrl)
+			gotResult, gotErr := NewCommitWithLogSpec(tc.c, *logSpecByData, tc.gitHttpInfo)
 			assert.Equal(t, tc.wantErr, gotErr)
 			if tc.wantErr != nil {
 				return
@@ -155,7 +161,7 @@ func TestNewCommit(t *testing.T) {
 }
 
 func TestAppendMarkdownLink(t *testing.T) {
-	defaultRepoInfo := GitRepositoryInfo{
+	defaultRepoInfo := GitRepositoryHttpInfo{
 		Scheme:     "https",
 		Host:       "github.com",
 		Owner:      "convention-change",
@@ -170,7 +176,7 @@ func TestAppendMarkdownLink(t *testing.T) {
 		name              string
 		c                 git.Commit
 		gitCommitInfo     gitCommitInfo
-		gitRepositoryInfo GitRepositoryInfo
+		gitRepositoryInfo GitRepositoryHttpInfo
 		wantErr           error
 	}{
 		{
