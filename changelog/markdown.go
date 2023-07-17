@@ -17,10 +17,20 @@ const (
 	thirdLevel  = 3
 )
 
+// GenerateMarkdownNodes
+//
+// gitRepoInfo: git repo info by convention.GitRepositoryInfo
+//
+// changelogDesc: changelog desc by ConventionalChangeLogDesc
+//
+// commit: commit list by []convention.Commit
+//
+// logSpec: log spec by convention.ConventionalChangeLogSpec
 func GenerateMarkdownNodes(
+	gitRepoInfo convention.GitRepositoryInfo,
+	changelogDesc ConventionalChangeLogDesc,
 	commits []convention.Commit,
 	logSpec convention.ConventionalChangeLogSpec,
-	changelogDesc ConventionalChangeLogDesc,
 ) ([]sample_mk.Node, error) {
 
 	if changelogDesc.Version == "" {
@@ -76,9 +86,9 @@ func GenerateMarkdownNodes(
 	}
 
 	// Adding title
-	versionHeader := generateVersionHeaderValue(logSpec, changelogDesc)
+	versionHeader := generateVersionHeaderValue(gitRepoInfo, logSpec, changelogDesc)
 	nodes = append([]sample_mk.Node{
-		sample_mk.NewHeader(firstLevel, title),
+		sample_mk.NewHeader(firstLevel, logSpec.Header),
 		sample_mk.NewBasicItem(fmt.Sprintf(titleDesc, changelogDesc.ToolsKitName, changelogDesc.ToolsKitURL)),
 		sample_mk.NewHeader(secondLevel, versionHeader),
 	}, nodes...)
@@ -96,7 +106,10 @@ func convertToListMarkdownNodes(commits []convention.Commit) []sample_mk.Node {
 	return result
 }
 
+// generateVersionHeaderValue
+// if generate compareUrl error will return sample
 func generateVersionHeaderValue(
+	gitRepoInfo convention.GitRepositoryInfo,
 	spec convention.ConventionalChangeLogSpec,
 	changelogDesc ConventionalChangeLogDesc,
 ) string {
@@ -104,8 +117,22 @@ func generateVersionHeaderValue(
 	if spec.TagPrefix != "" {
 		versionTxt = strings.Replace(changelogDesc.Version, spec.TagPrefix, "", 1)
 	}
-	if changelogDesc.VersionNotesUrl == "" {
+
+	if changelogDesc.PreviousTag == "" {
 		return fmt.Sprintf("%s (%s)", versionTxt, date.FormatDateByDefault(changelogDesc.When, changelogDesc.Location))
 	}
-	return fmt.Sprintf("[%s](%s) (%s)", versionTxt, changelogDesc.VersionNotesUrl, date.FormatDateByDefault(changelogDesc.When, changelogDesc.Location))
+
+	compareRender := new(convention.CompareRenderTemplate)
+	compareRender.Scheme = gitRepoInfo.Scheme
+	compareRender.Host = gitRepoInfo.Host
+	compareRender.Owner = gitRepoInfo.Owner
+	compareRender.Repository = gitRepoInfo.Repository
+	compareRender.PreviousTag = changelogDesc.PreviousTag
+	compareRender.CurrentTag = changelogDesc.Version
+
+	compareUrl, err := convention.RaymondRender(spec.CompareUrlFormat, compareRender)
+	if err != nil {
+		return fmt.Sprintf("%s (%s)", versionTxt, date.FormatDateByDefault(changelogDesc.When, changelogDesc.Location))
+	}
+	return fmt.Sprintf("[%s](%s) (%s)", versionTxt, compareUrl, date.FormatDateByDefault(changelogDesc.When, changelogDesc.Location))
 }

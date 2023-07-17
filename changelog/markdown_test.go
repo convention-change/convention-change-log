@@ -11,16 +11,33 @@ import (
 )
 
 func TestGenerateMarkdownNodes(t *testing.T) {
+
+	gitRepoInfoDefault := convention.GitRepositoryInfo{
+		Scheme:     "https",
+		Host:       "github.com",
+		Owner:      "convention-change",
+		Repository: "convention-change-log",
+	}
+
 	// mock GenerateMarkdownNodes
 	tests := []struct {
-		name          string
-		commits       []convention.Commit
-		logSpec       convention.ConventionalChangeLogSpec
-		changelogDesc ConventionalChangeLogDesc
-		wantErr       error
+		name              string
+		gitRepositoryInfo convention.GitRepositoryInfo
+		changelogDesc     ConventionalChangeLogDesc
+		commits           []convention.Commit
+		logSpec           convention.ConventionalChangeLogSpec
+		wantErr           error
 	}{
 		{
-			name: "empty old data",
+			name:              "empty old data",
+			gitRepositoryInfo: gitRepoInfoDefault,
+			changelogDesc: ConventionalChangeLogDesc{
+				Version:      "v1.0.0",
+				When:         time.Date(2020, 1, 18, 0, 1, 23, 45, time.UTC),
+				Location:     time.UTC,
+				ToolsKitName: "convention-change-log",
+				ToolsKitURL:  "https://github.com/convention-change/convention-change-log",
+			},
 			commits: []convention.Commit{
 				{
 					RawHeader: "feat: new feature",
@@ -38,16 +55,18 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 				},
 			},
 			logSpec: convention.DefaultConventionalChangeLogSpec(),
+		},
+		{
+			name:              "version notes url",
+			gitRepositoryInfo: gitRepoInfoDefault,
 			changelogDesc: ConventionalChangeLogDesc{
-				Version:      "v1.0.0",
+				Version:      "v1.1.0",
+				PreviousTag:  "v1.0.0",
 				When:         time.Date(2020, 1, 18, 0, 1, 23, 45, time.UTC),
 				Location:     time.UTC,
 				ToolsKitName: "convention-change-log",
 				ToolsKitURL:  "https://github.com/convention-change/convention-change-log",
 			},
-		},
-		{
-			name: "version notes url",
 			commits: []convention.Commit{
 				{
 					RawHeader: "feat: new feature",
@@ -63,17 +82,17 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 				},
 			},
 			logSpec: convention.DefaultConventionalChangeLogSpec(),
-			changelogDesc: ConventionalChangeLogDesc{
-				Version:         "v1.0.0",
-				VersionNotesUrl: "https://github.com/convention-change/convention-change-log/compare/v1.0.1...v1.1.0",
-				When:            time.Date(2020, 1, 18, 0, 1, 23, 45, time.UTC),
-				Location:        time.UTC,
-				ToolsKitName:    "convention-change-log",
-				ToolsKitURL:     "https://github.com/convention-change/convention-change-log",
-			},
 		},
 		{
-			name: "many commits",
+			name:              "many commits",
+			gitRepositoryInfo: gitRepoInfoDefault,
+			changelogDesc: ConventionalChangeLogDesc{
+				Version:      "v1.0.0",
+				When:         time.Date(2020, 1, 18, 0, 0, 0, 0, time.UTC),
+				Location:     time.UTC,
+				ToolsKitName: "convention-change-log",
+				ToolsKitURL:  "https://github.com/convention-change/convention-change-log",
+			},
 			commits: []convention.Commit{
 				{
 					RawHeader: "feat: new feature",
@@ -109,13 +128,6 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 				},
 			},
 			logSpec: convention.DefaultConventionalChangeLogSpec(),
-			changelogDesc: ConventionalChangeLogDesc{
-				Version:      "v1.0.0",
-				When:         time.Date(2020, 1, 18, 0, 0, 0, 0, time.UTC),
-				Location:     time.UTC,
-				ToolsKitName: "convention-change-log",
-				ToolsKitURL:  "https://github.com/convention-change/convention-change-log",
-			},
 		},
 	}
 	for _, tc := range tests {
@@ -125,9 +137,11 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 			)
 
 			// do GenerateMarkdownNodes
-			gotResult, gotErr := GenerateMarkdownNodes(tc.commits,
-				tc.logSpec,
+			gotResult, gotErr := GenerateMarkdownNodes(
+				tc.gitRepositoryInfo,
 				tc.changelogDesc,
+				tc.commits,
+				tc.logSpec,
 			)
 			assert.Equal(t, tc.wantErr, gotErr)
 			if tc.wantErr != nil {

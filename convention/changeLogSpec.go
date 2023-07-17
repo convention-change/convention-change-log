@@ -7,10 +7,10 @@ import (
 
 const (
 	DefaultHeader                     = "Changelog"
-	DefaultCommitUrlFormat            = "https://{{host}}/{{owner}}/{{repository}}/commit/{{hash}}"
-	DefaultCompareUrlFormat           = "https://{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}"
-	DefaultIssueUrlFormat             = "https://{{host}}/{{owner}}/{{repository}}/issues/{{id}}"
-	DefaultUserUrlFormat              = "https://{{host}}/{{user}}"
+	DefaultCommitUrlFormat            = "{{scheme}}://{{host}}/{{owner}}/{{repository}}/commit/{{hash}}"
+	DefaultCompareUrlFormat           = "{{scheme}}://{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}"
+	DefaultIssueUrlFormat             = "{{scheme}}://{{host}}/{{owner}}/{{repository}}/issues/{{id}}"
+	DefaultUserUrlFormat              = "{{scheme}://{{host}}/{{user}}"
 	DefaultReleaseCommitMessageFormat = "chore(release): {{currentTag}}"
 )
 

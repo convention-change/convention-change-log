@@ -89,12 +89,13 @@ func NewCommitWithOptions(opts ...OptionFn) (result Commit, err error) {
 }
 
 // AppendMarkdownCommitLink
-// will append [shortHash](RaymondRender(commitUrlFormat)) by {{Host}}/{{Owner}}/{{Repository}}/commit/{{Hash}}
-func (c *Commit) AppendMarkdownCommitLink(commitUrlFormat string, shortHash, hash string, gitHost, gitOwner, gitRepo string) error {
+// will append [shortHash](RaymondRender(commitUrlFormat)) by {{scheme}}://{{Host}}/{{Owner}}/{{Repository}}/commit/{{Hash}}
+func (c *Commit) AppendMarkdownCommitLink(commitUrlFormat string, shortHash, hash string, gitRepositoryInfo GitRepositoryInfo) error {
 	commitRt := new(CommitRenderTemplate)
-	commitRt.Host = gitHost
-	commitRt.Owner = gitOwner
-	commitRt.Repository = gitRepo
+	commitRt.Scheme = gitRepositoryInfo.Scheme
+	commitRt.Host = gitRepositoryInfo.Host
+	commitRt.Owner = gitRepositoryInfo.Owner
+	commitRt.Repository = gitRepositoryInfo.Repository
 	commitRt.Hash = hash
 	commitUrl, err := RaymondRender(commitUrlFormat, commitRt)
 	if err != nil {

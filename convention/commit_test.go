@@ -155,19 +155,23 @@ func TestNewCommit(t *testing.T) {
 }
 
 func TestAppendMarkdownLink(t *testing.T) {
+	defaultRepoInfo := GitRepositoryInfo{
+		Scheme:     "https",
+		Host:       "github.com",
+		Owner:      "convention-change",
+		Repository: "convention-change-log",
+	}
 	// mock AppendMarkdownCommitLink
-	type gitInfo struct {
+	type gitCommitInfo struct {
 		shortHash string
 		hash      string
-		host      string
-		owner     string
-		repo      string
 	}
 	tests := []struct {
-		name    string
-		c       git.Commit
-		gitInfo gitInfo
-		wantErr error
+		name              string
+		c                 git.Commit
+		gitCommitInfo     gitCommitInfo
+		gitRepositoryInfo GitRepositoryInfo
+		wantErr           error
 	}{
 		{
 			name: "sample", // testdata/TestAppendMarkdownLink/sample.golden
@@ -177,13 +181,11 @@ func TestAppendMarkdownLink(t *testing.T) {
 					When: time.Date(2020, 4, 1, 0, 0, 0, 0, time.Local),
 				},
 			},
-			gitInfo: gitInfo{
+			gitCommitInfo: gitCommitInfo{
 				shortHash: "a1b2c3d",
 				hash:      "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0",
-				host:      "github.com",
-				owner:     "convention-change",
-				repo:      "convention-change-log",
 			},
+			gitRepositoryInfo: defaultRepoInfo,
 		},
 	}
 	spec := DefaultConventionalChangeLogSpec()
@@ -198,7 +200,7 @@ func TestAppendMarkdownLink(t *testing.T) {
 				t.Fatal(gotCommitErr)
 			}
 			// do AppendMarkdownCommitLink
-			gotErr := gotResult.AppendMarkdownCommitLink(spec.CommitUrlFormat, tc.gitInfo.shortHash, tc.gitInfo.hash, tc.gitInfo.host, tc.gitInfo.owner, tc.gitInfo.repo)
+			gotErr := gotResult.AppendMarkdownCommitLink(spec.CommitUrlFormat, tc.gitCommitInfo.shortHash, tc.gitCommitInfo.hash, tc.gitRepositoryInfo)
 			assert.Equal(t, tc.wantErr, gotErr)
 			if tc.wantErr != nil {
 				return

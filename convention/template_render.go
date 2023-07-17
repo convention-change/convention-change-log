@@ -17,6 +17,7 @@ type IssueRenderTemplate struct {
 }
 
 type GitUrlRenderTemplate struct {
+	Scheme     string `handlebars:"scheme"`
 	Host       string `handlebars:"host"`
 	Owner      string `handlebars:"owner"`
 	Repository string `handlebars:"repository"`
