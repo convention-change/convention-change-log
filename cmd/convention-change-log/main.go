@@ -4,12 +4,15 @@ package main
 
 import (
 	"fmt"
+	"github.com/convention-change/convention-change-log"
 	"github.com/convention-change/convention-change-log/cmd/kit/cli"
+	"github.com/convention-change/convention-change-log/internal/pkgJson"
 	"github.com/gookit/color"
 	"os"
 )
 
 func main() {
+	pkgJson.InitPkgJsonContent(convention_change_log.PackageJson)
 	app := cli.NewCliApp()
 	args := os.Args
 	if len(args) < 2 {

@@ -13,7 +13,7 @@ const (
   "author": {
     "name": "sinlov",
     "email": "sinlovgmppt@gmail.com",
-    "url": "https://github.com/sinlov/gh-conventional-kit"
+    "url": "https://github.com/convention-change/convention-change-log"
   }
 }
 `
@@ -24,10 +24,10 @@ const (
   "author": {
     "name": "sinlov",
     "email": "sinlovgmppt@gmail.com",
-    "url": "https://github.com/sinlov/gh-conventional-kit"
+    "url": "https://github.com/convention-change/convention-change-log"
   },
   "description": "mock go style",
-  "homepage": "https://github.com/sinlov/gh-conventional-kit#readme"
+  "homepage": "https://github.com/convention-change/convention-change-log#readme"
 }
 `
 )
@@ -215,5 +215,5 @@ func TestGetPackageJsonHomepage(t *testing.T) {
 	assert.Equal(t, "", GetPackageJsonHomepage())
 
 	InitPkgJsonContent(jsonInfoGoStyle)
-	assert.Equal(t, "https://github.com/sinlov/gh-conventional-kit#readme", GetPackageJsonHomepage())
+	assert.Equal(t, "https://github.com/convention-change/convention-change-log#readme", GetPackageJsonHomepage())
 }

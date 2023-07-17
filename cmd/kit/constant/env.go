@@ -10,4 +10,8 @@ const (
 	// EnvKeyCliTimeoutSecond
 	//	Provides the timeout second flag
 	EnvKeyCliTimeoutSecond = "CLI_CONFIG_TIMEOUT_SECOND"
+
+	// EnvLogLevel
+	//	env ENV_WEB_LOG_LEVEL default ""
+	EnvLogLevel string = "CLI_LOG_LEVEL"
 )

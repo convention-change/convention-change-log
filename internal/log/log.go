@@ -3,8 +3,8 @@ package log
 import (
 	"fmt"
 	"github.com/bar-counter/slog"
-	"github.com/sinlov/gh-conventional-kit/constant"
-	"github.com/sinlov/gh-conventional-kit/utils/env_kit"
+	"github.com/convention-change/convention-change-log/cmd/kit/constant"
+	"github.com/sinlov-go/go-common-lib/pkg/env_kit"
 )
 
 // InitLog

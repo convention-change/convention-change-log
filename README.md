@@ -41,6 +41,13 @@ $ go install -v github.com/convention-change/convention-change-log/cmd/conventio
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.0.0
 ````
 
+- please use cli at `git repository root path`
+
+```bash
+# init config file at git repository root path
+$ convention-change-log init
+```
+
 # dev
 
 ## Contributing

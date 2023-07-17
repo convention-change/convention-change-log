@@ -2,12 +2,12 @@ package subcommand_init
 
 import (
 	"fmt"
+	"github.com/convention-change/convention-change-log/cmd/kit/command"
+	"github.com/convention-change/convention-change-log/convention"
 	"os"
 	"path/filepath"
 
 	"github.com/bar-counter/slog"
-	command2 "github.com/convention-change/convention-change-log/cmd/kit/command"
-	"github.com/convention-change/convention-change-log/convention"
 	"github.com/convention-change/convention-change-log/internal/urfave_cli"
 	"github.com/gookit/color"
 	"github.com/sinlov-go/go-common-lib/pkg/filepath_plus"
@@ -29,28 +29,43 @@ type NewCommand struct {
 	GitRootPath string
 
 	TargetFile string
+	MoreConfig bool
 }
 
 func (n *NewCommand) Exec() error {
 
 	if filepath_plus.PathExistsFast(n.TargetFile) {
 		color.Yellowf("init versionrc file is exists, file: %s", n.TargetFile)
-	} else {
-		err := filepath_plus.WriteFileAsJsonBeauty(n.TargetFile, convention.SimplifyConventionalChangeLogSpec(), false)
-		if err != nil {
-			return fmt.Errorf("write file %s err: %v", n.TargetFile, err)
-		}
-		color.Greenf("init .versionrc file success, file: %s", n.TargetFile)
+		return nil
 	}
+
+	var spec *convention.ConventionalChangeLogSpec
+	if n.MoreConfig {
+		logSpec := convention.DefaultConventionalChangeLogSpec()
+		spec = &logSpec
+	} else {
+		spec = convention.SimplifyConventionalChangeLogSpec()
+	}
+
+	err := filepath_plus.WriteFileAsJsonBeauty(n.TargetFile, spec, false)
+	if err != nil {
+		return fmt.Errorf("write file %s err: %v", n.TargetFile, err)
+	}
+	color.Greenf("init .versionrc file success, file: %s", n.TargetFile)
 	return nil
 }
 
 func flag() []cli.Flag {
-	return []cli.Flag{}
+	return []cli.Flag{
+		&cli.BoolFlag{
+			Name:  "more",
+			Usage: "more config at init",
+		},
+	}
 }
 
 func withEntry(c *cli.Context) (*NewCommand, error) {
-	globalEntry := command2.CmdGlobalEntry()
+	globalEntry := command.CmdGlobalEntry()
 
 	dir, err := os.Getwd()
 	if err != nil {
@@ -65,9 +80,12 @@ func withEntry(c *cli.Context) (*NewCommand, error) {
 	targetFile := filepath.Join(gitRootFolder, versionRcFile)
 
 	return &NewCommand{
-		isDebug:     globalEntry.Verbose,
+		isDebug: globalEntry.Verbose,
+
 		GitRootPath: gitRootFolder,
 		TargetFile:  targetFile,
+
+		MoreConfig: c.Bool("more"),
 	}, nil
 }
 
@@ -82,7 +100,7 @@ func action(c *cli.Context) error {
 }
 
 func Command() []*cli.Command {
-	urfave_cli.UrfaveCliAppendCliFlag(command2.GlobalFlag(), command2.HideGlobalFlag())
+	urfave_cli.UrfaveCliAppendCliFlag(command.GlobalFlag(), command.HideGlobalFlag())
 	return []*cli.Command{
 		{
 			Name:   commandName,
