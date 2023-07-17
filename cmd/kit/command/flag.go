@@ -34,7 +34,7 @@ func MainFlag() []cli.Flag {
 		},
 		&cli.StringFlag{
 			Name:  "from-commit",
-			Usage: "Generate the changelog from a specific tag. If not specified will use HEAD",
+			Usage: "Generate the changelog from a specific tag commit full code. If not specified will use latest releaseCommitMessageFormat to find",
 			Value: "",
 		},
 		&cli.BoolFlag{
