@@ -282,7 +282,7 @@ func readFileAsJson(path string, v interface{}) error {
 // writeFileByByte
 //
 //	write bytes to file
-//	path most use Abs Path
+//	path most use Abs path
 //	data []byte
 //	fileMod os.FileMode(0666) or os.FileMode(0644)
 //	coverage true will coverage old
@@ -312,7 +312,7 @@ func writeFileByByte(path string, data []byte, fileMod fs.FileMode, coverage boo
 
 // writeFileAsJson write json file
 //
-//	path most use Abs Path
+//	path most use Abs path
 //	v data
 //	fileMod os.FileMode(0666) or os.FileMode(0644)
 //	coverage true will coverage old

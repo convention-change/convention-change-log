@@ -12,12 +12,12 @@ import (
 func TestNewReader(t *testing.T) {
 	// mock NewReader
 	tests := []struct {
-		name                string
-		changelogMdPath     string
-		spec                convention.ConventionalChangeLogSpec
-		wantHistoryTagShort string
-		wantHistoryNodeLen  int
-		wantErr             error
+		name                  string
+		changelogMdPath       string
+		spec                  convention.ConventionalChangeLogSpec
+		wantHistoryTagShort   string
+		wantHistoryFirstTitle string
+		wantErr               error
 	}{
 		{
 			name:            "not found file",
@@ -32,25 +32,25 @@ func TestNewReader(t *testing.T) {
 			wantErr:         fmt.Errorf("can not find any sample markdown node by path: testdata/TestNewReader/empty-log.md.golden"),
 		},
 		{
-			name:                "first release", // testdata/TestNewReader/sample.golden
-			changelogMdPath:     "first_release",
-			spec:                convention.DefaultConventionalChangeLogSpec(),
-			wantHistoryTagShort: "1.0.0",
-			wantHistoryNodeLen:  3,
+			name:                  "first release", // testdata/TestNewReader/sample.golden
+			changelogMdPath:       "first_release",
+			spec:                  convention.DefaultConventionalChangeLogSpec(),
+			wantHistoryTagShort:   "1.0.0",
+			wantHistoryFirstTitle: "1.0.0 (2023-07-11)",
 		},
 		{
-			name:                "sample", // testdata/TestNewReader/sample.golden
-			changelogMdPath:     "sample",
-			spec:                convention.DefaultConventionalChangeLogSpec(),
-			wantHistoryTagShort: "1.1.0",
-			wantHistoryNodeLen:  6,
+			name:                  "sample", // testdata/TestNewReader/sample.golden
+			changelogMdPath:       "sample",
+			spec:                  convention.DefaultConventionalChangeLogSpec(),
+			wantHistoryTagShort:   "1.1.0",
+			wantHistoryFirstTitle: "[1.1.0](https://github.com/sinlov-go/sample-markdown/compare/v1.0.0...v1.1.0) (2023-07-18)",
 		},
 		{
-			name:                "break change", // testdata/TestNewReader/sample.golden
-			changelogMdPath:     "break_change",
-			spec:                convention.DefaultConventionalChangeLogSpec(),
-			wantHistoryTagShort: "1.1.0",
-			wantHistoryNodeLen:  8,
+			name:                  "break change", // testdata/TestNewReader/sample.golden
+			changelogMdPath:       "break_change",
+			spec:                  convention.DefaultConventionalChangeLogSpec(),
+			wantHistoryTagShort:   "1.1.0",
+			wantHistoryFirstTitle: "[1.1.0](https://github.com/sinlov-go/sample-markdown/compare/v1.0.0...v1.1.0) (2023-07-18)",
 		},
 	}
 	for _, tc := range tests {
@@ -67,9 +67,9 @@ func TestNewReader(t *testing.T) {
 				return
 			}
 			// verify NewReader
-			g.AssertJson(t, t.Name(), reader)
-			assert.Equal(t, tc.wantHistoryTagShort, reader.HistoryTagShort())
-			assert.Equal(t, tc.wantHistoryNodeLen, len(reader.HistoryNodes()))
+			assert.Equal(t, tc.wantHistoryTagShort, reader.HistoryFirstTagShort())
+			assert.Equal(t, tc.wantHistoryFirstTitle, reader.HistoryFirstTitle())
+			g.Assert(t, t.Name(), []byte(reader.HistoryFirstContent()))
 		})
 	}
 }
