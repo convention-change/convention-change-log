@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	leftScope       = "("
-	rightScope      = ")"
-	breakingChanges = "BREAKING CHANGE: "
+	leftScope                    = "("
+	rightScope                   = ")"
+	MarkdownBreakingChangesToken = "BREAKING CHANGE: "
 )
 
 var (
@@ -79,8 +79,8 @@ func GetBreakChanges(gitCommit git.Commit, spec ConventionalChangeLogSpec) Optio
 		issueReference := ""
 		var issueNum uint64
 		for _, line := range messages {
-			if strings.Index(line, breakingChanges) == 0 {
-				breakingChangesDesc = strings.Replace(line, breakingChanges, "", 1)
+			if strings.Index(line, MarkdownBreakingChangesToken) == 0 {
+				breakingChangesDesc = strings.Replace(line, MarkdownBreakingChangesToken, "", 1)
 				continue
 			}
 			lineSplitSpace := strings.SplitN(line, " ", 2)

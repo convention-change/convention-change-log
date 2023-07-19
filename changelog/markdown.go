@@ -64,11 +64,22 @@ func GenerateMarkdownNodes(
 
 	nodesLen := 0
 	markDownNodes := orderedmap.NewOrderedMap[string, []sample_mk.Node]()
-	//markDownNodes := make(map[string][]sample_mk.Node, len(filteredCommits))
+
+	breakingChanges := make([]convention.BreakingChanges, 0)
 	if sortedCommits.Len() > 0 {
 		//var markDownNodes map[string][]sample_mk.Node
 		for el := sortedCommits.Front(); el != nil; el = el.Next() {
-			markdownNodes := convertToListMarkdownNodes(el.Value)
+			elCommits := el.Value
+
+			if len(elCommits) > 0 {
+				for _, commit := range elCommits {
+					if commit.BreakingChanges.Describe != "" {
+						breakingChanges = append(breakingChanges, commit.BreakingChanges)
+					}
+				}
+			}
+
+			markdownNodes := convertToListMarkdownNodes(elCommits)
 			markDownNodes.Set(el.Key, markdownNodes)
 			nodesLen += len(markdownNodes)
 		}
@@ -83,6 +94,17 @@ func GenerateMarkdownNodes(
 		sectionFromType := convention.ParseSectionFromType(logSpec, el.Key)
 		nodes = append(nodes, sample_mk.NewHeader(thirdLevel, sectionFromType))
 		nodes = append(nodes, el.Value...)
+	}
+
+	// add BREAKING CHANGE:
+	if len(breakingChanges) > 0 {
+		bkNode := []sample_mk.Node{
+			sample_mk.NewHeader(thirdLevel, convention.MarkdownBreakingChangesToken),
+		}
+		for _, breakingChange := range breakingChanges {
+			bkNode = append(bkNode, sample_mk.NewListItem(breakingChange.Describe))
+		}
+		nodes = append(bkNode, nodes...)
 	}
 
 	// Adding title
