@@ -3,7 +3,9 @@
   "Type": "refactor",
   "Scope": "",
   "BreakingChanges": {
-    "Describe": "",
+    "Describe": ""
+  },
+  "IssueInfo": {
     "IssueReference": "",
     "IssuePrefix": "",
     "IssueReferencesId": 0

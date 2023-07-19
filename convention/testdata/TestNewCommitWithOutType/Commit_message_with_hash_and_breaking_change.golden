@@ -3,7 +3,9 @@
   "Type": "feat",
   "Scope": "",
   "BreakingChanges": {
-    "Describe": "this is describe of new api breaking changes",
+    "Describe": "this is describe of new api breaking changes"
+  },
+  "IssueInfo": {
     "IssueReference": "fix",
     "IssuePrefix": "#",
     "IssueReferencesId": 1

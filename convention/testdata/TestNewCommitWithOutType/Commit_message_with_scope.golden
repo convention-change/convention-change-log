@@ -3,7 +3,9 @@
   "Type": "feat",
   "Scope": "lang",
   "BreakingChanges": {
-    "Describe": "",
+    "Describe": ""
+  },
+  "IssueInfo": {
     "IssueReference": "",
     "IssuePrefix": "",
     "IssueReferencesId": 0

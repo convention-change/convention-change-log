@@ -67,7 +67,7 @@ func AddAuthorDate(gitCommit git.Commit) OptionFn {
 	}
 }
 
-func GetBreakChanges(gitCommit git.Commit, spec ConventionalChangeLogSpec) OptionFn {
+func GetBreakChangesAndIssue(gitCommit git.Commit, spec ConventionalChangeLogSpec) OptionFn {
 	return func(c *Commit) error {
 		if gitCommit.Message == "" {
 			return nil
@@ -105,12 +105,17 @@ func GetBreakChanges(gitCommit git.Commit, spec ConventionalChangeLogSpec) Optio
 		}
 		if breakingChangesDesc != "" {
 			bc := BreakingChanges{
-				Describe:          breakingChangesDesc,
+				Describe: breakingChangesDesc,
+			}
+			c.BreakingChanges = bc
+		}
+		if issueNum > 0 {
+			ii := IssueInfo{
 				IssueReference:    issueReference,
 				IssuePrefix:       issuePrefix,
 				IssueReferencesId: issueNum,
 			}
-			c.BreakingChanges = bc
+			c.IssueInfo = ii
 		}
 
 		return nil
