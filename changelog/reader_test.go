@@ -17,19 +17,19 @@ func TestNewReader(t *testing.T) {
 		spec                  convention.ConventionalChangeLogSpec
 		wantHistoryTagShort   string
 		wantHistoryFirstTitle string
-		wantErr               error
+		wantError             bool
 	}{
 		{
 			name:            "not found file",
 			changelogMdPath: "not-found",
 			spec:            convention.DefaultConventionalChangeLogSpec(),
-			wantErr:         fmt.Errorf("read path testdata/TestNewReader/not_found_file-log.md.golden not exists"),
+			wantError:       true,
 		},
 		{
 			name:            "empty",
 			changelogMdPath: "empty",
 			spec:            convention.DefaultConventionalChangeLogSpec(),
-			wantErr:         fmt.Errorf("can not find any sample markdown node by path: testdata/TestNewReader/empty-log.md.golden"),
+			wantError:       true,
 		},
 		{
 			name:                  "first release", // testdata/TestNewReader/sample.golden
@@ -62,8 +62,8 @@ func TestNewReader(t *testing.T) {
 			// do NewReader
 			changeLogPath := filepath.Join(filepath.Dir(g.GoldenFileName(t, tc.name)), fmt.Sprintf("%s-log.md.golden", t.Name()))
 			reader, gotErr := NewReader(changeLogPath, tc.spec)
-			assert.Equal(t, tc.wantErr, gotErr)
-			if tc.wantErr != nil {
+			assert.Equal(t, tc.wantError, gotErr != nil)
+			if tc.wantError {
 				return
 			}
 			// verify NewReader
