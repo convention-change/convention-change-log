@@ -1,0 +1,10 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+
+## 1.0.0 (2023-07-11)
+
+### ✨ Features
+
+- add sample_mk for fast markdown parse and check ([fce0bf2](https://github.com/sinlov-go/sample-markdown/commit/fce0bf2ab453cbfe820fe71d1b71e7dc926beb92))

@@ -9,9 +9,9 @@ require (
 	github.com/go-git/go-git/v5 v5.7.0
 	github.com/gookit/color v1.5.3
 	github.com/sebdah/goldie/v2 v2.5.3
-	github.com/sinlov-go/go-common-lib v1.2.0
-	github.com/sinlov-go/go-git-tools v1.2.3
-	github.com/sinlov-go/sample-markdown v1.0.0
+	github.com/sinlov-go/go-common-lib v1.3.0
+	github.com/sinlov-go/go-git-tools v1.3.0
+	github.com/sinlov-go/sample-markdown v1.3.0
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli/v2 v2.25.7
 )
