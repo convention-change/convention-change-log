@@ -4,15 +4,21 @@ All notable changes to this project will be documented in this file. See [conven
 
 ## 1.0.0 (2020-01-18)
 
+### BREAKING CHANGE:
+
+* desc breaking changes new fix
+
+* desc breaking changes support new client
+
 ### Bug Fixes
 
 * fix: new fix
 
-* fix: wrong color
+* fix: wrong color, fix [#2](https://github.com/convention-change/convention-change-log/issues/2)
 
 ### Features
 
-* feat: new feature
+* feat: new feature, fix [#1](https://github.com/convention-change/convention-change-log/issues/1)
 
 * feat: support new client
 

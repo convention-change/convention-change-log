@@ -97,18 +97,34 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 				{
 					RawHeader: "feat: new feature",
 					Type:      convention.FeatType,
+					IssueInfo: convention.IssueInfo{
+						IssueReferencesId: 1,
+						IssuePrefix:       "#",
+						IssueReference:    "fix",
+					},
 				},
 				{
 					RawHeader: "feat: support new client",
 					Type:      convention.FeatType,
+					BreakingChanges: convention.BreakingChanges{
+						Describe: "desc breaking changes support new client",
+					},
 				},
 				{
 					RawHeader: "fix: new fix",
 					Type:      convention.FixType,
+					BreakingChanges: convention.BreakingChanges{
+						Describe: "desc breaking changes new fix",
+					},
 				},
 				{
 					RawHeader: "fix: wrong color",
 					Type:      convention.FixType,
+					IssueInfo: convention.IssueInfo{
+						IssueReferencesId: 2,
+						IssuePrefix:       "#",
+						IssueReference:    "fix",
+					},
 				},
 				{
 					RawHeader: "chore: new build",
@@ -119,12 +135,12 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 					Type:      convention.ChoreType,
 				},
 				{
-					RawHeader: "chore(gitlab): release on gitlab",
-					Type:      convention.ChoreType,
-				},
-				{
 					RawHeader: "unleash the dragon",
 					Type:      convention.MiscType,
+				},
+				{
+					RawHeader: "chore(gitlab): release on gitlab",
+					Type:      convention.ChoreType,
 				},
 			},
 			logSpec: convention.DefaultConventionalChangeLogSpec(),

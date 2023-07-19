@@ -2,6 +2,7 @@ package changelog
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -79,7 +80,7 @@ func GenerateMarkdownNodes(
 				}
 			}
 
-			markdownNodes := convertToListMarkdownNodes(elCommits)
+			markdownNodes := convertToListMarkdownNodes(elCommits, gitHttpInfo, logSpec)
 			markDownNodes.Set(el.Key, markdownNodes)
 			nodesLen += len(markdownNodes)
 		}
@@ -118,11 +119,33 @@ func GenerateMarkdownNodes(
 	return nodes, nil
 }
 
-func convertToListMarkdownNodes(commits []convention.Commit) []sample_mk.Node {
+func convertToListMarkdownNodes(commits []convention.Commit, gitHttpInfo convention.GitRepositoryHttpInfo, spec convention.ConventionalChangeLogSpec) []sample_mk.Node {
 	result := make([]sample_mk.Node, 0, len(commits))
 
 	for _, commit := range commits {
-		result = append(result, sample_mk.NewListItem(commit.String()))
+		commitRaw := commit.String()
+		if commit.IssueInfo.IssueReferencesId > 0 {
+			issueInfo := commit.IssueInfo
+			if gitHttpInfo.Host != "" {
+				issueTemplate := new(convention.IssueRenderTemplate)
+				issueTemplate.Scheme = gitHttpInfo.Scheme
+				issueTemplate.Host = gitHttpInfo.Host
+				issueTemplate.Owner = gitHttpInfo.Owner
+				issueTemplate.Repository = gitHttpInfo.Repository
+				issueTemplate.Id = strconv.FormatUint(issueInfo.IssueReferencesId, 10)
+				render, err := convention.RaymondRender(spec.IssueUrlFormat, issueTemplate)
+				if err != nil {
+					fmt.Printf("convertToListMarkdownNodes spec.IssueUrlFormat %s err: %v\n", spec.IssueUrlFormat, err)
+				} else {
+					commitRaw = fmt.Sprintf("%s, %s [%s%s](%s)",
+						commitRaw, issueInfo.IssueReference, issueInfo.IssuePrefix, issueTemplate.Id, render)
+				}
+			} else {
+				commitRaw = fmt.Sprintf("%s, %s %s%d",
+					commitRaw, issueInfo.IssueReference, issueInfo.IssuePrefix, issueInfo.IssueReferencesId)
+			}
+		}
+		result = append(result, sample_mk.NewListItem(commitRaw))
 	}
 
 	return result
