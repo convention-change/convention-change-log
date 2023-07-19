@@ -4,13 +4,13 @@
       "type": "feat",
       "section": "✨ Features",
       "hidden": false,
-      "sort": 1
+      "sort": 2
     },
     {
       "type": "fix",
       "section": "🐛 Bug Fixes",
       "hidden": false,
-      "sort": 2
+      "sort": 1
     },
     {
       "type": "docs",

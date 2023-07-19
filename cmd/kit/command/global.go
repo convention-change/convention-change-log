@@ -5,13 +5,17 @@ import (
 	"fmt"
 	"github.com/bar-counter/slog"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/exit_cli"
+	"github.com/convention-change/convention-change-log/cmd/kit/constant"
+	"github.com/convention-change/convention-change-log/convention"
 	"github.com/convention-change/convention-change-log/internal/log"
 	"github.com/convention-change/convention-change-log/internal/pkgJson"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/storage/memory"
+	"github.com/sinlov-go/go-common-lib/pkg/filepath_plus"
 	"github.com/sinlov-go/go-git-tools/git_info"
 	"github.com/urfave/cli/v2"
 	"os"
+	"path/filepath"
 )
 
 type GlobalConfig struct {
@@ -28,8 +32,9 @@ type (
 		Verbose bool
 		DryRun  bool
 
-		GitRootPath string
-		GitRemote   string
+		GitRootPath   string
+		GitRemote     string
+		ChangeLogSpec convention.ConventionalChangeLogSpec
 
 		RootCfg GlobalConfig
 
@@ -146,14 +151,32 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		AutoPush: c.Bool("auto-push"),
 	}
 
+	var changeLogSpec *convention.ConventionalChangeLogSpec
+	specFilePath := filepath.Join(gitRootFolder, constant.VersionRcFileName)
+	if filepath_plus.PathExistsFast(specFilePath) {
+		specByte, errReadSpec := filepath_plus.ReadFileAsByte(specFilePath)
+		if errReadSpec != nil {
+			return nil, exit_cli.Err(errReadSpec)
+		}
+		spec, errReadSpec := convention.LoadConventionalChangeLogSpecByData(specByte)
+		if errReadSpec != nil {
+			return nil, exit_cli.Err(errReadSpec)
+		}
+		changeLogSpec = spec
+	} else {
+		spec := convention.DefaultConventionalChangeLogSpec()
+		changeLogSpec = &spec
+	}
+
 	p := GlobalCommand{
 		Name:    cliName,
 		Version: cliVersion,
 		Verbose: isVerbose,
 		DryRun:  c.Bool("dry-run"),
 
-		GitRootPath: gitRootFolder,
-		GitRemote:   c.String("git-remote"),
+		GitRootPath:   gitRootFolder,
+		GitRemote:     c.String("git-remote"),
+		ChangeLogSpec: *changeLogSpec,
 
 		RootCfg:        config,
 		GenerateConfig: generateConfig,

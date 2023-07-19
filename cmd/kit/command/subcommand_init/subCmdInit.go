@@ -3,6 +3,7 @@ package subcommand_init
 import (
 	"github.com/convention-change/convention-change-log/cmd/kit/command"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/exit_cli"
+	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/convention-change/convention-change-log/convention"
 	"path/filepath"
 
@@ -15,20 +16,18 @@ import (
 
 const (
 	commandName = "init"
-
-	versionRcFile = ".versionrc"
 )
 
-var commandEntry *NewCommand
+var commandEntry *InitCommand
 
-type NewCommand struct {
+type InitCommand struct {
 	isDebug bool
 
 	TargetFile string
 	MoreConfig bool
 }
 
-func (n *NewCommand) Exec() error {
+func (n *InitCommand) Exec() error {
 	slog.Debugf("-> Exec subCommand [ %s ]", commandName)
 
 	if filepath_plus.PathExistsFast(n.TargetFile) {
@@ -61,14 +60,14 @@ func flag() []cli.Flag {
 	}
 }
 
-func withEntry(c *cli.Context) (*NewCommand, error) {
+func withEntry(c *cli.Context) (*InitCommand, error) {
 	slog.Debugf("-> withEntry subCommand [ %s ]", commandName)
 
 	globalEntry := command.CmdGlobalEntry()
 
-	targetFile := filepath.Join(globalEntry.GitRootPath, versionRcFile)
+	targetFile := filepath.Join(globalEntry.GitRootPath, constant.VersionRcFileName)
 
-	return &NewCommand{
+	return &InitCommand{
 		isDebug: globalEntry.Verbose,
 
 		TargetFile: targetFile,

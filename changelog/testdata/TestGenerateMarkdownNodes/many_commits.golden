@@ -4,17 +4,17 @@ All notable changes to this project will be documented in this file. See [conven
 
 ## 1.0.0 (2020-01-18)
 
-### Features
-
-* feat: new feature
-
-* feat: support new client
-
 ### Bug Fixes
 
 * fix: new fix
 
 * fix: wrong color
+
+### Features
+
+* feat: new feature
+
+* feat: support new client
 
 ### Miscellaneous
 

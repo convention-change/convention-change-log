@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/convention-change/convention-change-log/cmd/kit/command"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/subcommand_init"
+	"github.com/convention-change/convention-change-log/cmd/kit/command/subcommand_read_latest"
 	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/convention-change/convention-change-log/internal/pkgJson"
 	"github.com/convention-change/convention-change-log/internal/urfave_cli"
@@ -43,6 +44,7 @@ func NewCliApp() *cli.App {
 
 	var appCommands []*cli.Command
 	appCommands = urfave_cli.UrfaveCliAppendCliCommand(appCommands, subcommand_init.Command())
+	appCommands = urfave_cli.UrfaveCliAppendCliCommand(appCommands, subcommand_read_latest.Command())
 	app.Commands = appCommands
 
 	return app

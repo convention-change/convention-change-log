@@ -69,13 +69,14 @@ func parse(changeLog *changeLog) error {
 	nodes := sample_mk.Parse(readLine)
 
 	if len(nodes) == 0 {
-		return fmt.Errorf("can not find any sample markdown node by path: %s", changeLog.path)
+		return fmt.Errorf("can not find any sample markdown node at path: %s", changeLog.path)
 	}
 
 	nodeStartIndex := 0
 	searchCnt := 2
 	firstTag := ""
 	firstTitle := ""
+	var firstTitleNode sample_mk.Node
 	firstNodes := []sample_mk.Node{}
 	for i, node := range nodes {
 		if searchCnt == 0 {
@@ -98,6 +99,7 @@ func parse(changeLog *changeLog) error {
 						}
 					}
 					firstTitle = firstHistoryTagStr
+					firstTitleNode = node
 				}
 				searchCnt--
 				continue
@@ -113,7 +115,13 @@ func parse(changeLog *changeLog) error {
 	changeLog.historyFirstTitle = firstTitle
 	historyFirstContent := sample_mk.GenerateText(firstNodes)
 	changeLog.historyFirstContent = historyFirstContent
-	changeLog.historyFirstNodes = firstNodes
+	if firstTitleNode != nil {
+		changeLog.historyFirstNodes = append([]sample_mk.Node{
+			firstTitleNode,
+		}, firstNodes...)
+	} else {
+		changeLog.historyFirstNodes = firstNodes
+	}
 
 	changeLog.historyNodes = nodes[nodeStartIndex:]
 
@@ -121,13 +129,23 @@ func parse(changeLog *changeLog) error {
 }
 
 type Reader interface {
+	// HistoryFirstTagShort
+	// return history first tag short not include convention.ConventionalChangeLogSpec TagPrefix
 	HistoryFirstTagShort() string
 
+	// HistoryFirstTitle
+	// return history first title
 	HistoryFirstTitle() string
 
-	HistoryFirstNodes() []sample_mk.Node
-
+	// HistoryFirstContent
+	// return history first content without title
 	HistoryFirstContent() string
 
+	// HistoryFirstNodes
+	// return history first nodes contains title
+	HistoryFirstNodes() []sample_mk.Node
+
+	// HistoryNodes
+	// full history Nodes
 	HistoryNodes() []sample_mk.Node
 }

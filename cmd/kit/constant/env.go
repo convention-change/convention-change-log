@@ -14,4 +14,9 @@ const (
 	// EnvLogLevel
 	//	env ENV_WEB_LOG_LEVEL default ""
 	EnvLogLevel string = "CLI_LOG_LEVEL"
+
+	DefaultChangelogMarkdownFile    = "CHANGELOG.md"
+	DefaultChangelogLastContentFile = "CHANGELOG.txt"
+
+	VersionRcFileName = ".versionrc"
 )

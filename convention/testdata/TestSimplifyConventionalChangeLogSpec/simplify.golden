@@ -1,14 +1,14 @@
 {
   "types": [
     {
-      "type": "feat",
-      "section": "Features",
+      "type": "fix",
+      "section": "Bug Fixes",
       "hidden": false,
       "sort": 1
     },
     {
-      "type": "fix",
-      "section": "Bug Fixes",
+      "type": "feat",
+      "section": "Features",
       "hidden": false,
       "sort": 2
     },

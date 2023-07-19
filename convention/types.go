@@ -18,14 +18,14 @@ const (
 var (
 	defaultType = []Types{
 		{
-			Type:    FeatType,
-			Section: "Features",
+			Type:    FixType,
+			Section: "Bug Fixes",
 			Hidden:  false,
 			Sort:    1,
 		},
 		{
-			Type:    FixType,
-			Section: "Bug Fixes",
+			Type:    FeatType,
+			Section: "Features",
 			Hidden:  false,
 			Sort:    2,
 		},

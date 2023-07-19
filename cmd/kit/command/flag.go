@@ -29,13 +29,13 @@ func MainFlag() []cli.Flag {
 			Name:    "infile",
 			Aliases: []string{"i"},
 			Usage:   "Read the CHANGELOG from this file",
-			Value:   "CHANGELOG.md",
+			Value:   constant.DefaultChangelogMarkdownFile,
 		},
 		&cli.StringFlag{
 			Name:    "outfile",
 			Aliases: []string{"o"},
 			Usage:   "Write the CHANGELOG to this file",
-			Value:   "CHANGELOG.md",
+			Value:   constant.DefaultChangelogMarkdownFile,
 		},
 		&cli.StringFlag{
 			Name:  "from-commit",
