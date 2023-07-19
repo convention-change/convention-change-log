@@ -1,7 +1,7 @@
 ### BREAKING CHANGES
 
-- Describe the breaking changes 1
+* Describe the breaking changes 1
 
 ### ✨ Features
 
-- let sample_mk.Parse support BasicItem ([eda8986](https://github.com/sinlov-go/sample-markdown/commit/eda8986063a69eafff7bf142312bd23d6bfbc284))
+* let sample_mk.Parse support BasicItem ([eda8986](https://github.com/sinlov-go/sample-markdown/commit/eda8986063a69eafff7bf142312bd23d6bfbc284))

@@ -7,4 +7,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### ✨ Features
 
-- add sample_mk for fast markdown parse and check ([fce0bf2](https://github.com/sinlov-go/sample-markdown/commit/fce0bf2ab453cbfe820fe71d1b71e7dc926beb92))
+* add sample_mk for fast markdown parse and check ([fce0bf2](https://github.com/sinlov-go/sample-markdown/commit/fce0bf2ab453cbfe820fe71d1b71e7dc926beb92))
