@@ -9,7 +9,6 @@ import (
 	"github.com/convention-change/convention-change-log/internal/urfave_cli"
 	"github.com/gookit/color"
 	"github.com/sinlov-go/go-common-lib/pkg/filepath_plus"
-	"github.com/sinlov-go/sample-markdown/sample_mk"
 	"github.com/urfave/cli/v2"
 	"os"
 	"path/filepath"
@@ -42,21 +41,26 @@ func (n *ReadLatestCommand) Exec() error {
 		return exit_cli.Err(err)
 	}
 
-	color.Greenf("Last change tag\n")
+	color.Greenf("=> Last change tag\n")
 	color.Bluef("full tag: %s%s\n", changeLogSpec.TagPrefix, reader.HistoryFirstTagShort())
 	color.Bluef("sort tag: %s\n", reader.HistoryFirstTagShort())
-	color.Greenf("\nLast change title\n")
+	color.Greenf("\n=> Last change title\n")
 	color.Grayf(reader.HistoryFirstTitle())
-	color.Greenf("\n\nLast change content\n")
+	color.Greenf("\n\n=> Last change content\n")
 	color.Grayf(reader.HistoryFirstContent())
+	if reader.HistoryFirstChangeUrl() != "" {
+		color.Greenf("\n\n=> Last change compare Url\n")
+		color.Grayf(reader.HistoryFirstChangeUrl())
+	}
+	color.Println()
 
 	if n.isWriteLastChangeFile {
-		generateText := sample_mk.GenerateText(reader.HistoryFirstNodes())
-		errWrite := filepath_plus.WriteFileByByte(n.WriteLastChangeFileFullPath, []byte(generateText), os.FileMode(0766), true)
+		errWrite := filepath_plus.WriteFileByByte(n.WriteLastChangeFileFullPath, []byte(reader.HistoryFirstContent()), os.FileMode(0766), true)
 		if errWrite != nil {
 			return exit_cli.Format("write last change to file: %s err: %v\n", n.WriteLastChangeFileFullPath, errWrite)
 		}
 		color.Greenf("\nWrite last change to file: %s\n", n.WriteLastChangeFileFullPath)
+		color.Println()
 	}
 
 	return nil

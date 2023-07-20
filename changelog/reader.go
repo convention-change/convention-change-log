@@ -5,7 +5,14 @@ import (
 	"github.com/convention-change/convention-change-log/convention"
 	"github.com/sinlov-go/go-common-lib/pkg/filepath_plus"
 	"github.com/sinlov-go/sample-markdown/sample_mk"
+	"regexp"
 	"strings"
+)
+
+const (
+	regHistoryMarkdownTagHeadLine     = "^(#+)\\W(.*)\\W(\\(.*\\))$"
+	regHistoryMarkdownTagLinkHeadLine = "^(#+)\\W(\\[.*\\])(\\()(.*)(\\))\\W(\\()(.*)(\\))$"
+	regHistoryMarkdownTagTitle        = "^(#+)\\W(.*)$"
 )
 
 // NewReader
@@ -31,31 +38,55 @@ type changeLog struct {
 
 	spec convention.ConventionalChangeLogSpec
 
-	titleNodes           []sample_mk.Node
-	historyFirstTagShort string
-	historyFirstTitle    string
-	historyFirstNodes    []sample_mk.Node
-	historyFirstContent  string
+	titleNodes            []sample_mk.Node
+	historyFirstTagShort  string
+	historyFirstTag       string
+	historyFirstTitle     string
+	historyFirstNodes     []sample_mk.Node
+	historyFirstContent   string
+	historyFirstChangeUrl string
 
 	historyNodes []sample_mk.Node
 }
 
+// HistoryFirstTagShort
+// return history first tag short not include convention.ConventionalChangeLogSpec TagPrefix
 func (c *changeLog) HistoryFirstTagShort() string {
 	return c.historyFirstTagShort
 }
 
+// HistoryFirstTag
+// return history first tag this will append convention.ConventionalChangeLogSpec TagPrefix
+func (c *changeLog) HistoryFirstTag() string {
+	return c.historyFirstTag
+}
+
+// HistoryFirstTitle
+// return history first title, title not contain ## or ###
 func (c *changeLog) HistoryFirstTitle() string {
 	return c.historyFirstTitle
 }
 
-func (c *changeLog) HistoryFirstNodes() []sample_mk.Node {
-	return c.historyFirstNodes
-}
-
+// HistoryFirstContent
+// return history first content without title
 func (c *changeLog) HistoryFirstContent() string {
 	return c.historyFirstContent
 }
 
+// HistoryFirstChangeUrl
+// return history first change url like https://github.com/convention-change/convention-change-log/compare/v1.0.0...v1.1.0
+func (c *changeLog) HistoryFirstChangeUrl() string {
+	return c.historyFirstChangeUrl
+}
+
+// HistoryFirstNodes
+// return history first nodes contains title
+func (c *changeLog) HistoryFirstNodes() []sample_mk.Node {
+	return c.historyFirstNodes
+}
+
+// HistoryNodes
+// full history Nodes
 func (c *changeLog) HistoryNodes() []sample_mk.Node {
 	return c.historyNodes
 }
@@ -72,10 +103,15 @@ func parse(changeLog *changeLog) error {
 		return fmt.Errorf("can not find any sample markdown node at path: %s", changeLog.path)
 	}
 
+	compileMarkdownTagHeadLine, _ := regexp.Compile(regHistoryMarkdownTagHeadLine)
+	compileMarkdownTagLinkHeadLine, _ := regexp.Compile(regHistoryMarkdownTagLinkHeadLine)
+	compileMarkdownTagTitle, _ := regexp.Compile(regHistoryMarkdownTagTitle)
+
 	nodeStartIndex := 0
 	searchCnt := 2
-	firstTag := ""
+	firstTagShort := ""
 	firstTitle := ""
+	firstChangeUrl := ""
 	var firstTitleNode sample_mk.Node
 	firstNodes := []sample_mk.Node{}
 	for i, node := range nodes {
@@ -84,22 +120,28 @@ func parse(changeLog *changeLog) error {
 		}
 		if node.Type() == sample_mk.NodeTypeHeader {
 			header := node.(sample_mk.Header)
-			if header.Level() == 2 {
+			firstHistoryTitleStr := header.String()
+			if compileMarkdownTagHeadLine.MatchString(firstHistoryTitleStr) {
 				if searchCnt == 2 {
-					nodeStartIndex = i
-					firstHistoryTagStr := header.String()
-					firstHistoryTagStr = strings.Replace(firstHistoryTagStr, "## ", "", 1)
-					if strings.Index(firstHistoryTagStr, "[") == 0 {
-						endIndex := strings.Index(firstHistoryTagStr, "]")
-						firstTag = firstHistoryTagStr[1:endIndex]
-					} else {
-						spTagStr := strings.Split(firstHistoryTagStr, " ")
-						if len(spTagStr) > 1 {
-							firstTag = spTagStr[0]
+					findStringSub := compileMarkdownTagHeadLine.FindStringSubmatch(firstHistoryTitleStr)
+					if len(findStringSub) > 3 {
+						firstHistoryVersionStr := findStringSub[2]
+						if strings.Index(firstHistoryVersionStr, "[") == 0 {
+							endIndex := strings.Index(firstHistoryVersionStr, "]")
+							firstTagShort = firstHistoryVersionStr[1:endIndex]
+
+							markdownLinkSub := compileMarkdownTagLinkHeadLine.FindStringSubmatch(firstHistoryTitleStr)
+							if len(markdownLinkSub) > 8 {
+								firstChangeUrl = markdownLinkSub[4]
+							}
+						} else {
+							firstTagShort = firstHistoryVersionStr
 						}
+						titleSub := compileMarkdownTagTitle.FindStringSubmatch(firstHistoryTitleStr)
+						firstTitle = titleSub[2]
+						firstTitleNode = node
+						nodeStartIndex = i
 					}
-					firstTitle = firstHistoryTagStr
-					firstTitleNode = node
 				}
 				searchCnt--
 				continue
@@ -111,7 +153,8 @@ func parse(changeLog *changeLog) error {
 	}
 	changeLog.titleNodes = nodes[:nodeStartIndex]
 
-	changeLog.historyFirstTagShort = firstTag
+	changeLog.historyFirstTagShort = firstTagShort
+	changeLog.historyFirstTag = fmt.Sprintf("%s%s", changeLog.spec.TagPrefix, firstTagShort)
 	changeLog.historyFirstTitle = firstTitle
 	historyFirstContent := sample_mk.GenerateText(firstNodes)
 	changeLog.historyFirstContent = historyFirstContent
@@ -122,6 +165,7 @@ func parse(changeLog *changeLog) error {
 	} else {
 		changeLog.historyFirstNodes = firstNodes
 	}
+	changeLog.historyFirstChangeUrl = firstChangeUrl
 
 	changeLog.historyNodes = nodes[nodeStartIndex:]
 
@@ -133,13 +177,21 @@ type Reader interface {
 	// return history first tag short not include convention.ConventionalChangeLogSpec TagPrefix
 	HistoryFirstTagShort() string
 
+	// HistoryFirstTag
+	// return history first tag this will append convention.ConventionalChangeLogSpec TagPrefix
+	HistoryFirstTag() string
+
 	// HistoryFirstTitle
-	// return history first title
+	// return history first title, title not contain ## or ###
 	HistoryFirstTitle() string
 
 	// HistoryFirstContent
 	// return history first content without title
 	HistoryFirstContent() string
+
+	// HistoryFirstChangeUrl
+	// return history first change url like https://github.com/convention-change/convention-change-log/compare/v1.0.0...v1.1.0
+	HistoryFirstChangeUrl() string
 
 	// HistoryFirstNodes
 	// return history first nodes contains title
