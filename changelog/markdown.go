@@ -64,7 +64,7 @@ func GenerateMarkdownNodes(
 			sample_mk.NewHeader(secondLevel, versionHeader),
 		}, nodes...)
 
-		return nil, NotErrCommitsLenZero
+		return nodes, NotErrCommitsLenZero
 	}
 
 	if changelogDesc.Location == nil {
