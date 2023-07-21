@@ -35,7 +35,7 @@ type (
 
 		GitRootPath   string
 		GitRemote     string
-		ChangeLogSpec convention.ConventionalChangeLogSpec
+		ChangeLogSpec *convention.ConventionalChangeLogSpec
 
 		RootCfg GlobalConfig
 
@@ -178,7 +178,7 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 
 		GitRootPath:   gitRootFolder,
 		GitRemote:     c.String("git-remote"),
-		ChangeLogSpec: *changeLogSpec,
+		ChangeLogSpec: changeLogSpec,
 
 		RootCfg:        config,
 		GenerateConfig: generateConfig,

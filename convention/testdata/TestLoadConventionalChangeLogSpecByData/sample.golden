@@ -23,5 +23,6 @@
   "compareUrlFormat": "{{scheme}}://{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
   "issueUrlFormat": "{{scheme}}://{{host}}/{{owner}}/{{repository}}/issues/{{id}}",
   "userUrlFormat": "{{scheme}://{{host}}/{{user}}",
-  "releaseCommitMessageFormat": "chore(release): {{currentTag}}"
+  "releaseCommitMessageFormat": "chore(release): {{currentTag}}",
+  "CoverHttpHost": ""
 }

@@ -64,6 +64,10 @@ type ConventionalChangeLogSpec struct {
 	//	A string to be used to format the auto-generated release commit message
 	// default DefaultReleaseCommitMessageFormat
 	ReleaseCommitMessageFormat string `json:"releaseCommitMessageFormat,omitempty"`
+
+	// CoverHttpHost
+	// this will cover all http host
+	CoverHttpHost string
 }
 
 var (
