@@ -18,6 +18,10 @@ const (
 	thirdLevel  = 3
 )
 
+var (
+	NotErrCommitsLenZero = fmt.Errorf("commits len is zero")
+)
+
 // GenerateMarkdownNodes
 //
 // gitHttpInfo: git repo info by convention.GitRepositoryHttpInfo
@@ -49,7 +53,18 @@ func GenerateMarkdownNodes(
 		return nil, fmt.Errorf("changelogDesc.ToolsKitURL can not be empty")
 	}
 	if len(commits) == 0 {
-		return nil, fmt.Errorf("commits can not be empty")
+		// type header + 2 version header
+		nodes := make([]sample_mk.Node, 0, 3)
+
+		// Adding title
+		versionHeader := generateVersionHeaderValue(gitHttpInfo, logSpec, changelogDesc)
+		nodes = append([]sample_mk.Node{
+			sample_mk.NewHeader(firstLevel, logSpec.Header),
+			sample_mk.NewBasicItem(fmt.Sprintf(titleDesc, changelogDesc.ToolsKitName, changelogDesc.ToolsKitURL)),
+			sample_mk.NewHeader(secondLevel, versionHeader),
+		}, nodes...)
+
+		return nil, NotErrCommitsLenZero
 	}
 
 	if changelogDesc.Location == nil {

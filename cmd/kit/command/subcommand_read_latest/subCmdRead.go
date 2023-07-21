@@ -36,7 +36,7 @@ func (n *ReadLatestCommand) Exec() error {
 	}
 
 	changeLogSpec := command.CmdGlobalEntry().ChangeLogSpec
-	reader, err := changelog.NewReader(n.ReadChangeLogFile, changeLogSpec)
+	reader, err := changelog.NewReader(n.ReadChangeLogFile, *changeLogSpec)
 	if err != nil {
 		return exit_cli.Err(err)
 	}

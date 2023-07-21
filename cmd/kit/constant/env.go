@@ -1,5 +1,7 @@
 package constant
 
+import "github.com/gookit/color"
+
 const (
 	CopyrightStartYear = "2023"
 
@@ -19,4 +21,18 @@ const (
 	DefaultChangelogLastContentFile = "CHANGELOG.txt"
 
 	VersionRcFileName = ".versionrc"
+
+	KitName = "convention-change-log"
+	KitUrl  = "https://github.com/convention-change/convention-change-log"
+
+	LogLineSpe = "---"
+)
+
+var (
+	CmdOkEmoji        = color.Green.Render("✔")
+	CmdInfoEmoji      = color.Blue.Render("ℹ")
+	CmdHelpOutputting = CmdOkEmoji + " outputting changes to %s"
+	CmdHelpCommitting = CmdOkEmoji + " committing %s"
+	CmdHelpTagRelease = CmdOkEmoji + " tagging release %s"
+	CmdHelpGitPush    = CmdInfoEmoji + " Run `git push --follow-tags origin main` to publish"
 )
