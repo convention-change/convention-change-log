@@ -67,7 +67,7 @@ type ConventionalChangeLogSpec struct {
 
 	// CoverHttpHost
 	// this will cover all http host
-	CoverHttpHost string
+	CoverHttpHost string `json:"cover-http-host,omitempty"`
 }
 
 var (

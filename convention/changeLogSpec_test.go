@@ -57,6 +57,24 @@ func TestLoadConventionalChangeLogSpecByData(t *testing.T) {
 }`),
 		},
 		{
+			name: "cover http host", // testdata/TestLoadConventionalChangeLogSpecByData/sample.golden
+			c: []byte(`
+{
+  "types": [
+    {"type": "feat", "section": "✨ Features", "hidden": false},
+    {"type": "fix", "section": "🐛 Bug Fixes", "hidden": false}
+  ],
+  "tag-prefix": "",
+  "skip": {
+    "bump": false,
+    "changelog": false,
+    "commit": false,
+    "tag": false
+  },
+  "cover-http-host": "github.com:443"
+}`),
+		},
+		{
 			name: "Error", // testdata/TestLoadConventionalChangeLogSpecByData/sample.golden
 			c: []byte(`
 {
@@ -78,7 +96,7 @@ func TestLoadConventionalChangeLogSpecByData(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			g := goldie.New(t,
-				goldie.WithDiffEngine(goldie.ColoredDiff),
+				goldie.WithDiffEngine(goldie.ClassicDiff),
 			)
 
 			// do LoadConventionalChangeLogSpecByData
