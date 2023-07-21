@@ -9,9 +9,10 @@ import (
 	"github.com/convention-change/convention-change-log/convention"
 	"github.com/convention-change/convention-change-log/internal/log"
 	"github.com/convention-change/convention-change-log/internal/pkgJson"
-	"github.com/go-git/go-git/v5"
+	goGit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/storage/memory"
 	"github.com/sinlov-go/go-common-lib/pkg/filepath_plus"
+	"github.com/sinlov-go/go-git-tools/git"
 	"github.com/sinlov-go/go-git-tools/git_info"
 	"github.com/urfave/cli/v2"
 	"os"
@@ -64,39 +65,44 @@ func (c *GlobalCommand) globalExec() error {
 		return exit_cli.Format("args --release-as is empty")
 	}
 
+	_, err := git_info.IsPathGitManagementRoot(c.GitRootPath)
+	if err != nil {
+		return exit_cli.Format("cli run path not git repository root, please check path at: %s", c.GitRootPath)
+	}
+	fistRemoteInfo, err := git_info.RepositoryFistRemoteInfo(c.GitRootPath, c.GitRemote)
+	if err != nil {
+		return exit_cli.Err(err)
+	}
+	if c.Verbose {
+		bytes, errJson := json.Marshal(fistRemoteInfo)
+		if errJson != nil {
+			return exit_cli.Err(errJson)
+		}
+		slog.Debugf("fistRemoteInfo:\n%s", string(bytes))
+
+	}
+
 	var repository *git.Repository
 	if c.GenerateConfig.GitCloneUrl == "" {
-		fistRemoteInfo, err := git_info.RepositoryFistRemoteInfo(c.GitRootPath, c.GitRemote)
-		if err != nil {
-			return exit_cli.Err(err)
-		}
-		if c.Verbose {
-			bytes, errJson := json.Marshal(fistRemoteInfo)
-			if errJson != nil {
-				return exit_cli.Err(errJson)
-			}
-			slog.Debugf("fistRemoteInfo: %s", string(bytes))
 
+		repositoryOpen, errOpen := git.NewRepositoryByPath(c.GitRootPath)
+		if errOpen != nil {
+			return exit_cli.Format("load local git repository error: %s", errOpen)
 		}
-		repositoryOpen, err := git.PlainOpen(c.GitRootPath)
-		if err != nil {
-			return exit_cli.Format("load local git repository error: %s", err)
-		}
-		repository = repositoryOpen
+
+		repository = &repositoryOpen
 	} else {
-		repositoryClone, err := git.Clone(memory.NewStorage(), nil, &git.CloneOptions{
+		repositoryClone, errClone := git.NewRepositoryClone(memory.NewStorage(), nil, &goGit.CloneOptions{
 			URL: c.GenerateConfig.GitCloneUrl,
 		})
-		if err != nil {
-			return exit_cli.Format("clone git repository %s \nerror: %s", c.GenerateConfig.GitCloneUrl, err)
+		if errClone != nil {
+			return exit_cli.Format("clone git repository %s \nerror: %s", c.GenerateConfig.GitCloneUrl, errClone)
 		}
-		repository = repositoryClone
+		repository = &repositoryClone
 	}
-	headReference, err := repository.Head()
-	if err != nil {
-		return exit_cli.Format("can not get git head reference, error: %s", err)
+	if repository == nil {
+		return exit_cli.Format("can not load git repository")
 	}
-	slog.Debugf("%s", headReference)
 
 	return nil
 }
@@ -128,10 +134,6 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		return nil, exit_cli.Err(err)
 	}
 	gitRootFolder := dir
-	_, err = git_info.IsPathGitManagementRoot(gitRootFolder)
-	if err != nil {
-		return nil, exit_cli.Format("cli run path not git repository root, please check path at: %s", dir)
-	}
 
 	config := GlobalConfig{
 		LogLevel:      c.String("config.log_level"),
