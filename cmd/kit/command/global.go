@@ -79,21 +79,21 @@ func (c *GlobalCommand) globalExec() error {
 			return exit_cli.Err(errJson)
 		}
 		slog.Debugf("fistRemoteInfo:\n%s", string(bytes))
-
 	}
 
 	var repository *git.Repository
 	if c.GenerateConfig.GitCloneUrl == "" {
 
-		repositoryOpen, errOpen := git.NewRepositoryByPath(c.GitRootPath)
+		repositoryOpen, errOpen := git.NewRepositoryRemoteByPath(c.GitRemote, c.GitRootPath)
 		if errOpen != nil {
 			return exit_cli.Format("load local git repository error: %s", errOpen)
 		}
-
 		repository = &repositoryOpen
+
 	} else {
-		repositoryClone, errClone := git.NewRepositoryClone(memory.NewStorage(), nil, &goGit.CloneOptions{
-			URL: c.GenerateConfig.GitCloneUrl,
+		repositoryClone, errClone := git.NewRepositoryRemoteClone(c.GitRemote, memory.NewStorage(), nil, &goGit.CloneOptions{
+			URL:        c.GenerateConfig.GitCloneUrl,
+			RemoteName: c.GitRemote,
 		})
 		if errClone != nil {
 			return exit_cli.Format("clone git repository %s \nerror: %s", c.GenerateConfig.GitCloneUrl, errClone)
