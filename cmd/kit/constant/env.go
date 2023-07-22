@@ -34,5 +34,5 @@ var (
 	CmdHelpOutputting = CmdOkEmoji + " outputting changes to %s"
 	CmdHelpCommitting = CmdOkEmoji + " committing %s"
 	CmdHelpTagRelease = CmdOkEmoji + " tagging release %s"
-	CmdHelpGitPush    = CmdInfoEmoji + " Run `git push --follow-tags origin main` to publish"
+	CmdHelpGitPush    = CmdInfoEmoji + " Run `git push --follow-tags origin %s` to publish"
 )

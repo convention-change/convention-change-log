@@ -19,6 +19,7 @@ import (
 	"github.com/sinlov-go/sample-markdown/sample_mk"
 	"github.com/urfave/cli/v2"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"time"
 )
@@ -96,6 +97,10 @@ func (c *GlobalCommand) globalExec() error {
 	if repository == nil {
 		return exit_cli.Format("can not load git repository")
 	}
+	headBranchName, err := repository.HeadBranchName()
+	if err != nil {
+		return err
+	}
 
 	gitRemoteInfo, err := repository.RemoteInfo(c.GitRemote, 0)
 	if err != nil {
@@ -145,33 +150,34 @@ func (c *GlobalCommand) globalExec() error {
 	} else {
 		changeLogNodes = append(changeLogNodes, reader.HistoryNodes()...)
 	}
-
-	lastHistoryTagCommit, errHistoryTagCommit := repository.TagLatestByCommitTime()
-
-	if errHistoryTagCommit != nil {
-		slog.Debugf("can not get last history tag commit err: %v", errHistoryTagCommit)
-		if errHistory != nil {
-			// this not find any tag and history
-			c.GenerateConfig.HistoryTagCommitHash = ""
-		} else {
-			tagSearchByName, errTagSearchByName := repository.CommitTagSearchByName(reader.HistoryFirstTag())
-			if errTagSearchByName != nil {
-				slog.Debugf("errTagSearchByName err: %v", errTagSearchByName)
-			} else {
-				c.GenerateConfig.HistoryTagCommitHash = tagSearchByName.Hash.String()
+	if c.GenerateConfig.FromCommit == "" {
+		lastHistoryTagCommit, errHistoryTagCommit := repository.TagLatestByCommitTime()
+		if errHistoryTagCommit != nil {
+			if errHistoryTagCommit != changelog.NotErrCommitsLenZero {
+				return exit_cli.Err(errHistoryTagCommit)
 			}
+			slog.Debugf("can not get last history tag commit err: %v", errHistoryTagCommit)
+			if errHistory != nil {
+				// this not find any tag and history
+				c.GenerateConfig.FromCommit = ""
+			} else {
+				tagSearchByName, errTagSearchByName := repository.CommitTagSearchByName(reader.HistoryFirstTag())
+				if errTagSearchByName != nil {
+					slog.Debugf("errTagSearchByName err: %v", errTagSearchByName)
+				} else {
+					c.GenerateConfig.FromCommit = tagSearchByName.Hash.String()
+				}
+			}
+		} else {
+			c.GenerateConfig.FromCommit = lastHistoryTagCommit.Hash.String()
 		}
-	} else {
-		c.GenerateConfig.HistoryTagCommitHash = lastHistoryTagCommit.Hash.String()
 	}
 
 	latestMarkdownNodes := make([]sample_mk.Node, 0)
 
-	latestCommits, errLatestCommits := repository.Log("", c.GenerateConfig.HistoryTagCommitHash)
+	latestCommits, errLatestCommits := repository.Log("", c.GenerateConfig.FromCommit)
 	if errLatestCommits != nil {
-		if errHistoryTagCommit != changelog.NotErrCommitsLenZero {
-			return exit_cli.Err(errLatestCommits)
-		}
+		return exit_cli.Err(errLatestCommits)
 	} else {
 		conventionCommits, errConvert := convention.ConvertGitCommits2ConventionCommits(latestCommits, *c.ChangeLogSpec, gitHttpInfoDefault)
 		if errConvert != nil {
@@ -198,7 +204,7 @@ func (c *GlobalCommand) globalExec() error {
 		color.Println("")
 		color.Printf(constant.CmdHelpTagRelease, c.GenerateConfig.ReleaseTag)
 		color.Println("")
-		color.Printf(constant.CmdHelpGitPush, c.GitRemote)
+		color.Printf(constant.CmdHelpGitPush, headBranchName)
 		color.Println("")
 		return nil
 	}
@@ -212,6 +218,60 @@ func (c *GlobalCommand) globalExec() error {
 		return exit_cli.Err(errWriteFile)
 	}
 
+	errDoGit := c.doGit(headBranchName)
+	if errDoGit != nil {
+		return exit_cli.Err(errDoGit)
+	}
+
+	return nil
+}
+
+func (c *GlobalCommand) doGit(branchName string) error {
+	// disable git-go repository issues until https://github.com/go-git/go-git/issues/180 is fixed
+
+	cmdOutput, err := exec.Command("git", "add", c.GenerateConfig.Outfile).CombinedOutput()
+	if err != nil {
+		return err
+	}
+	slog.Debugf("git add output:\n%s", cmdOutput)
+
+	releaseCommit := new(convention.ReleaseCommitMessageRenderTemplate)
+	releaseCommit.CurrentTag = c.GenerateConfig.ReleaseAs
+	releaseCommitMsg, errRender := convention.RaymondRender(c.ChangeLogSpec.ReleaseCommitMessageFormat, releaseCommit)
+	if errRender != nil {
+		return errRender
+	}
+
+	cmdOutput, err = exec.Command("git", "commit", "-m", releaseCommitMsg).CombinedOutput()
+	if err != nil {
+		return err
+	}
+	slog.Debugf("git commit output:\n%s", cmdOutput)
+
+	cmdOutput, err = exec.Command("git", "tag", c.GenerateConfig.ReleaseTag, "-m", releaseCommitMsg).CombinedOutput()
+	if err != nil {
+		return err
+	}
+	slog.Debugf("git tag output:\n%s", cmdOutput)
+
+	color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
+	color.Println("")
+	color.Printf(constant.CmdHelpCommitting, c.GenerateConfig.Infile)
+	color.Println("")
+	color.Printf(constant.CmdHelpTagRelease, c.GenerateConfig.ReleaseTag)
+	color.Println("")
+
+	if c.GenerateConfig.AutoPush {
+		cmdOutput, err = exec.Command("git", "push", "--follow-tags", "origin", branchName).CombinedOutput()
+		if err != nil {
+			return err
+		}
+		slog.Debugf("git push output:\n%s", cmdOutput)
+		return nil
+	}
+
+	color.Printf(constant.CmdHelpGitPush, branchName)
+	color.Println("")
 	return nil
 }
 
@@ -221,8 +281,6 @@ type GenerateConfig struct {
 	ReleaseAs  string
 	TagPrefix  string
 	ReleaseTag string
-
-	HistoryTagCommitHash string
 
 	Infile  string
 	Outfile string

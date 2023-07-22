@@ -33,6 +33,7 @@ func NewCliApp() *cli.App {
 	app.Authors = []*cli.Author{
 		author,
 	}
+	app.UsageText = fmt.Sprintf("%s --dry-run -r <release-as>", app.Name)
 
 	flags := urfave_cli.UrfaveCliAppendCliFlag(command.GlobalFlag(), command.HideGlobalFlag())
 	flags = urfave_cli.UrfaveCliAppendCliFlag(flags, command.MainFlag())
