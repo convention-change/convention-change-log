@@ -129,7 +129,7 @@ func (c *GlobalCommand) globalExec() error {
 	changelogDesc := changelog.ConventionalChangeLogDesc{
 		Version:      c.GenerateConfig.ReleaseTag,
 		When:         time.Now(),
-		Location:     time.UTC,
+		Location:     time.Local,
 		ToolsKitName: constant.KitName,
 		ToolsKitURL:  constant.KitUrl,
 	}
