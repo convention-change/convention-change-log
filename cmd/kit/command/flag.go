@@ -16,7 +16,7 @@ func MainFlag() []cli.Flag {
 		//},
 		&cli.StringFlag{
 			Name:    "release-as",
-			Usage:   "Specify the release type manually (like npm version <major|minor|patch>)",
+			Usage:   "Specify the release type manually (like npm version <major|minor|patch>) if not setting will use semver by history",
 			Aliases: []string{"r"},
 		},
 		&cli.StringFlag{

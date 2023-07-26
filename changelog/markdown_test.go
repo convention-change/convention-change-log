@@ -26,6 +26,7 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 		changelogDesc     ConventionalChangeLogDesc
 		commits           []convention.Commit
 		logSpec           convention.ConventionalChangeLogSpec
+		wantFeatNodesSize int
 		wantErr           error
 	}{
 		{
@@ -54,7 +55,8 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 					RawHeader: "commit sample 2\nmore info",
 				},
 			},
-			logSpec: convention.DefaultConventionalChangeLogSpec(),
+			logSpec:           convention.DefaultConventionalChangeLogSpec(),
+			wantFeatNodesSize: 1,
 		},
 		{
 			name:              "version notes url",
@@ -81,7 +83,8 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 					Type:      convention.ChoreType,
 				},
 			},
-			logSpec: convention.DefaultConventionalChangeLogSpec(),
+			logSpec:           convention.DefaultConventionalChangeLogSpec(),
+			wantFeatNodesSize: 1,
 		},
 		{
 			name:              "many commits",
@@ -143,7 +146,8 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 					Type:      convention.ChoreType,
 				},
 			},
-			logSpec: convention.DefaultConventionalChangeLogSpec(),
+			logSpec:           convention.DefaultConventionalChangeLogSpec(),
+			wantFeatNodesSize: 2,
 		},
 	}
 	for _, tc := range tests {
@@ -153,9 +157,8 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 			)
 
 			// do GenerateMarkdownNodes
-			gotResult, gotErr := GenerateMarkdownNodes(
+			gotResult, goFeatNodes, gotErr := GenerateMarkdownNodes(
 				tc.gitRepositoryInfo,
-				tc.changelogDesc,
 				tc.commits,
 				tc.logSpec,
 			)
@@ -163,8 +166,18 @@ func TestGenerateMarkdownNodes(t *testing.T) {
 			if tc.wantErr != nil {
 				return
 			}
+			gotResult, gotErr = AddMarkdownChangelogNodesTitle(
+				gotResult,
+				tc.gitRepositoryInfo,
+				tc.changelogDesc,
+				tc.logSpec)
+			assert.Equal(t, tc.wantErr, gotErr)
+			if tc.wantErr != nil {
+				return
+			}
 			// verify GenerateMarkdownNodes
 			generateText := sample_mk.GenerateText(gotResult)
+			assert.Equal(t, tc.wantFeatNodesSize, len(goFeatNodes))
 			g.Assert(t, t.Name(), []byte(generateText))
 		})
 	}

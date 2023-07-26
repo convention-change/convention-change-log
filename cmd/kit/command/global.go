@@ -3,6 +3,7 @@ package command
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Masterminds/semver/v3"
 	"github.com/bar-counter/slog"
 	"github.com/convention-change/convention-change-log/changelog"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/exit_cli"
@@ -66,10 +67,6 @@ func (c *GlobalCommand) globalExec() error {
 
 	slog.Debug("-> start GlobalAction")
 
-	if c.GenerateConfig.ReleaseAs == "" {
-		return exit_cli.Format("args --release-as is empty")
-	}
-
 	_, err := git_info.IsPathGitManagementRoot(c.GitRootPath)
 	if err != nil {
 		return exit_cli.Format("cli run path not git repository root, please check path at: %s", c.GitRootPath)
@@ -99,21 +96,77 @@ func (c *GlobalCommand) globalExec() error {
 	}
 	headBranchName, err := repository.HeadBranchName()
 	if err != nil {
+		slog.Error("HeadBranchName err: %v", err)
 		return err
 	}
 
 	gitRemoteInfo, err := repository.RemoteInfo(c.GitRemote, 0)
 	if err != nil {
+		slog.Error("RemoteInfo err: %v", err)
 		return exit_cli.Err(err)
 	}
 
 	if c.Verbose {
 		bytes, errJson := json.Marshal(gitRemoteInfo)
 		if errJson != nil {
+			slog.Error("Marshal err: %v", errJson)
 			return exit_cli.Err(errJson)
 		}
 		slog.Debugf("gitRemoteInfo:\n%s", string(bytes))
 	}
+
+	changeLogNodes := make([]sample_mk.Node, 0)
+	reader, errHistory := changelog.NewReader(c.GenerateConfig.Infile, *c.ChangeLogSpec)
+	if errHistory != nil {
+		slog.Debugf("can not read history changelog err: %v", errHistory)
+		c.GenerateConfig.ReleaseAs = "1.0.0"
+		c.GenerateConfig.ReleaseTag = fmt.Sprintf("%s%s", c.GenerateConfig.TagPrefix, c.GenerateConfig.ReleaseAs)
+	} else {
+		changeLogNodes = append(changeLogNodes, reader.HistoryNodes()...)
+	}
+
+	historyFirstTagName := ""
+	if c.GenerateConfig.FromCommit == "" {
+		if errHistory != nil {
+			// this not find any tag and history
+			c.GenerateConfig.FromCommit = ""
+		} else {
+			lastHistoryTagCommit, errHistoryTagCommit := repository.TagLatestByCommitTime()
+			if errHistoryTagCommit != nil {
+				if errHistoryTagCommit != changelog.NotErrCommitsLenZero {
+					slog.Error("NotErrCommitsLenZero err: %v", errHistoryTagCommit)
+					return exit_cli.Err(errHistoryTagCommit)
+				}
+				historyFirstTag := reader.HistoryFirstTag()
+				tagSearchByName, errTagSearchByName := repository.CommitTagSearchByName(historyFirstTag)
+				if errTagSearchByName != nil {
+					slog.Debugf("errTagSearchByName err: %v", errTagSearchByName)
+					c.GenerateConfig.FromCommit = ""
+				} else {
+					c.GenerateConfig.FromCommit = tagSearchByName.Hash.String()
+					historyFirstTagName = historyFirstTag
+				}
+			} else {
+				historyFirstTagName = lastHistoryTagCommit.Name
+				commitTagSearch, errTagCommit := repository.CommitTagSearchByName(historyFirstTagName)
+				if errTagCommit != nil {
+					slog.Error("CommitTagSearchByName err: %v", errTagCommit)
+					return exit_cli.Err(errTagCommit)
+				}
+				c.GenerateConfig.FromCommit = commitTagSearch.Hash.String()
+			}
+		}
+	}
+	slog.Debugf("historyFirstTagName: %s", historyFirstTagName)
+	slog.Debugf("c.GenerateConfig.FromCommit: %s", c.GenerateConfig.FromCommit)
+
+	latestCommits, errLatestCommits := repository.Log("", c.GenerateConfig.FromCommit)
+	if errLatestCommits != nil {
+		slog.Error("errLatestCommits err: %v", errLatestCommits)
+		return exit_cli.Err(errLatestCommits)
+	}
+
+	slog.Debugf("latestCommits len %d", len(latestCommits))
 
 	gitHttpHost := gitRemoteInfo.Host
 	if c.ChangeLogSpec.CoverHttpHost != "" {
@@ -126,6 +179,55 @@ func (c *GlobalCommand) globalExec() error {
 		Repository: gitRemoteInfo.Repo,
 	}
 
+	conventionCommits, errConvert := convention.ConvertGitCommits2ConventionCommits(latestCommits, *c.ChangeLogSpec, gitHttpInfoDefault)
+	if errConvert != nil {
+		slog.Error("ConvertGitCommits2ConventionCommits err: %v", errConvert)
+		return exit_cli.Err(errConvert)
+	}
+	generateMarkdownNodes, featNodes, errConvert := changelog.GenerateMarkdownNodes(
+		gitHttpInfoDefault,
+		conventionCommits,
+		*c.ChangeLogSpec,
+	)
+	if errConvert != nil {
+		slog.Error("GenerateMarkdownNodes err: %v", errConvert)
+		return exit_cli.Err(errConvert)
+	}
+
+	if c.GenerateConfig.ReleaseAs != "" {
+		// check cli settings ReleaseAs tag is exists
+		oldReleaseTag, errOldReleaseTag := repository.CommitTagSearchByName(c.GenerateConfig.ReleaseTag)
+		if err != nil {
+			slog.Debugf("not find tag: %s err: %v", c.GenerateConfig.ReleaseTag, errOldReleaseTag)
+		}
+		if oldReleaseTag != nil {
+			errReleaseTagExist := fmt.Errorf("want release tag is exist: %s, tag message is %s", c.GenerateConfig.ReleaseTag, oldReleaseTag.Message)
+			slog.Error("ReleaseTagExist err: %v", errReleaseTagExist)
+			return exit_cli.Err(errReleaseTagExist)
+		}
+		// check version as semver
+		_, errSemverCheck := semver.NewVersion(c.GenerateConfig.ReleaseAs)
+		if errSemverCheck != nil {
+			slog.Error("NewVersion err: %v", errSemverCheck)
+			return exit_cli.ErrMsg(errSemverCheck, "release-as is not semver")
+		}
+	} else {
+		// find new version as semver by historyFirstTagName
+		historyVersion, errHistorySemver := semver.NewVersion(historyFirstTagName)
+		if errHistorySemver != nil {
+			slog.Error("find new version as semver by historyFirstTagName err: %v", errHistorySemver)
+			return exit_cli.Err(errHistorySemver)
+		}
+		var version semver.Version
+		if len(featNodes) > 0 {
+			version = historyVersion.IncMinor()
+		} else {
+			version = historyVersion.IncPatch()
+		}
+		c.GenerateConfig.ReleaseAs = version.String()
+		c.GenerateConfig.ReleaseTag = fmt.Sprintf("%s%s", c.GenerateConfig.TagPrefix, c.GenerateConfig.ReleaseAs)
+	}
+
 	changelogDesc := changelog.ConventionalChangeLogDesc{
 		Version:      c.GenerateConfig.ReleaseTag,
 		When:         time.Now(),
@@ -133,66 +235,24 @@ func (c *GlobalCommand) globalExec() error {
 		ToolsKitName: constant.KitName,
 		ToolsKitURL:  constant.KitUrl,
 	}
-
-	// check old tag is exists
-	oldReleaseTag, errOldReleaseTag := repository.CommitTagSearchByName(c.GenerateConfig.ReleaseTag)
-	if err != nil {
-		slog.Debugf("not find tag: %s err: %v", c.GenerateConfig.ReleaseTag, errOldReleaseTag)
-	}
-	if oldReleaseTag != nil {
-		return exit_cli.Format("want release tag is exist: %s, tag message is %s", c.GenerateConfig.ReleaseTag, oldReleaseTag.Message)
+	if reader.HistoryFirstTagShort() != "" {
+		changelogDesc.PreviousTag = reader.HistoryFirstTagShort()
 	}
 
-	changeLogNodes := make([]sample_mk.Node, 0)
-	reader, errHistory := changelog.NewReader(c.GenerateConfig.Infile, *c.ChangeLogSpec)
-	if errHistory != nil {
-		slog.Debugf("can not read history changelog err: %v", errHistory)
-	} else {
-		changeLogNodes = append(changeLogNodes, reader.HistoryNodes()...)
-	}
-	if c.GenerateConfig.FromCommit == "" {
-		lastHistoryTagCommit, errHistoryTagCommit := repository.TagLatestByCommitTime()
-		if errHistoryTagCommit != nil {
-			if errHistoryTagCommit != changelog.NotErrCommitsLenZero {
-				return exit_cli.Err(errHistoryTagCommit)
-			}
-			slog.Debugf("can not get last history tag commit err: %v", errHistoryTagCommit)
-			if errHistory != nil {
-				// this not find any tag and history
-				c.GenerateConfig.FromCommit = ""
-			} else {
-				tagSearchByName, errTagSearchByName := repository.CommitTagSearchByName(reader.HistoryFirstTag())
-				if errTagSearchByName != nil {
-					slog.Debugf("errTagSearchByName err: %v", errTagSearchByName)
-				} else {
-					c.GenerateConfig.FromCommit = tagSearchByName.Hash.String()
-				}
-			}
-		} else {
-			c.GenerateConfig.FromCommit = lastHistoryTagCommit.Hash.String()
-		}
-	}
+	nodesGenerateWithTitle, errAddTitle := changelog.AddMarkdownChangelogNodesTitle(
+		generateMarkdownNodes,
+		gitHttpInfoDefault,
+		changelogDesc,
+		*c.ChangeLogSpec,
+	)
 
-	latestMarkdownNodes := make([]sample_mk.Node, 0)
-
-	latestCommits, errLatestCommits := repository.Log("", c.GenerateConfig.FromCommit)
-	if errLatestCommits != nil {
-		return exit_cli.Err(errLatestCommits)
-	} else {
-		conventionCommits, errConvert := convention.ConvertGitCommits2ConventionCommits(latestCommits, *c.ChangeLogSpec, gitHttpInfoDefault)
-		if errConvert != nil {
-			return exit_cli.Err(errConvert)
-		}
-		generateMarkdownNodes, errConvert := changelog.GenerateMarkdownNodes(gitHttpInfoDefault, changelogDesc,
-			conventionCommits, *c.ChangeLogSpec)
-		if errConvert != nil {
-			return exit_cli.Err(errConvert)
-		}
-		latestMarkdownNodes = append(latestMarkdownNodes, generateMarkdownNodes...)
+	if errAddTitle != nil {
+		slog.Error("AddMarkdownChangelogNodesTitle err: %v", errAddTitle)
+		return exit_cli.Err(errAddTitle)
 	}
 
 	if c.DryRun {
-		latestMarkdownContent := sample_mk.GenerateText(latestMarkdownNodes)
+		latestMarkdownContent := sample_mk.GenerateText(nodesGenerateWithTitle)
 		color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
 		color.Println("")
 
@@ -209,17 +269,20 @@ func (c *GlobalCommand) globalExec() error {
 		return nil
 	}
 
-	changeLogNodes = append(changeLogNodes, latestMarkdownNodes...)
+	// add history
+	changeLogNodes = append(nodesGenerateWithTitle, changeLogNodes...)
 
 	fullMarkdownContent := sample_mk.GenerateText(changeLogNodes)
 
 	errWriteFile := filepath_plus.WriteFileByByte(c.GenerateConfig.Outfile, []byte(fullMarkdownContent), os.FileMode(0766), true)
 	if errWriteFile != nil {
+		slog.Error("WriteFileByByte err: %v", errWriteFile)
 		return exit_cli.Err(errWriteFile)
 	}
 
 	errDoGit := c.doGit(headBranchName)
 	if errDoGit != nil {
+		slog.Error("doGit err: %v", errDoGit)
 		return exit_cli.Err(errDoGit)
 	}
 
@@ -311,11 +374,18 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 
 	// c.String("clone-url") close this way to get latest tag
 
+	tagPrefix := c.String("tag-prefix")
+	cliReleaseAs := c.String("release-as")
+	cliReleaseTag := ""
+	if cliReleaseAs != "" {
+		cliReleaseTag = fmt.Sprintf("%s%s", tagPrefix, cliReleaseAs)
+	}
+
 	generateConfig := GenerateConfig{
 		GitCloneUrl: "",
-		ReleaseAs:   c.String("release-as"),
-		TagPrefix:   c.String("tag-prefix"),
-		ReleaseTag:  fmt.Sprintf("%s%s", c.String("tag-prefix"), c.String("release-as")),
+		ReleaseAs:   cliReleaseAs,
+		TagPrefix:   tagPrefix,
+		ReleaseTag:  cliReleaseTag,
 
 		Infile:  c.String("infile"),
 		Outfile: c.String("outfile"),

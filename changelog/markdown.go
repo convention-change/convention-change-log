@@ -2,14 +2,13 @@ package changelog
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
-	"time"
-
 	"github.com/convention-change/convention-change-log/convention"
 	"github.com/elliotchance/orderedmap/v2"
 	"github.com/sinlov-go/go-common-lib/pkg/date"
 	"github.com/sinlov-go/sample-markdown/sample_mk"
+	"strconv"
+	"strings"
+	"time"
 )
 
 const (
@@ -31,51 +30,29 @@ var (
 // commit: commit list by []convention.Commit
 //
 // logSpec: log spec by convention.ConventionalChangeLogSpec
+//
+// return markdown nodes and feat nodes
 func GenerateMarkdownNodes(
 	gitHttpInfo convention.GitRepositoryHttpInfo,
-	changelogDesc ConventionalChangeLogDesc,
 	commits []convention.Commit,
 	logSpec convention.ConventionalChangeLogSpec,
-) ([]sample_mk.Node, error) {
+) ([]sample_mk.Node, []sample_mk.Node, error) {
 
-	if changelogDesc.Version == "" {
-		return nil, fmt.Errorf("changelogDesc.Version can not be empty")
-	}
-
-	if changelogDesc.When.IsZero() {
-		return nil, fmt.Errorf("changelogDesc.When can not be Zero")
-	}
-
-	if changelogDesc.ToolsKitName == "" {
-		return nil, fmt.Errorf("changelogDesc.ToolsKitName can not be empty")
-	}
-	if changelogDesc.ToolsKitURL == "" {
-		return nil, fmt.Errorf("changelogDesc.ToolsKitURL can not be empty")
-	}
+	nodes := make([]sample_mk.Node, 0, 3)
 	if len(commits) == 0 {
 		// type header + 2 version header
-		nodes := make([]sample_mk.Node, 0, 3)
-
-		// Adding title
-		versionHeader := generateVersionHeaderValue(gitHttpInfo, logSpec, changelogDesc)
-		nodes = append([]sample_mk.Node{
-			sample_mk.NewHeader(firstLevel, logSpec.Header),
-			sample_mk.NewBasicItem(fmt.Sprintf(titleDesc, changelogDesc.ToolsKitName, changelogDesc.ToolsKitURL)),
-			sample_mk.NewHeader(secondLevel, versionHeader),
-		}, nodes...)
-
-		return nodes, NotErrCommitsLenZero
-	}
-
-	if changelogDesc.Location == nil {
-		changelogDesc.Location = time.Local
+		return nodes, nil, NotErrCommitsLenZero
 	}
 
 	filteredCommits := filter(commits, logSpec)
 
+	if len(filteredCommits) == 0 {
+		return nodes, nil, nil
+	}
+
 	sortedCommits, errSort := SortCommitsByLogSpec(filteredCommits, logSpec)
 	if errSort != nil {
-		return nil, errSort
+		return nil, nil, errSort
 	}
 
 	nodesLen := 0
@@ -102,14 +79,19 @@ func GenerateMarkdownNodes(
 	}
 
 	// type header + 2 version header
-	nodes := make([]sample_mk.Node, 0, nodesLen+3)
+	nodesAll := make([]sample_mk.Node, 0, nodesLen+3)
+	featNodes := make([]sample_mk.Node, 0, 4)
 
 	// Adding each type
 	for el := markDownNodes.Front(); el != nil; el = el.Next() {
 		//fmt.Println(el.Key, el.Value)
-		sectionFromType := convention.ParseSectionFromType(logSpec, el.Key)
-		nodes = append(nodes, sample_mk.NewHeader(thirdLevel, sectionFromType))
-		nodes = append(nodes, el.Value...)
+		commitType := el.Key
+		sectionFromType := convention.ParseSectionFromType(logSpec, commitType)
+		nodesAll = append(nodesAll, sample_mk.NewHeader(thirdLevel, sectionFromType))
+		nodesAll = append(nodesAll, el.Value...)
+		if commitType == convention.FeatType {
+			featNodes = append(featNodes, el.Value...)
+		}
 	}
 
 	// add BREAKING CHANGE:
@@ -120,8 +102,41 @@ func GenerateMarkdownNodes(
 		for _, breakingChange := range breakingChanges {
 			bkNode = append(bkNode, sample_mk.NewListItem(breakingChange.Describe))
 		}
-		nodes = append(bkNode, nodes...)
+		nodesAll = append(bkNode, nodesAll...)
 	}
+
+	return nodesAll, featNodes, nil
+}
+
+// AddMarkdownChangelogNodesTitle
+// add title to markdown nodes
+func AddMarkdownChangelogNodesTitle(
+	itemNode []sample_mk.Node,
+	gitHttpInfo convention.GitRepositoryHttpInfo,
+	changelogDesc ConventionalChangeLogDesc,
+	logSpec convention.ConventionalChangeLogSpec,
+) ([]sample_mk.Node, error) {
+	if changelogDesc.Version == "" {
+		return nil, fmt.Errorf("changelogDesc.Version can not be empty")
+	}
+
+	if changelogDesc.When.IsZero() {
+		return nil, fmt.Errorf("changelogDesc.When can not be Zero")
+	}
+
+	if changelogDesc.ToolsKitName == "" {
+		return nil, fmt.Errorf("changelogDesc.ToolsKitName can not be empty")
+	}
+
+	if changelogDesc.ToolsKitURL == "" {
+		return nil, fmt.Errorf("changelogDesc.ToolsKitURL can not be empty")
+	}
+
+	if changelogDesc.Location == nil {
+		changelogDesc.Location = time.Local
+	}
+
+	nodes := make([]sample_mk.Node, 0, 3)
 
 	// Adding title
 	versionHeader := generateVersionHeaderValue(gitHttpInfo, logSpec, changelogDesc)
@@ -130,6 +145,10 @@ func GenerateMarkdownNodes(
 		sample_mk.NewBasicItem(fmt.Sprintf(titleDesc, changelogDesc.ToolsKitName, changelogDesc.ToolsKitURL)),
 		sample_mk.NewHeader(secondLevel, versionHeader),
 	}, nodes...)
+
+	if itemNode != nil {
+		nodes = append(nodes, itemNode...)
+	}
 
 	return nodes, nil
 }
