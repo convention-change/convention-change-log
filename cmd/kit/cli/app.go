@@ -9,6 +9,7 @@ import (
 	"github.com/convention-change/convention-change-log/internal/pkgJson"
 	"github.com/convention-change/convention-change-log/internal/urfave_cli"
 	"github.com/urfave/cli/v2"
+	"runtime"
 	"time"
 )
 
@@ -25,7 +26,8 @@ func NewCliApp() *cli.App {
 
 	year := time.Now().Year()
 	jsonAuthor := pkgJson.GetPackageJsonAuthor()
-	app.Copyright = fmt.Sprintf("© %s-%d %s", constant.CopyrightStartYear, year, jsonAuthor.Name)
+	app.Copyright = fmt.Sprintf("© %s-%d %s by: %s, run on %s %s",
+		constant.CopyrightStartYear, year, jsonAuthor.Name, runtime.Version(), runtime.GOOS, runtime.GOARCH)
 	author := &cli.Author{
 		Name:  jsonAuthor.Name,
 		Email: jsonAuthor.Email,

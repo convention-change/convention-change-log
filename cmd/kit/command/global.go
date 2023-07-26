@@ -309,8 +309,10 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		TimeoutSecond: c.Uint("config.timeout_second"),
 	}
 
+	// c.String("clone-url") close this way to get latest tag
+
 	generateConfig := GenerateConfig{
-		GitCloneUrl: c.String("clone-url"),
+		GitCloneUrl: "",
 		ReleaseAs:   c.String("release-as"),
 		TagPrefix:   c.String("tag-prefix"),
 		ReleaseTag:  fmt.Sprintf("%s%s", c.String("tag-prefix"), c.String("release-as")),

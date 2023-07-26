@@ -9,6 +9,11 @@ import (
 // main flags
 func MainFlag() []cli.Flag {
 	return []cli.Flag{
+		//&cli.StringFlag{
+		//	Name:  "clone-url",
+		//	Usage: "Set git url to use by clone, if not set will use local repository",
+		//	Value: "",
+		//},
 		&cli.StringFlag{
 			Name:    "release-as",
 			Usage:   "Specify the release type manually (like npm version <major|minor|patch>)",
@@ -19,11 +24,6 @@ func MainFlag() []cli.Flag {
 			Aliases: []string{"t"},
 			Usage:   "Set a custom prefix for the git tag to be created",
 			Value:   "v",
-		},
-		&cli.StringFlag{
-			Name:  "clone-url",
-			Usage: "Set git url to use by clone, if not set will use local repository",
-			Value: "",
 		},
 		&cli.StringFlag{
 			Name:    "infile",

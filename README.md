@@ -16,20 +16,6 @@
 - [ ] more perfect test case coverage
 - [ ] more perfect benchmark case
 
-## env
-
-- minimum go version: go 1.18
-- change `go 1.18`, `^1.18`, `1.18.10` to new go version
-
-### libs
-
-| lib                                 | version |
-|:------------------------------------|:--------|
-| https://github.com/stretchr/testify | v1.8.4  |
-| https://github.com/sebdah/goldie    | v2.5.3  |
-
-- more libs see [go.mod](https://github.com/convention-change/convention-change-log/blob/main/go.mod)
-
 ## usage
 
 ### cli
@@ -49,6 +35,20 @@ $ convention-change-log init
 ```
 
 # dev
+
+## env
+
+- minimum go version: go 1.18
+- change `go 1.18`, `^1.18`, `1.18.10` to new go version
+
+### libs
+
+| lib                                 | version |
+|:------------------------------------|:--------|
+| https://github.com/stretchr/testify | v1.8.4  |
+| https://github.com/sebdah/goldie    | v2.5.3  |
+
+- more libs see [go.mod](https://github.com/convention-change/convention-change-log/blob/main/go.mod)
 
 ## Contributing
 
