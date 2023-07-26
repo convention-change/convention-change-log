@@ -43,21 +43,34 @@ jobs:
     uses: ./.github/workflows/golang-ci.yml
     secrets: inherit
 
-  go-release:
-    name: go-release
+  go-release-platform:
+    name: go-release-platform
     needs:
      - version
      - golang-ci
     if: startsWith(github.ref, 'refs/tags/')
-    uses: ./.github/workflows/go-release.yml
+    uses: ./.github/workflows/go-release-platform.yml
     secrets: inherit
     with:
+      verison_name: ${{ needs.version.outputs.tag_name }}
       upload_artifact_name: go-release
+
+#  go-release-cross:
+#    name: go-release-cross
+#    needs:
+#     - version
+#     - golang-ci
+#    if: startsWith(github.ref, 'refs/tags/')
+#    uses: ./.github/workflows/go-release-cross.yml
+#    secrets: inherit
+#    with:
+#      upload_artifact_name: go-releas
 
   deploy-tag:
     needs:
       - version
-      - go-release
+      - go-release-platform
+#      - go-release-cross
     name: deploy-tag
     uses: ./.github/workflows/deploy-tag.yml
     if: startsWith(github.ref, 'refs/tags/')
