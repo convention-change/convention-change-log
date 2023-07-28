@@ -6,6 +6,7 @@ import (
 )
 
 const (
+	DefaultSemverVersion              = "1.0.0"
 	DefaultHeader                     = "Changelog"
 	DefaultCommitUrlFormat            = "{{scheme}}://{{host}}/{{owner}}/{{repository}}/commit/{{hash}}"
 	DefaultCompareUrlFormat           = "{{scheme}}://{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}"

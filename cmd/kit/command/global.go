@@ -119,7 +119,7 @@ func (c *GlobalCommand) globalExec() error {
 	reader, errHistory := changelog.NewReader(c.GenerateConfig.Infile, *c.ChangeLogSpec)
 	if errHistory != nil {
 		slog.Debugf("can not read history changelog err: %v", errHistory)
-		c.GenerateConfig.ReleaseAs = "1.0.0"
+		c.GenerateConfig.ReleaseAs = convention.DefaultSemverVersion
 		c.GenerateConfig.ReleaseTag = fmt.Sprintf("%s%s", c.GenerateConfig.TagPrefix, c.GenerateConfig.ReleaseAs)
 	} else {
 		changeLogNodes = append(changeLogNodes, reader.HistoryNodes()...)
@@ -264,8 +264,6 @@ func (c *GlobalCommand) globalExec() error {
 		color.Println("")
 		color.Printf(constant.CmdHelpTagRelease, c.GenerateConfig.ReleaseTag)
 		color.Println("")
-		color.Printf(constant.CmdHelpGitPush, headBranchName)
-		color.Println("")
 		return nil
 	}
 
@@ -274,16 +272,25 @@ func (c *GlobalCommand) globalExec() error {
 
 	fullMarkdownContent := sample_mk.GenerateText(changeLogNodes)
 
-	errWriteFile := filepath_plus.WriteFileByByte(c.GenerateConfig.Outfile, []byte(fullMarkdownContent), os.FileMode(0766), true)
-	if errWriteFile != nil {
-		slog.Error("WriteFileByByte err: %v", errWriteFile)
-		return exit_cli.Err(errWriteFile)
+	errChangeLocalFile := c.changeLocalFiles(fullMarkdownContent)
+	if errChangeLocalFile != nil {
+		slog.Error("WriteFileByByte err: %v", errChangeLocalFile)
+		return exit_cli.Err(errChangeLocalFile)
 	}
 
 	errDoGit := c.doGit(headBranchName)
 	if errDoGit != nil {
 		slog.Error("doGit err: %v", errDoGit)
 		return exit_cli.Err(errDoGit)
+	}
+
+	return nil
+}
+
+func (c *GlobalCommand) changeLocalFiles(fullChangeLogContent string) error {
+	errWriteFile := filepath_plus.WriteFileByByte(c.GenerateConfig.Outfile, []byte(fullChangeLogContent), os.FileMode(0766), true)
+	if errWriteFile != nil {
+		return fmt.Errorf("WriteFileByByte err: %v", errWriteFile)
 	}
 
 	return nil

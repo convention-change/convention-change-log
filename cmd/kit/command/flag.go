@@ -1,7 +1,9 @@
 package command
 
 import (
+	"fmt"
 	"github.com/convention-change/convention-change-log/cmd/kit/constant"
+	"github.com/convention-change/convention-change-log/convention"
 	"github.com/urfave/cli/v2"
 )
 
@@ -16,7 +18,7 @@ func MainFlag() []cli.Flag {
 		//},
 		&cli.StringFlag{
 			Name:    "release-as",
-			Usage:   "Specify the release type manually (like npm version <major|minor|patch>) if not setting will use semver by history",
+			Usage:   fmt.Sprintf("Specify the release type manually (like npm version <major|minor|patch>) if not setting will use semver by history, if first release will change to %s", convention.DefaultSemverVersion),
 			Aliases: []string{"r"},
 		},
 		&cli.StringFlag{
