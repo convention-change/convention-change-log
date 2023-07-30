@@ -15,8 +15,8 @@ on:
         type: string
 
 env:
-  DIST_BINARY_NAME: temp-golang-cli-fast # to change your binary name, windows will auto add .exe
-  DIST_BUILD_ENTRANCE: cmd/temp-golang-cli-fast/main.go # to change your build entrance
+  DIST_BINARY_NAME: convention-change-log # to change your binary name, windows will auto add .exe
+  DIST_BUILD_ENTRANCE: cmd/convention-change-log/main.go # to change your build entrance
 
 permissions:
   contents: write
