@@ -23,6 +23,10 @@ permissions:
 
 jobs:
   go-release-platform:
+    defaults:
+      run:
+        shell: bash
+       # working-directory: ${{ env.WORK_DIR }}
     strategy:
       matrix:
         # You can add more, for any target you'd like! target list see: go tool dist list
@@ -68,9 +72,11 @@ jobs:
           go mod vendor
           # Replace with the name of your binary
           binary_name=${{ env.DIST_BINARY_NAME }}
+
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             binary_name=${{ env.DIST_BINARY_NAME }}.exe
           fi
+
           dirname="${{ env.DIST_BINARY_NAME }}-${{ inputs.verison_name }}-${{ matrix.go_os }}-${{ matrix.go_arch }}"
 
           # change build tag and ldflags if you need
@@ -89,6 +95,7 @@ jobs:
             shasum -a 256 "$dirname.tar.gz" >> "$dirname.tar.gz.sha256"
             echo "ASSET=$dirname.tar.gz" >> $GITHUB_ENV
           fi
+
         env:
           CGO_ENABLED: 0
           GOOS: ${{ matrix.go_os }}
