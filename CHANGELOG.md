@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.0.3](https://github.com/convention-change/convention-change-log/compare/1.0.2...v1.0.3) (2023-07-30)
+
+### 🐛 Bug Fixes
+
+* change go-build-check-main for test (2023-07-30) [80f7d59c](https://github.com/convention-change/convention-change-log/commit/80f7d59c84ad0460344307e824de5442d286e243)
+
 ## [1.0.2](https://github.com/convention-change/convention-change-log/compare/1.0.1...v1.0.2) (2023-07-30)
 
 ### 🐛 Bug Fixes
