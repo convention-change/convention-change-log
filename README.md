@@ -27,6 +27,8 @@ $ go install -v github.com/convention-change/convention-change-log/cmd/conventio
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.0.3
 ````
 
+- or install by [release](https://github.com/convention-change/convention-change-log/releases) and add `PATH`
+
 - please use cli at `git repository root path`
 
 ```bash
