@@ -102,7 +102,7 @@ jobs:
           GOARCH: ${{ matrix.go_arch }}
 
       - name: Check Release archive
-        if: ${{ inputs.tag_name != null }}
+       # if: ${{ inputs.tag_name != null }}
         run: |
           echo "release archive at: ${{ env.ASSET }}"
           echo " archive sha256sum at: ${{ env.ASSET }}.sha256"
