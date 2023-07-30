@@ -8,13 +8,13 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "sunday"
     open-pull-requests-limit: 10
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
     open-pull-requests-limit: 10
 #    ignore:
 #    - dependency-name: foo
