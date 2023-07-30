@@ -33,7 +33,18 @@ $ go install -v github.com/convention-change/convention-change-log/cmd/conventio
 # init config file at git repository root path
 $ convention-change-log init
 
-# 
+# check release note by tag
+$ convention-change-log --dry-run
+# let release version as -r
+$ convention-change-log -r 0.1.0 --dry-run
+# change tag prefix
+$ convention-change-log -r 0.1.0 -t "" --dry-run
+
+# finish check then generate release note and tag
+$ convention-change-log -r 1.0.0
+
+# or add auto push to remote
+$ convention-change-log --auto-push
 ```
 
 # dev

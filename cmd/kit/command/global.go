@@ -117,7 +117,7 @@ func (c *GlobalCommand) globalExec() error {
 
 	changeLogNodes := make([]sample_mk.Node, 0)
 	reader, errHistory := changelog.NewReader(c.GenerateConfig.Infile, *c.ChangeLogSpec)
-	if errHistory != nil {
+	if errHistory != nil && c.GenerateConfig.ReleaseAs == "" {
 		slog.Debugf("can not read history changelog err: %v", errHistory)
 		c.GenerateConfig.ReleaseAs = convention.DefaultSemverVersion
 		c.GenerateConfig.ReleaseTag = fmt.Sprintf("%s%s", c.GenerateConfig.TagPrefix, c.GenerateConfig.ReleaseAs)
