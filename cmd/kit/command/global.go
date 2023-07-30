@@ -131,29 +131,14 @@ func (c *GlobalCommand) globalExec() error {
 			// this not find any tag and history
 			c.GenerateConfig.FromCommit = ""
 		} else {
-			lastHistoryTagCommit, errHistoryTagCommit := repository.TagLatestByCommitTime()
-			if errHistoryTagCommit != nil {
-				if errHistoryTagCommit != changelog.NotErrCommitsLenZero {
-					slog.Error("NotErrCommitsLenZero err: %v", errHistoryTagCommit)
-					return exit_cli.Err(errHistoryTagCommit)
-				}
-				historyFirstTag := reader.HistoryFirstTag()
-				tagSearchByName, errTagSearchByName := repository.CommitTagSearchByName(historyFirstTag)
-				if errTagSearchByName != nil {
-					slog.Debugf("errTagSearchByName err: %v", errTagSearchByName)
-					c.GenerateConfig.FromCommit = ""
-				} else {
-					c.GenerateConfig.FromCommit = tagSearchByName.Hash.String()
-					historyFirstTagName = historyFirstTag
-				}
+			historyFirstTag := reader.HistoryFirstTag()
+			tagSearchByName, errTagSearchByName := repository.CommitTagSearchByName(historyFirstTag)
+			if errTagSearchByName != nil {
+				slog.Debugf("errTagSearchByName err: %v", errTagSearchByName)
+				c.GenerateConfig.FromCommit = ""
 			} else {
-				historyFirstTagName = lastHistoryTagCommit.Name
-				commitTagSearch, errTagCommit := repository.CommitTagSearchByName(historyFirstTagName)
-				if errTagCommit != nil {
-					slog.Error("CommitTagSearchByName err: %v", errTagCommit)
-					return exit_cli.Err(errTagCommit)
-				}
-				c.GenerateConfig.FromCommit = commitTagSearch.Hash.String()
+				c.GenerateConfig.FromCommit = tagSearchByName.Hash.String()
+				historyFirstTagName = historyFirstTag
 			}
 		}
 	}
@@ -251,6 +236,11 @@ func (c *GlobalCommand) globalExec() error {
 		return exit_cli.Err(errAddTitle)
 	}
 
+	err = pkgJson.ReplaceJsonVersionByLine(filepath.Join(c.GitRootPath, "package.json"), c.GenerateConfig.ReleaseAs)
+	if err != nil {
+		slog.Error("ReplaceJsonVersionByLine", err)
+	}
+
 	if c.DryRun {
 		latestMarkdownContent := sample_mk.GenerateText(nodesGenerateWithTitle)
 		color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
@@ -293,13 +283,34 @@ func (c *GlobalCommand) changeLocalFiles(fullChangeLogContent string) error {
 		return fmt.Errorf("WriteFileByByte err: %v", errWriteFile)
 	}
 
+	if c.GenerateConfig.ReleaseAs != "" {
+		// try update node
+		pkgJsonPath := filepath.Join(c.GitRootPath, "package.json")
+		if filepath_plus.PathExistsFast(pkgJsonPath) {
+			// replace file line by regexp
+			slog.Debugf("try update node version in file: %s", pkgJsonPath)
+			err := pkgJson.ReplaceJsonVersionByLine(pkgJsonPath, c.GenerateConfig.ReleaseAs)
+			if err != nil {
+				slog.Error("ReplaceJsonVersionByLine", err)
+			}
+			pkgJsonLockPath := filepath.Join(c.GitRootPath, "package-lock.json")
+			if filepath_plus.PathExistsFast(pkgJsonLockPath) {
+				output, errNpmInstall := exec.Command("npm", "install").CombinedOutput()
+				if errNpmInstall != nil {
+					slog.Error("do Command npm install error", errNpmInstall)
+				}
+				slog.Debugf("npm install output:\n%s", output)
+			}
+		}
+	}
+
 	return nil
 }
 
 func (c *GlobalCommand) doGit(branchName string) error {
 	// disable git-go repository issues until https://github.com/go-git/go-git/issues/180 is fixed
 
-	cmdOutput, err := exec.Command("git", "add", c.GenerateConfig.Outfile).CombinedOutput()
+	cmdOutput, err := exec.Command("git", "add", "--all").CombinedOutput()
 	if err != nil {
 		return err
 	}
