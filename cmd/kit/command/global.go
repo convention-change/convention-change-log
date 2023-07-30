@@ -431,6 +431,8 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		changeLogSpec = &spec
 	}
 
+	changeLogSpec.TagPrefix = tagPrefix
+
 	p := GlobalCommand{
 		Name:    cliName,
 		Version: cliVersion,

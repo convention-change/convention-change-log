@@ -1,10 +1,12 @@
 package subcommand_init
 
 import (
+	convention_change_log "github.com/convention-change/convention-change-log"
 	"github.com/convention-change/convention-change-log/cmd/kit/command"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/exit_cli"
 	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/convention-change/convention-change-log/convention"
+	"os"
 	"path/filepath"
 
 	"github.com/bar-counter/slog"
@@ -36,15 +38,20 @@ func (n *InitCommand) Exec() error {
 	}
 
 	var spec *convention.ConventionalChangeLogSpec
-	if n.MoreConfig {
-		logSpec := convention.DefaultConventionalChangeLogSpec()
-		spec = &logSpec
-	} else {
-		spec = convention.SimplifyConventionalChangeLogSpec()
+	if !n.MoreConfig {
+		err := filepath_plus.WriteFileByByte(n.TargetFile, []byte(convention_change_log.ResVersionRcBeautyJson), os.FileMode(0766), false)
+		if err != nil {
+			slog.Error("init .versionrc file err: %v", err)
+			return exit_cli.Err(err)
+		}
+		return nil
 	}
-
+	logSpec := convention.DefaultConventionalChangeLogSpec()
+	spec = &logSpec
 	err := filepath_plus.WriteFileAsJsonBeauty(n.TargetFile, spec, false)
 	if err != nil {
+		slog.Error("write .versionrc file err: %v", err)
+
 		return exit_cli.Format("write file %s err: %v", n.TargetFile, err)
 	}
 	color.Greenf("init .versionrc file success, file: %s", n.TargetFile)
@@ -56,10 +63,6 @@ func flag() []cli.Flag {
 		&cli.BoolFlag{
 			Name:  "more",
 			Usage: "more config at init",
-		},
-		&cli.BoolFlag{
-			Name:  "init-beauty",
-			Usage: "config at init will",
 		},
 	}
 }
