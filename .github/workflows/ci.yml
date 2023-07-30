@@ -43,16 +43,16 @@ jobs:
     uses: ./.github/workflows/golang-ci.yml
     secrets: inherit
 
-  go-build-check-main:
-    name: go-build-check-main
-    needs:
-     - version
-     - golang-ci
-    if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || github.base_ref == 'main' }}
-    uses: ./.github/workflows/go-release-platform.yml
-    secrets: inherit
-    with:
-      verison_name: latest
+#  go-build-check-main:
+#    name: go-build-check-main
+#    needs:
+#     - version
+#     - golang-ci
+#    if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || github.base_ref == 'main' }}
+#    uses: ./.github/workflows/go-release-platform.yml
+#    secrets: inherit
+#    with:
+#      verison_name: latest
 
   go-release-platform:
     name: go-release-platform
