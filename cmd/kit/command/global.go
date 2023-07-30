@@ -346,9 +346,12 @@ func (c *GlobalCommand) doGit(branchName string) error {
 	if c.GenerateConfig.AutoPush {
 		cmdOutput, err = exec.Command("git", "push", "--follow-tags", "origin", branchName).CombinedOutput()
 		if err != nil {
+			slog.Error("git push error", err)
 			return err
 		}
 		slog.Debugf("git push output:\n%s", cmdOutput)
+		color.Printf(constant.CmdHelpFinishGitPush, branchName)
+		color.Println("")
 		return nil
 	}
 
