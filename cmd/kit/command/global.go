@@ -236,11 +236,6 @@ func (c *GlobalCommand) globalExec() error {
 		return exit_cli.Err(errAddTitle)
 	}
 
-	err = pkgJson.ReplaceJsonVersionByLine(filepath.Join(c.GitRootPath, "package.json"), c.GenerateConfig.ReleaseAs)
-	if err != nil {
-		slog.Error("ReplaceJsonVersionByLine", err)
-	}
-
 	if c.DryRun {
 		latestMarkdownContent := sample_mk.GenerateText(nodesGenerateWithTitle)
 		color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
@@ -257,8 +252,14 @@ func (c *GlobalCommand) globalExec() error {
 		return nil
 	}
 
+	changelogNodesWithHead, err := changelog.AddMarkdownChangelogNodesHead(nodesGenerateWithTitle, changelogDesc, *c.ChangeLogSpec)
+	if err != nil {
+		slog.Error("AddMarkdownChangelogNodesHead err: %v", err)
+		return exit_cli.Err(err)
+	}
+
 	// add history
-	changeLogNodes = append(nodesGenerateWithTitle, changeLogNodes...)
+	changeLogNodes = append(changelogNodesWithHead, changeLogNodes...)
 
 	fullMarkdownContent := sample_mk.GenerateText(changeLogNodes)
 

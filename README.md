@@ -32,6 +32,8 @@ $ go install -v github.com/convention-change/convention-change-log/cmd/conventio
 ```bash
 # init config file at git repository root path
 $ convention-change-log init
+
+# 
 ```
 
 # dev

@@ -124,6 +124,40 @@ func AddMarkdownChangelogNodesTitle(
 		return nil, fmt.Errorf("changelogDesc.When can not be Zero")
 	}
 
+	if changelogDesc.Location == nil {
+		changelogDesc.Location = time.Local
+	}
+
+	nodes := make([]sample_mk.Node, 0, 3)
+
+	// Adding title
+	versionHeader := generateVersionHeaderValue(gitHttpInfo, logSpec, changelogDesc)
+	nodes = append([]sample_mk.Node{
+		sample_mk.NewHeader(secondLevel, versionHeader),
+	}, nodes...)
+
+	if itemNode != nil {
+		nodes = append(nodes, itemNode...)
+	}
+
+	return nodes, nil
+}
+
+// AddMarkdownChangelogNodesHead
+// add title to markdown nodes
+func AddMarkdownChangelogNodesHead(
+	itemNode []sample_mk.Node,
+	changelogDesc ConventionalChangeLogDesc,
+	logSpec convention.ConventionalChangeLogSpec,
+) ([]sample_mk.Node, error) {
+	if changelogDesc.Version == "" {
+		return nil, fmt.Errorf("changelogDesc.Version can not be empty")
+	}
+
+	if changelogDesc.When.IsZero() {
+		return nil, fmt.Errorf("changelogDesc.When can not be Zero")
+	}
+
 	if changelogDesc.ToolsKitName == "" {
 		return nil, fmt.Errorf("changelogDesc.ToolsKitName can not be empty")
 	}
@@ -135,21 +169,14 @@ func AddMarkdownChangelogNodesTitle(
 	if changelogDesc.Location == nil {
 		changelogDesc.Location = time.Local
 	}
-
 	nodes := make([]sample_mk.Node, 0, 3)
-
-	// Adding title
-	versionHeader := generateVersionHeaderValue(gitHttpInfo, logSpec, changelogDesc)
 	nodes = append([]sample_mk.Node{
 		sample_mk.NewHeader(firstLevel, logSpec.Header),
 		sample_mk.NewBasicItem(fmt.Sprintf(titleDesc, changelogDesc.ToolsKitName, changelogDesc.ToolsKitURL)),
-		sample_mk.NewHeader(secondLevel, versionHeader),
 	}, nodes...)
-
 	if itemNode != nil {
 		nodes = append(nodes, itemNode...)
 	}
-
 	return nodes, nil
 }
 

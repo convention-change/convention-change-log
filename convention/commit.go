@@ -71,10 +71,19 @@ func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec, gitHttpI
 
 	}
 	if !c.Hash.IsZero() && gitHttpInfo.Host != "" {
-		gitRepoUrl := fmt.Sprintf("%s://%s/%s/%s", gitHttpInfo.Scheme, gitHttpInfo.Host, gitHttpInfo.Owner, gitHttpInfo.Repository)
-		hashFull := c.Hash.String()
+		commitRt := new(CommitRenderTemplate)
+		commitRt.Scheme = gitHttpInfo.Scheme
+		commitRt.Host = gitHttpInfo.Host
+		commitRt.Owner = gitHttpInfo.Owner
+		commitRt.Repository = gitHttpInfo.Repository
+		commitRt.Hash = c.Hash.String()
+		commitUrl, errFormat := RaymondRender(spec.CommitUrlFormat, commitRt)
+		if errFormat != nil {
+			return result, errFormat
+		}
+
 		hashShort := c.Hash.String()[:spec.HashLength]
-		result.RawHeader = fmt.Sprintf("%s [%s](%s/commit/%s)", result.RawHeader, hashShort, gitRepoUrl, hashFull)
+		result.RawHeader = fmt.Sprintf("%s [%s](%s)", result.RawHeader, hashShort, commitUrl)
 	}
 
 	return result, nil

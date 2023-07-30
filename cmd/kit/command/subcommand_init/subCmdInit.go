@@ -57,6 +57,10 @@ func flag() []cli.Flag {
 			Name:  "more",
 			Usage: "more config at init",
 		},
+		&cli.BoolFlag{
+			Name:  "init-beauty",
+			Usage: "config at init will",
+		},
 	}
 }
 
