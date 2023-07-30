@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.0.1](https://github.com/convention-change/convention-change-log/compare/1.0.0...v1.0.1) (2023-07-30)
+
+### 🐛 Bug Fixes
+
+* fix go-release-platform.yml config of build (2023-07-30) [9be3443d](https://github.com/convention-change/convention-change-log/commit/9be3443d6fb921e069cb9c6e9d721a20aacd9b1f)
+
 ## 1.0.0 (2023-07-30)
 
 ### BREAKING CHANGE:
