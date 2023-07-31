@@ -1,6 +1,13 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.1.0](https://github.com/convention-change/convention-change-log/compare/v1.0.3...v1.1.0) (2023-07-31)
+
+
+### 👷‍ Build System
+
+* **gomod:** github.com/sinlov-go/go-git-tools v1.9.1 ([248572a](https://github.com/convention-change/convention-change-log/commit/248572a30b8460d8804e0b275476ba31f7b1f8cd))
 
 ## [1.0.3](https://github.com/convention-change/convention-change-log/compare/1.0.2...v1.0.3) (2023-07-30)
 
