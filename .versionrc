@@ -12,5 +12,5 @@
     {"type": "chore", "section":"📦 Chores", "hidden": true},
     {"type": "revert", "section":"⏪ Reverts", "hidden": false}
   ],
-  "tag-prefix": ""
+  "tag-prefix": "v"
 }
