@@ -417,21 +417,10 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		AutoPush: c.Bool("auto-push"),
 	}
 
-	var changeLogSpec *convention.ConventionalChangeLogSpec
 	specFilePath := filepath.Join(gitRootFolder, constant.VersionRcFileName)
-	if filepath_plus.PathExistsFast(specFilePath) {
-		specByte, errReadSpec := filepath_plus.ReadFileAsByte(specFilePath)
-		if errReadSpec != nil {
-			return nil, exit_cli.Err(errReadSpec)
-		}
-		spec, errReadSpec := convention.LoadConventionalChangeLogSpecByData(specByte)
-		if errReadSpec != nil {
-			return nil, exit_cli.Err(errReadSpec)
-		}
-		changeLogSpec = spec
-	} else {
-		spec := convention.DefaultConventionalChangeLogSpec()
-		changeLogSpec = &spec
+	changeLogSpec, err := convention.LoadConventionalChangeLogSpecByPath(specFilePath)
+	if err != nil {
+		return nil, exit_cli.Err(err)
 	}
 
 	changeLogSpec.TagPrefix = tagPrefix

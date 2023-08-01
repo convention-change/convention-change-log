@@ -3,6 +3,7 @@ package convention
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/sinlov-go/go-common-lib/pkg/filepath_plus"
 )
 
 const (
@@ -230,4 +231,29 @@ func LoadConventionalChangeLogSpecByData(logSpec []byte) (*ConventionalChangeLog
 	}
 
 	return &spec, nil
+}
+
+// LoadConventionalChangeLogSpecByPath
+//
+// load ConventionalChangeLogSpec by path
+//
+// if path not exists, will return default spec
+func LoadConventionalChangeLogSpecByPath(specFilePath string) (*ConventionalChangeLogSpec, error) {
+	var changeLogSpec *ConventionalChangeLogSpec
+	if filepath_plus.PathExistsFast(specFilePath) {
+		specByte, errReadSpec := filepath_plus.ReadFileAsByte(specFilePath)
+		if errReadSpec != nil {
+			return nil, fmt.Errorf("load ConventionalChangeLogSpec by path error: %s", errReadSpec.Error())
+		}
+		spec, errReadSpec := LoadConventionalChangeLogSpecByData(specByte)
+		if errReadSpec != nil {
+			return nil, fmt.Errorf("load ConventionalChangeLogSpec by path error: %s", errReadSpec.Error())
+		}
+		changeLogSpec = spec
+	} else {
+		spec := DefaultConventionalChangeLogSpec()
+		changeLogSpec = &spec
+	}
+
+	return changeLogSpec, nil
 }
