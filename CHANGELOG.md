@@ -1,9 +1,26 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
+
+## [1.2.0](https://github.com/convention-change/convention-change-log/compare/1.1.0...v1.2.0) (2023-08-01)
+
+### BREAKING CHANGE:
+
+* after this version each commit will not contain commit date information
+
+### 🐛 Bug Fixes
+
+* add convention.LoadConventionalChangeLogSpecByPath to fast load ConventionalChangeLogSpec ([b4fe99d0](https://github.com/convention-change/convention-change-log/commit/b4fe99d02cf1592e76ab636a6f2e372bb83562af))
+
+### ✨ Features
+
+* change doGit std print info ([96b29ae8](https://github.com/convention-change/convention-change-log/commit/96b29ae810b45abb43d8eb796fa54b11c2a1d294))
+
+* change format of convention.NewCommitWithLogSpec not contain AddAuthorDate ([689a502e](https://github.com/convention-change/convention-change-log/commit/689a502eae264128f25ae77a6c90754b40a5ae69))
+
+* use convention.LoadConventionalChangeLogSpecByPath to init ConventionalChangeLogSpec ([07ed5be0](https://github.com/convention-change/convention-change-log/commit/07ed5be0b3aea50a23bad29a58fd0f70ab8a15a7))
 
 ## [1.1.0](https://github.com/convention-change/convention-change-log/compare/v1.0.3...v1.1.0) (2023-07-31)
-
 
 ### 👷‍ Build System
 
