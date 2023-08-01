@@ -336,25 +336,31 @@ func (c *GlobalCommand) doGit(branchName string) error {
 	}
 	slog.Debugf("git tag output:\n%s", cmdOutput)
 
-	color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
-	color.Println("")
-	color.Printf(constant.CmdHelpCommitting, c.GenerateConfig.Infile)
-	color.Println("")
-	color.Printf(constant.CmdHelpTagRelease, c.GenerateConfig.ReleaseTag)
-	color.Println("")
-
 	if c.GenerateConfig.AutoPush {
 		cmdOutput, err = exec.Command("git", "push", "--follow-tags", "origin", branchName).CombinedOutput()
 		if err != nil {
 			slog.Error("git push error", err)
 			return err
 		}
+
 		slog.Debugf("git push output:\n%s", cmdOutput)
+		color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
+		color.Println("")
+		color.Printf(constant.CmdHelpCommitting, c.GenerateConfig.Infile)
+		color.Println("")
+		color.Printf(constant.CmdHelpTagRelease, c.GenerateConfig.ReleaseTag)
+		color.Println("")
 		color.Printf(constant.CmdHelpFinishGitPush, branchName)
 		color.Println("")
 		return nil
 	}
 
+	color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
+	color.Println("")
+	color.Printf(constant.CmdHelpCommitting, c.GenerateConfig.Infile)
+	color.Println("")
+	color.Printf(constant.CmdHelpTagRelease, c.GenerateConfig.ReleaseTag)
+	color.Println("")
 	color.Printf(constant.CmdHelpGitPush, branchName)
 	color.Println("")
 	return nil
