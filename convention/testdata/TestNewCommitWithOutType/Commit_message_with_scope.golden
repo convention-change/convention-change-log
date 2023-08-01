@@ -1,5 +1,5 @@
 {
-  "RawHeader": "add polish language (0001-01-01)",
+  "RawHeader": "add polish language",
   "Type": "feat",
   "Scope": "lang",
   "BreakingChanges": {

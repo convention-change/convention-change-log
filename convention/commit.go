@@ -48,12 +48,14 @@ type Commit struct {
 //
 // gitHttpInfo git info by GitRepositoryHttpInfo
 //
+// this method not add AddAuthorDate
+//
 // return conventional commit from git commit
 func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec, gitHttpInfo GitRepositoryHttpInfo) (Commit, error) {
 	result, err := NewCommitWithOptions(
 		GetRawHeader(c),
 		GetTypeAndScope(c),
-		AddAuthorDate(c),
+		//AddAuthorDate(c),
 		GetBreakChangesAndIssue(c, spec),
 	)
 	if err != nil {
@@ -83,7 +85,7 @@ func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec, gitHttpI
 		}
 
 		hashShort := c.Hash.String()[:spec.HashLength]
-		result.RawHeader = fmt.Sprintf("%s [%s](%s)", result.RawHeader, hashShort, commitUrl)
+		result.RawHeader = fmt.Sprintf("%s ([%s](%s))", result.RawHeader, hashShort, commitUrl)
 	}
 
 	return result, nil

@@ -1,5 +1,5 @@
 {
-  "RawHeader": "add commit convention (2020-04-01)",
+  "RawHeader": "add commit convention",
   "Type": "feat",
   "Scope": "",
   "BreakingChanges": {
