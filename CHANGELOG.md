@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.3.1](https://github.com/convention-change/convention-change-log/compare/1.3.0...v1.3.1) (2023-08-05)
+
+### 🐛 Bug Fixes
+
+* fix doc not set at subcommand at read-latest ([6780aacf](https://github.com/convention-change/convention-change-log/commit/6780aacfb493c1cee17efc88b3ddcd54570e5a2b))
+
 ## [1.3.0](https://github.com/convention-change/convention-change-log/compare/1.2.0...v1.3.0) (2023-08-05)
 
 ### ✨ Features
