@@ -10,11 +10,20 @@
 
 - convention change log generate
 - convention change log reader
+- convention change log config by `.versionrc` file
 
 ## Features
 
+- [x] subcommand `init` to init config file
+- [x] can read git root `.versionrc` for setting of change log generate
+    - more settings see `init --more` out file
+- [x] subcommand `read-latest` read the latest change log or write latest change to file
+- [x] global flag 
+    - [x] `-r` to set release version
+    - [x] `--dry-run` flag can see what change of new release
+    - [x] `--auto-push` flag can auto push tag to remote
+    - [x] `--tag-prefix` flag can change tag prefix
 - [ ] more perfect test case coverage
-- [ ] more perfect benchmark case
 
 ## usage
 

@@ -127,7 +127,7 @@ func Command() []*cli.Command {
 	return []*cli.Command{
 		{
 			Name:   commandName,
-			Usage:  "init convention change log config, this cli must run in git root folder",
+			Usage:  "read the latest change log or write latest change to file",
 			Action: action,
 			Flags:  flag(),
 		},
