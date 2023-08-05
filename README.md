@@ -28,6 +28,9 @@
   - [x] default will update `PATCH` version
   - [x] if the latest list has any `feat` message will update `MINOR` version
   - [x] if want change release version please use global flag `-r`
+- auto update version resource
+  - [x] project has `package.json` file will auto update `version` field
+  - [x] project has `package-lock.json` will try use `npm install` to update `package-lock.json` file
 - [ ] more perfect test case coverage
 
 more use see `convention-change-log --help`
