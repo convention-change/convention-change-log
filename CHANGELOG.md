@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.3.0](https://github.com/convention-change/convention-change-log/compare/1.2.0...v1.3.0) (2023-08-05)
+
+### ✨ Features
+
+* add git command error can use command notice ([f02bb653](https://github.com/convention-change/convention-change-log/commit/f02bb653112152ad1e3f1fcf1973185919ca89b0))
+
 ## [1.2.0](https://github.com/convention-change/convention-change-log/compare/1.1.0...v1.2.0) (2023-08-01)
 
 ### BREAKING CHANGE:
