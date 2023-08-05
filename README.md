@@ -24,13 +24,13 @@
     - [x] `--dry-run` flag can see what change of new release
     - [x] `--auto-push` flag can auto push tag to remote
     - [x] `--tag-prefix` flag can change tag prefix
-- generate as [conventionalcommits.org](https://www.conventionalcommits.org) for [semver.org](https://semver.org/)
+- generate from [conventional commits](https://www.conventionalcommits.org) for [semver.org](https://semver.org/)
   - [x] default will update `PATCH` version
   - [x] if the latest list has any `feat` message will update `MINOR` version
   - [x] if want change release version please use global flag `-r`
 - auto update version resource
-  - [x] project has `package.json` file will auto update `version` field
-  - [x] project has `package-lock.json` will try use `npm install` to update `package-lock.json` file
+  - [x] project has `package.json` file, will auto update `version` field
+  - [x] project has `package-lock.json` file, will try use `npm install` to update `package-lock.json` file
 - [ ] more perfect test case coverage
 
 more use see `convention-change-log --help`
@@ -46,7 +46,7 @@ $ go install -v github.com/convention-change/convention-change-log/cmd/conventio
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.3.1
 ````
 
-- or install by [release](https://github.com/convention-change/convention-change-log/releases) and add `PATH`
+- or install by [release](https://github.com/convention-change/convention-change-log/releases) and add environment variables `PATH`
 
 - please use cli at `git repository root path`
 
