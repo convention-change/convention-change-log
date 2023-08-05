@@ -23,8 +23,8 @@
 ```bash
 # install at $(GO_PATH)/bin
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@latest
-# install version v1.2.0
-$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.2.0
+# install version v1.3.0
+$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.3.0
 ````
 
 - or install by [release](https://github.com/convention-change/convention-change-log/releases) and add `PATH`
