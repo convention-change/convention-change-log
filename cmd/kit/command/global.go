@@ -271,6 +271,18 @@ func (c *GlobalCommand) globalExec() error {
 
 	errDoGit := c.doGit(headBranchName)
 	if errDoGit != nil {
+		color.Printf(constant.CmdHelpGitCommitFail)
+		color.Println("")
+		color.Printf(constant.CmdHelpGitCommitFixHead)
+		color.Println("")
+		color.Println("")
+		color.Printf(constant.CmdHelpGitCommitCheckStatus)
+		color.Println("")
+		color.Printf(constant.CmdHelpGitCommitFixTag, c.GenerateConfig.ReleaseTag)
+		color.Println("")
+		color.Printf(constant.CmdHelpGitCommitResetSoft)
+		color.Println("")
+		color.Println("")
 		slog.Error("doGit err: %v", errDoGit)
 		return exit_cli.Err(errDoGit)
 	}

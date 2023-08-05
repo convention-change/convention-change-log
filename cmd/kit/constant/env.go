@@ -31,9 +31,16 @@ const (
 var (
 	CmdOkEmoji           = color.Green.Render("✔")
 	CmdInfoEmoji         = color.Blue.Render("ℹ")
+	CmdWarnEmoji         = color.Warn.Render("ℹ")
 	CmdHelpOutputting    = CmdOkEmoji + " outputting changes to %s"
 	CmdHelpCommitting    = CmdOkEmoji + " committing %s"
 	CmdHelpTagRelease    = CmdOkEmoji + " tagging release %s"
 	CmdHelpGitPush       = CmdInfoEmoji + " Run `git push --follow-tags origin %s` to publish"
 	CmdHelpFinishGitPush = CmdOkEmoji + " Finish `git push --follow-tags origin %s`"
+
+	CmdHelpGitCommitFail        = CmdWarnEmoji + " must check git commit !"
+	CmdHelpGitCommitFixHead     = CmdWarnEmoji + " can use this command fix"
+	CmdHelpGitCommitCheckStatus = CmdWarnEmoji + " git status"
+	CmdHelpGitCommitFixTag      = CmdWarnEmoji + " git tag --delete %s"
+	CmdHelpGitCommitResetSoft   = CmdWarnEmoji + " git reset --soft HEAD^"
 )
