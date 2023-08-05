@@ -16,6 +16,7 @@
 
 - [x] subcommand `init` to init config file
 - [x] can read git root `.versionrc` for setting of change log generate
+    - support change log item sort by `versionrc` config `{{ .types[ .sort ] }}`, and default sort will auto set by this kit
     - more settings see `init --more` out file
 - [x] subcommand `read-latest` read the latest change log or write latest change to file
 - [x] global flag 
