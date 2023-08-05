@@ -19,11 +19,17 @@
     - more settings see `init --more` out file
 - [x] subcommand `read-latest` read the latest change log or write latest change to file
 - [x] global flag 
-    - [x] `-r` to set release version
+    - [x] `-r` or `--release-as` to set release version
     - [x] `--dry-run` flag can see what change of new release
     - [x] `--auto-push` flag can auto push tag to remote
     - [x] `--tag-prefix` flag can change tag prefix
+- generate as [conventionalcommits.org](https://www.conventionalcommits.org) for [semver.org](https://semver.org/)
+  - [x] default will update `PATCH` version
+  - [x] if the latest list has any `feat` message will update `MINOR` version
+  - [x] if want change release version please use global flag `-r`
 - [ ] more perfect test case coverage
+
+more use see `convention-change-log --help`
 
 ## usage
 
