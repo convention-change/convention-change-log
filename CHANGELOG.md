@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.4.0](https://github.com/convention-change/convention-change-log/compare/1.3.1...v1.4.0) (2023-08-07)
+
+### ✨ Features
+
+* convention.NewCommitWithLogSpec generate head at word `:` support ([9540a3a4](https://github.com/convention-change/convention-change-log/commit/9540a3a43f4f16c627d4cdb03d4d2e6c550f8b15))
+
 ## [1.3.1](https://github.com/convention-change/convention-change-log/compare/1.3.0...v1.3.1) (2023-08-05)
 
 ### 🐛 Bug Fixes
