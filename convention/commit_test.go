@@ -30,7 +30,7 @@ func TestNewCommitWithOutType(t *testing.T) {
 		{
 			name: "sample",
 			c: git.Commit{
-				Message: "feat: add commit convention",
+				Message: "feat: add commit convention:use this and more case: one",
 				Author: git.Author{
 					When: time.Date(2020, 4, 1, 0, 0, 0, 0, time.Local),
 				},
@@ -55,7 +55,7 @@ func TestNewCommitWithOutType(t *testing.T) {
 		{
 			name: "Commit message with hash and breaking change",
 			c: git.Commit{
-				Message: "feat: new api\n\nBREAKING CHANGE: this is describe of new api breaking changes\n\nfix #1",
+				Message: "feat: new api env:CI env:CI_DEBUG support\n\nBREAKING CHANGE: this is env:CI env:CI_DEBUG api breaking changes\n\nfix #1",
 				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
 			},
 			gitHttpInfo: gitHttpInfoDefault,

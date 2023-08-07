@@ -66,7 +66,8 @@ func NewCommitWithLogSpec(c git.Commit, spec ConventionalChangeLogSpec, gitHttpI
 			if strings.Index(result.RawHeader, typeSpec.Type) == 0 {
 				spHead := strings.Split(result.RawHeader, ":")
 				if len(spHead) > 1 {
-					result.RawHeader = strings.TrimSpace(spHead[1])
+					jonRes := strings.Join(spHead[1:], ":")
+					result.RawHeader = strings.TrimSpace(jonRes)
 				}
 			}
 		}

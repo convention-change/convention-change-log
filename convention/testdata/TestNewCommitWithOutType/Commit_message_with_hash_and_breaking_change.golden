@@ -1,9 +1,9 @@
 {
-  "RawHeader": "new api ([a1b2c3d4](https://github.com/convention-change/convention-change-log/commit/a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2))",
+  "RawHeader": "new api env:CI env:CI_DEBUG support ([a1b2c3d4](https://github.com/convention-change/convention-change-log/commit/a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2))",
   "Type": "feat",
   "Scope": "",
   "BreakingChanges": {
-    "Describe": "this is describe of new api breaking changes"
+    "Describe": "this is env:CI env:CI_DEBUG api breaking changes"
   },
   "IssueInfo": {
     "IssueReference": "fix",
