@@ -29,18 +29,25 @@ const (
 )
 
 var (
-	CmdOkEmoji           = color.Green.Render("✔")
-	CmdInfoEmoji         = color.Blue.Render("ℹ")
-	CmdWarnEmoji         = color.Warn.Render("ℹ")
-	CmdHelpOutputting    = CmdOkEmoji + " outputting changes to %s"
-	CmdHelpCommitting    = CmdOkEmoji + " committing %s"
-	CmdHelpTagRelease    = CmdOkEmoji + " tagging release %s"
-	CmdHelpGitPush       = CmdInfoEmoji + " Run `git push --follow-tags origin %s` to publish"
-	CmdHelpFinishGitPush = CmdOkEmoji + " Finish `git push --follow-tags origin %s`"
+	CmdOkEmoji          = color.Green.Render("✔")
+	CmdInfoEmoji        = color.Blue.Render("ℹ")
+	CmdWarnEmoji        = color.Warn.Render("ℹ")
+	CmdHelpFinishDryRun = CmdOkEmoji + " finish dry run"
 
-	CmdHelpGitCommitFail        = CmdWarnEmoji + " must check git commit !"
-	CmdHelpGitCommitFixHead     = CmdWarnEmoji + " can use this command fix"
-	CmdHelpGitCommitCheckStatus = CmdWarnEmoji + " git status"
+	CmdHelpOutputting = CmdOkEmoji + " outputting changes to %s"
+	CmdHelpCommitting = CmdOkEmoji + " committing %s"
+	CmdHelpTagRelease = CmdOkEmoji + " tagging release %s"
+
+	CmdHelpGitPushRun    = CmdInfoEmoji + " Run `git push --follow-tags origin %s` to publish"
+	CmdHelpFinishGitPush = CmdOkEmoji + " Finish `git push --follow-tags origin %s`"
+	CmdHelpHasTagRelease = CmdOkEmoji + " has release %s"
+
+	CmdHelpGitCommitFail        = CmdWarnEmoji + " try git command push fail, please check!"
+	CmdHelpGitCommitFixHead     = CmdInfoEmoji + " you can use this command to check now"
+	CmdHelpGitCommitCheckBranch = CmdInfoEmoji + " git branch -vv"
+	CmdHelpGitPushTryAgain      = CmdInfoEmoji + " try `git push --follow-tags origin %s` to publish"
+	CmdHelpGitPushFailHint      = CmdWarnEmoji + " if push error show [ error: failed to push ] , please check git remote protection settings"
+	CmdHelpGitCommitErrorHint   = CmdInfoEmoji + " if commit error can use this command fix"
 	CmdHelpGitCommitFixTag      = CmdWarnEmoji + " git tag --delete %s"
 	CmdHelpGitCommitResetSoft   = CmdWarnEmoji + " git reset --soft HEAD^"
 )

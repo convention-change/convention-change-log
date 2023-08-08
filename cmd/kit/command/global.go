@@ -249,6 +249,8 @@ func (c *GlobalCommand) globalExec() error {
 		color.Println("")
 		color.Printf(constant.CmdHelpTagRelease, c.GenerateConfig.ReleaseTag)
 		color.Println("")
+		color.Printf(constant.CmdHelpFinishDryRun)
+		color.Println("")
 		return nil
 	}
 
@@ -276,7 +278,14 @@ func (c *GlobalCommand) globalExec() error {
 		color.Printf(constant.CmdHelpGitCommitFixHead)
 		color.Println("")
 		color.Println("")
-		color.Printf(constant.CmdHelpGitCommitCheckStatus)
+		color.Printf(constant.CmdHelpGitCommitCheckBranch)
+		color.Println("")
+		color.Printf(constant.CmdHelpGitPushTryAgain, headBranchName)
+		color.Println("")
+		color.Printf(constant.CmdHelpGitPushFailHint)
+		color.Println("")
+		color.Println("")
+		color.Printf(constant.CmdHelpGitCommitErrorHint)
 		color.Println("")
 		color.Printf(constant.CmdHelpGitCommitFixTag, c.GenerateConfig.ReleaseTag)
 		color.Println("")
@@ -329,6 +338,11 @@ func (c *GlobalCommand) doGit(branchName string) error {
 	}
 	slog.Debugf("git add output:\n%s", cmdOutput)
 
+	color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
+	color.Println("")
+	color.Printf(constant.CmdHelpCommitting, c.GenerateConfig.Infile)
+	color.Println("")
+
 	releaseCommit := new(convention.ReleaseCommitMessageRenderTemplate)
 	releaseCommit.CurrentTag = c.GenerateConfig.ReleaseAs
 	releaseCommitMsg, errRender := convention.RaymondRender(c.ChangeLogSpec.ReleaseCommitMessageFormat, releaseCommit)
@@ -341,6 +355,9 @@ func (c *GlobalCommand) doGit(branchName string) error {
 		return err
 	}
 	slog.Debugf("git commit output:\n%s", cmdOutput)
+
+	color.Printf(constant.CmdHelpTagRelease, c.GenerateConfig.ReleaseTag)
+	color.Println("")
 
 	cmdOutput, err = exec.Command("git", "tag", c.GenerateConfig.ReleaseTag, "-m", releaseCommitMsg).CombinedOutput()
 	if err != nil {
@@ -356,24 +373,14 @@ func (c *GlobalCommand) doGit(branchName string) error {
 		}
 
 		slog.Debugf("git push output:\n%s", cmdOutput)
-		color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
-		color.Println("")
-		color.Printf(constant.CmdHelpCommitting, c.GenerateConfig.Infile)
-		color.Println("")
-		color.Printf(constant.CmdHelpTagRelease, c.GenerateConfig.ReleaseTag)
-		color.Println("")
 		color.Printf(constant.CmdHelpFinishGitPush, branchName)
+		color.Println("")
+		color.Printf(constant.CmdHelpHasTagRelease, c.GenerateConfig.ReleaseTag)
 		color.Println("")
 		return nil
 	}
 
-	color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
-	color.Println("")
-	color.Printf(constant.CmdHelpCommitting, c.GenerateConfig.Infile)
-	color.Println("")
-	color.Printf(constant.CmdHelpTagRelease, c.GenerateConfig.ReleaseTag)
-	color.Println("")
-	color.Printf(constant.CmdHelpGitPush, branchName)
+	color.Printf(constant.CmdHelpGitPushRun, branchName)
 	color.Println("")
 	return nil
 }
