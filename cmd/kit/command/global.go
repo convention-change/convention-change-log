@@ -180,7 +180,7 @@ func (c *GlobalCommand) globalExec() error {
 	}
 
 	if c.GenerateConfig.ReleaseAs != "" {
-		// check cli settings ReleaseAs tag is exists
+		// check cli settings ReleaseAs tag it exists
 		oldReleaseTag, errOldReleaseTag := repository.CommitTagSearchByName(c.GenerateConfig.ReleaseTag)
 		if err != nil {
 			slog.Debugf("not find tag: %s err: %v", c.GenerateConfig.ReleaseTag, errOldReleaseTag)
@@ -352,6 +352,7 @@ func (c *GlobalCommand) doGit(branchName string) error {
 
 	cmdOutput, err = exec.Command("git", "commit", "-m", releaseCommitMsg).CombinedOutput()
 	if err != nil {
+		slog.Errorf(err, "git commit output:\n%s", cmdOutput)
 		return err
 	}
 	slog.Debugf("git commit output:\n%s", cmdOutput)
@@ -361,6 +362,7 @@ func (c *GlobalCommand) doGit(branchName string) error {
 
 	cmdOutput, err = exec.Command("git", "tag", c.GenerateConfig.ReleaseTag, "-m", releaseCommitMsg).CombinedOutput()
 	if err != nil {
+		slog.Errorf(err, "git tag output:\n%s", cmdOutput)
 		return err
 	}
 	slog.Debugf("git tag output:\n%s", cmdOutput)
