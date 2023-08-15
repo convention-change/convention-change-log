@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.4.2](https://github.com/convention-change/convention-change-log/compare/1.4.1...v1.4.2) (2023-08-15)
+
+### 🐛 Bug Fixes
+
+* add more error log show at do git ([2249d141](https://github.com/convention-change/convention-change-log/commit/2249d14178809a29f8e8cdf4e419c4c1ff370ffc))
+
 ## [1.4.1](https://github.com/convention-change/convention-change-log/compare/1.4.0...v1.4.1) (2023-08-09)
 
 ### ♻ Refactor
