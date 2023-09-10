@@ -57,7 +57,7 @@ func TestLoadConventionalChangeLogSpecByData(t *testing.T) {
 }`),
 		},
 		{
-			name: "cover http host", // testdata/TestLoadConventionalChangeLogSpecByData/sample.golden
+			name: "cover http host",
 			c: []byte(`
 {
   "types": [
@@ -75,7 +75,7 @@ func TestLoadConventionalChangeLogSpecByData(t *testing.T) {
 }`),
 		},
 		{
-			name: "Error", // testdata/TestLoadConventionalChangeLogSpecByData/sample.golden
+			name: "Error",
 			c: []byte(`
 {
   "types": [
@@ -91,6 +91,27 @@ func TestLoadConventionalChangeLogSpecByData(t *testing.T) {
   }
 }`),
 			wantErr: true,
+		},
+		{
+			name: "monorepo pkg path",
+			c: []byte(`
+{
+  "types": [
+    {"type": "feat", "section": "✨ Features", "hidden": false},
+    {"type": "fix", "section": "🐛 Bug Fixes", "hidden": false}
+  ],
+  "skip": {
+    "bump": false,
+    "changelog": false,
+    "commit": false,
+    "tag": false
+  },
+  "tag-prefix": "v",
+  "monorepo-pkg-path": [
+    "foo",
+    "bar"
+  ]
+}`),
 		},
 	}
 	for _, tc := range tests {

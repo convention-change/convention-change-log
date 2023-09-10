@@ -70,6 +70,10 @@ type ConventionalChangeLogSpec struct {
 	// CoverHttpHost
 	// this will cover all http host
 	CoverHttpHost string `json:"cover-http-host,omitempty"`
+
+	// MonoRepoPkgPathList
+	// monorepo package path list
+	MonoRepoPkgPathList []string `json:"monorepo-pkg-path,omitempty"`
 }
 
 var (
