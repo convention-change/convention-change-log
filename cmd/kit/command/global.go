@@ -324,6 +324,24 @@ func (c *GlobalCommand) changeLocalFiles(fullChangeLogContent string) error {
 				slog.Debugf("npm install output:\n%s", output)
 			}
 		}
+
+		// try update monorepo
+		if len(c.ChangeLogSpec.MonoRepoPkgPathList) > 0 {
+			// try update monorepo pkg list
+			for _, pkgPath := range c.ChangeLogSpec.MonoRepoPkgPathList {
+				// replace file line by regexp
+				subModulePkgJsonPath := filepath.Join(c.GitRootPath, pkgPath, "package.json")
+				slog.Debugf("try update submodule package.json version in file: %s", subModulePkgJsonPath)
+				if !filepath_plus.PathExistsFast(subModulePkgJsonPath) {
+					slog.Warnf("not find update submodule package.json path: %s", subModulePkgJsonPath)
+					continue
+				}
+				err := pkgJson.ReplaceJsonVersionByLine(pkgJsonPath, c.GenerateConfig.ReleaseAs)
+				if err != nil {
+					slog.Error("submodule package.json version ReplaceJsonVersionByLine", err)
+				}
+			}
+		}
 	}
 
 	return nil
