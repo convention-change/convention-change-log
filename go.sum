@@ -70,8 +70,8 @@ github.com/sebdah/goldie/v2 v2.5.3/go.mod h1:oZ9fp0+se1eapSRjfYbsV/0Hqhbuu3bJVvK
 github.com/sergi/go-diff v1.0.0/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
 github.com/sergi/go-diff v1.1.0 h1:we8PVUC3FE2uYfodKH/nBHMSetSfHDR6scGdBi+erh0=
 github.com/sergi/go-diff v1.1.0/go.mod h1:STckp+ISIX8hZLjrqAeVduY0gWCT9IjLuqbuNXdaHfM=
-github.com/sinlov-go/go-common-lib v1.4.0 h1:AmPGf+Xm2TUC0tzYiX4VAWYft7Yf5TVIIstU5rBN9ko=
-github.com/sinlov-go/go-common-lib v1.4.0/go.mod h1:DyJIbIs1UIqwgB57N7pkcDSBgnOGWkAcUArOP9w/pww=
+github.com/sinlov-go/go-common-lib v1.5.0 h1:0R542Hcg+raMvKI4lnrySgfDU4cttzrRA+7bqU3+1LI=
+github.com/sinlov-go/go-common-lib v1.5.0/go.mod h1:DyJIbIs1UIqwgB57N7pkcDSBgnOGWkAcUArOP9w/pww=
 github.com/sinlov-go/go-git-tools v1.9.1 h1:ZPRGZo+4fl4MSlDBiP9OfNZjf+MrVruzmkTRyiWCGtM=
 github.com/sinlov-go/go-git-tools v1.9.1/go.mod h1:OWcVn//uz3xG88iuhXp7bSHzXCOLPko3zHkOnQPLjDk=
 github.com/sinlov-go/sample-markdown v1.4.0 h1:79fVH3Asz7cGvPuPkqMVtPV8FVqoAymqMW0z3extQBU=
