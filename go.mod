@@ -10,7 +10,7 @@ require (
 	github.com/go-git/go-git/v5 v5.9.0
 	github.com/gookit/color v1.5.4
 	github.com/sebdah/goldie/v2 v2.5.3
-	github.com/sinlov-go/go-common-lib v1.4.0
+	github.com/sinlov-go/go-common-lib v1.5.0
 	github.com/sinlov-go/go-git-tools v1.9.1
 	github.com/sinlov-go/sample-markdown v1.4.0
 	github.com/stretchr/testify v1.8.4
