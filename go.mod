@@ -14,7 +14,7 @@ require (
 	github.com/sinlov-go/go-git-tools v1.9.1
 	github.com/sinlov-go/sample-markdown v1.4.0
 	github.com/stretchr/testify v1.8.4
-	github.com/urfave/cli/v2 v2.25.7
+	github.com/urfave/cli/v2 v2.27.1
 )
 
 require (
