@@ -19,7 +19,7 @@
     - support change log item sort by `versionrc` config `{{ .types[ .sort ] }}`, and default sort will auto set by this kit
     - more settings see `init --more` out file
 - [x] subcommand `read-latest` read the latest change log or write latest change to file
-- [x] global flag 
+- [x] global flag
     - [x] `-r` or `--release-as` to set release version
     - [x] `--dry-run` flag can see what change of new release
     - [x] `--auto-push` flag can auto push tag to remote
@@ -72,8 +72,8 @@ $ convention-change-log --auto-push
 
 ## env
 
-- minimum go version: go 1.18
-- change `go 1.18`, `^1.18`, `1.18.10` to new go version
+- minimum go version: go 1.19
+- change `go 1.19`, `^1.19`, `1.19.13` to new go version
 
 ### libs
 

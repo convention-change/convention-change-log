@@ -2,14 +2,15 @@ package convention
 
 import (
 	"fmt"
+	"io"
+	"net/http"
+	"net/url"
+	"os"
+
 	"github.com/aymerick/raymond"
 	"github.com/aymerick/raymond/ast"
 	"github.com/aymerick/raymond/parser"
 	"github.com/bar-counter/slog"
-	"io"
-	"io/ioutil"
-	"net/http"
-	"net/url"
 )
 
 // RaymondRender parses and executes a template, returning the results in string
@@ -35,7 +36,7 @@ func RaymondRender(template string, payload interface{}) (s string, err error) {
 				}
 			}(res.Body)
 
-			out, err := ioutil.ReadAll(res.Body)
+			out, err := io.ReadAll(res.Body)
 
 			if err != nil {
 				return s, fmt.Errorf("failed to read: %w", err)
@@ -43,7 +44,7 @@ func RaymondRender(template string, payload interface{}) (s string, err error) {
 
 			template = string(out)
 		case "file":
-			out, err := ioutil.ReadFile(u.Path)
+			out, err := os.ReadFile(u.Path)
 
 			if err != nil {
 				return s, fmt.Errorf("failed to read: %w", err)
