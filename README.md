@@ -31,6 +31,7 @@
 - auto update version resource
   - [x] project has `package.json` file, will auto update `version` field
   - [x] project has `package-lock.json` file, will try use `npm install` to update `package-lock.json` file
+  - [x] in `.versionrc` has `monorepo-pkg-path` field as string list, will auto update `package.json` file in `monorepo-pkg-path` path
 - [ ] more perfect test case coverage
 
 more use see `convention-change-log --help`
