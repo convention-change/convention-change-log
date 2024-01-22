@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         go:
-          - '^1.18'
+          - '^1.19'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
