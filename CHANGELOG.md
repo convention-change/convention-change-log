@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.5.0](https://github.com/convention-change/convention-change-log/compare/1.4.2...v1.5.0) (2024-01-23)
+
+### ✨ Features
+
+* change to github.com/sinlov-go/go-git-tools v1.11.0 ([82ed979a](https://github.com/convention-change/convention-change-log/commit/82ed979adb834d11d5662bf41b68024afbce7cfb))
+
+* let global command can try change by monorepo-pkg-path config at method monorepo-pkg-path ([cd157bba](https://github.com/convention-change/convention-change-log/commit/cd157bbaad82b52c95baa541db45f077272824f9))
+
+* add convention.ConventionalChangeLogSpec.MonoRepoPkgPathList and can load by config file ([83d6b50a](https://github.com/convention-change/convention-change-log/commit/83d6b50aebdb19d655d00917f9050308ecbbe883))
+
+### 👷‍ Build System
+
+* update golang full action CI pipline ([500860a4](https://github.com/convention-change/convention-change-log/commit/500860a4935ca1278a0b4e9566ef43e54620195b))
+
+* support actions/upload-artifact/tree/v4 and let action goversion ^1.19 ([1bd7ff4f](https://github.com/convention-change/convention-change-log/commit/1bd7ff4fbb7b5b64ed22280c2f794f7cc0b52eca))
+
+* bump github.com/go-git/go-git/v5 from 5.10.0 to 5.11.0 ([08a2d841](https://github.com/convention-change/convention-change-log/commit/08a2d841bd7d34afe2fa70edc430c1ba5b981757))
+
+* bump github.com/sinlov-go/go-git-tools from 1.9.1 to 1.10.0 ([e728183d](https://github.com/convention-change/convention-change-log/commit/e728183db9685c82816949ef0a557ff104d9532a))
+
+* update to go 1.19+ to suppot new version of build ([bb977d0d](https://github.com/convention-change/convention-change-log/commit/bb977d0d6d6dd9db14b629e8a6634a154d99428f))
+
+* bump github.com/urfave/cli/v2 from 2.25.7 to 2.27.1 ([45550366](https://github.com/convention-change/convention-change-log/commit/455503663af6fdc537051b85d80a5d6e6aa72851))
+
+* bump actions/download-artifact from 3 to 4 ([5bfe2734](https://github.com/convention-change/convention-change-log/commit/5bfe2734600e8175cae1e720a787096048407c88))
+
+* bump actions/setup-go from 4 to 5 ([b54a4fe7](https://github.com/convention-change/convention-change-log/commit/b54a4fe772810f90c22e74998ea57776fe5efc66))
+
+* bump actions/upload-artifact from 3 to 4 ([3659695f](https://github.com/convention-change/convention-change-log/commit/3659695f08319093c67c24a81f495dfd607a977c))
+
+* change golangci/golangci-lint-action use version latest ([fa79a999](https://github.com/convention-change/convention-change-log/commit/fa79a99931f03affc04729a2555bab165070474d))
+
+* bump github.com/go-git/go-git/v5 from 5.9.0 to 5.10.0 ([48d8cff0](https://github.com/convention-change/convention-change-log/commit/48d8cff05e60c3c750dd242028abd81a85dcdd56))
+
+* bump github.com/sinlov-go/go-common-lib from 1.4.0 to 1.5.0 ([630b77b2](https://github.com/convention-change/convention-change-log/commit/630b77b2337eed09a62ed7e11d96347724b48f27))
+
+* bump actions/checkout from 3 to 4 ([7289c471](https://github.com/convention-change/convention-change-log/commit/7289c47102e36aa2686a09d0322293aae7df7551))
+
+* bump github.com/go-git/go-git/v5 from 5.8.1 to 5.9.0 ([8fec5b90](https://github.com/convention-change/convention-change-log/commit/8fec5b90184b322b5087bc659955a793e1b361d5))
+
 ## [1.4.2](https://github.com/convention-change/convention-change-log/compare/1.4.1...v1.4.2) (2023-08-15)
 
 ### 🐛 Bug Fixes
