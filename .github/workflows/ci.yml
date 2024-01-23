@@ -42,7 +42,7 @@ jobs:
   golang-ci:
     name: golang-ci
     needs:
-     - version
+      - version
     uses: ./.github/workflows/golang-ci.yml
     secrets: inherit
 
@@ -60,8 +60,8 @@ jobs:
   go-release-platform:
     name: go-release-platform
     needs:
-     - version
-     - golang-ci
+      - version
+      - golang-ci
     if: startsWith(github.ref, 'refs/tags/')
     uses: ./.github/workflows/go-release-platform.yml
     secrets: inherit
@@ -73,7 +73,6 @@ jobs:
     needs:
       - version
       - go-release-platform
-#      - go-release-cross
     name: deploy-tag
     uses: ./.github/workflows/deploy-tag.yml
     if: startsWith(github.ref, 'refs/tags/')
