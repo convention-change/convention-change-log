@@ -24,11 +24,11 @@ on:
       - opened
       - reopened
       - closed
-    branches:
-      - 'main'
-      - 'release-*'
-      - 'DOC-*'
-      - 'hotfix-*'
+    # branches:
+    #   - 'main'
+    #   - 'release-*'
+    #   - 'DOC-*'
+    #   - 'hotfix-*'
 
 permissions:
   contents: write
