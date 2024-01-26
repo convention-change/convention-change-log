@@ -37,14 +37,17 @@
 
 - [x] can read git root `.versionrc` for setting of change log generate
     - support change log item sort by `versionrc` config `{{ .types[ .sort ] }}`, and default sort will auto set by this kit
-    - more settings see `init --more`
+    - more settings use `init --more` to generate `.versionrc` file
 - [x] subcommand `read-latest` read the latest change log or write latest change to file
+    - `--read-latest-file` read change log file path (default: "CHANGELOG.md")
+    - `--read-latest-out` flag can open output to file, not settings will not output
+      - `--read-latest-out-path` write last change file path (default: "CHANGELOG.txt")
 - [x] global flag
+    - [x] `--dry-run` flag can see what change of new release 
     - [x] `-r` or `--release-as` to set release version
       - when not set will auto generate release version
         - commit message contains `feat:` will update `MINOR` version
         - commit message not contains `feat:` will update `MAJOR` version
-    - [x] `--dry-run` flag can see what change of new release
     - [x] `--auto-push` flag can auto push tag to remote
     - [x] `--tag-prefix` flag can change tag prefix, default will use `.versionrc` config `tag-prefix`
 - generate from [conventional commits](https://www.conventionalcommits.org) for [semver.org](https://semver.org/)
@@ -76,8 +79,8 @@ more use see `convention-change-log --help`
 ```bash
 # install at $(GO_PATH)/bin
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@latest
-# install version v1.5.0
-$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.5.0
+# install version v1.5.1
+$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.5.1
 ````
 
 - or install by [release](https://github.com/convention-change/convention-change-log/releases) and add environment variables `PATH`
@@ -85,21 +88,29 @@ $ go install -v github.com/convention-change/convention-change-log/cmd/conventio
 - please use cli at `git repository root path`
 
 ```bash
+## init config
 # init config file at git repository root path
 $ convention-change-log init
 
-# check release note by tag
+## generate change log, this must run repository root path and project must management by git
+# with dry run
+# check release note by dry run
 $ convention-change-log --dry-run
-# let release version as -r
+# let release version as -r and dry run
 $ convention-change-log -r 0.1.0 --dry-run
 # change tag prefix
 $ convention-change-log -r 0.1.0 -t "" --dry-run
 
 # finish check then generate release note and tag
 $ convention-change-log -r 1.0.0
-
 # or add auto push to remote
 $ convention-change-log --auto-push
+
+## read-latest
+# read and output to stdout
+$ convention-change-log read-latest
+# read and output to file
+$ convention-change-log read-latest --read-latest-out
 ```
 
 # dev
