@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.5.1](https://github.com/convention-change/convention-change-log/compare/1.5.0...v1.5.1) (2024-01-26)
+
+### 📝 Documentation
+
+* change default type docs not hidden ([5b4ca0c0](https://github.com/convention-change/convention-change-log/commit/5b4ca0c078f89518b225a023845fa8857dfe359e)), docs [#11](https://github.com/convention-change/convention-change-log/issues/11)
+
+* update doc ([03a9d1f9](https://github.com/convention-change/convention-change-log/commit/03a9d1f9e1b4dfea10343e8d192621ea739ec162))
+
 ## [1.5.0](https://github.com/convention-change/convention-change-log/compare/1.4.2...v1.5.0) (2024-01-23)
 
 ### ✨ Features

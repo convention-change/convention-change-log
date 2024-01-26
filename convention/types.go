@@ -32,7 +32,7 @@ var (
 		{
 			Type:    DocsType,
 			Section: "Documentation",
-			Hidden:  true,
+			Hidden:  false,
 			Sort:    3,
 		},
 		{
