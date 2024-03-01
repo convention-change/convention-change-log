@@ -1,6 +1,13 @@
 # this file must use as base Makefile
 # use as:
 # include z-MakefileUtils/MakeBasicEnv.mk
+## feature:
+# - can fetch PLATFORM OS_BIT ENV_ROOT ENV_HOME_PATH ENV_NOW_TIME_FORMAT, from runner
+# - can fetch ENV_DIST_VERSION ENV_DIST_MARK , from CI/CD or git
+## task:
+# make envHelp
+# make envBasic
+# make envDistBasic
 
 # env PLATFORM OS_BIT ENV_ROOT ENV_HOME_PATH
 ifeq ($(OS),Windows_NT)
@@ -34,32 +41,49 @@ else
   endif
 endif
 
-# change by env
-ifneq ($(strip $(ENV_CI_DIST_VERSION)),)
-    ENV_DIST_VERSION=${ENV_CI_DIST_VERSION}
+# change mark from woodpecker-ci https://woodpecker-ci.org/docs/usage/environment
+ifneq ($(strip $(CI_COMMIT_TAG)),)
+$(info -> change ENV_DIST_MARK by CI_COMMIT_TAG)
+    ENV_DIST_MARK=-tag.${CI_COMMIT_TAG}
+else
+    ifneq ($(strip $(CI_COMMIT_SHA)),)
+$(info -> change ENV_DIST_MARK by CI_COMMIT_SHA)
+    ENV_DIST_MARK=-${CI_COMMIT_SHA}
+    endif
 endif
-
-# this can change to other mark https://docs.drone.io/pipeline/environment/substitution/
+# change mark from https://docs.drone.io/pipeline/environment/substitution/
 ifneq ($(strip $(DRONE_TAG)),)
 $(info -> change ENV_DIST_MARK by DRONE_TAG)
     ENV_DIST_MARK=-tag.${DRONE_TAG}
 else
     ifneq ($(strip $(DRONE_COMMIT)),)
 $(info -> change ENV_DIST_MARK by DRONE_COMMIT)
-        ENV_DIST_MARK=-${DRONE_COMMIT}
+    ENV_DIST_MARK=-${DRONE_COMMIT}
     endif
 endif
+
+# change mark from github actions https://docs.github.com/actions/learn-github-actions/environment-variables
 ifneq ($(strip $(GITHUB_SHA)),)
 $(info -> change ENV_DIST_MARK by GITHUB_SHA)
-    ENV_DIST_MARK=-${GITHUB_SHA}# https://docs.github.com/cn/enterprise-server@2.22/actions/learn-github-actions/environment-variables
+    ENV_DIST_MARK=-${GITHUB_SHA}
 endif
+
+# if above CI not set ENV_DIST_MARK, use git
 ifeq ($(strip $(ENV_DIST_MARK)),)
 $(info -> change ENV_DIST_MARK by git)
     ENV_DIST_MARK=-$(strip $(shell git --no-pager rev-parse --short HEAD))
 endif
+
+# finally change by ENV_CI_DIST_MARK
 ifneq ($(strip $(ENV_CI_DIST_MARK)),)
 $(info -> change ENV_DIST_MARK by ENV_CI_DIST_MARK)
     ENV_DIST_MARK=-${ENV_CI_DIST_MARK}
+endif
+
+# finally change by env ENV_CI_DIST_VERSION
+ifneq ($(strip $(ENV_CI_DIST_VERSION)),)
+$(info -> change ENV_DIST_VERSION by ENV_CI_DIST_VERSION)
+    ENV_DIST_VERSION=${ENV_CI_DIST_VERSION}
 endif
 
 envBasic:
@@ -74,7 +98,26 @@ envBasic:
 	@echo ""
 	@echo ------- end  show env basic ---------
 
+
 envDistBasic:
 	@echo "ENV_DIST_VERSION :                        ${ENV_DIST_VERSION}"
 	@echo "ENV_DIST_MARK :                           ${ENV_DIST_MARK}"
 	@echo ""
+
+envHelp:
+ifeq ($(OS),Windows_NT)
+	@echo ""
+	@echo "warning: other install make cli tools has bug"
+	@echo " run will at make tools version 4.+"
+	@echo "windows use this kit must install tools blow:"
+	@echo "-> scoop install main/make"
+	@echo ""
+	@echo "https://scoop.sh/#/apps?q=busybox&s=0&d=1&o=true"
+	@echo "-> scoop install main/busybox"
+	@echo "and if want use shasum must install tools blow:"
+	@echo "https://scoop.sh/#/apps?q=shasum&s=0&d=1&o=true"
+	@echo "-> scoop install main/shasum"
+	@echo ""
+endif
+	@echo "=> make envBasic            - print basic env of this project"
+	@echo "=> make envDistBasic        - print dist env of this project"

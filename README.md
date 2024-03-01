@@ -124,7 +124,7 @@ $ convention-change-log read-latest --read-latest-out
 
 | lib                                 | version |
 |:------------------------------------|:--------|
-| https://github.com/stretchr/testify | v1.8.4  |
+| https://github.com/stretchr/testify | v1.9.0  |
 | https://github.com/sebdah/goldie    | v2.5.3  |
 
 - more libs see [go.mod](https://github.com/convention-change/convention-change-log/blob/main/go.mod)

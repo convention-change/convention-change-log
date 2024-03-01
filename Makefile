@@ -132,6 +132,12 @@ style: modTidy modVerify modFmt modLintRun
 
 ci: modTidy modVerify modFmt modVet modLintRun test
 
+ciTestBenchmark: modTidy modVerify testBenchmark
+
+ciCoverageShow: modTidy modVerify modVet testCoverage testCoverageShow
+
+ciAll: ci ciTestBenchmark ciCoverageShow
+
 buildMain:
 	@echo "-> start build local OS: ${PLATFORM} ${OS_BIT}"
 ifeq ($(OS),Windows_NT)
