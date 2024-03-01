@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/bar-counter/slog"
 	"github.com/convention-change/convention-change-log/cmd/kit/constant"
-	"github.com/sinlov-go/go-common-lib/pkg/env_kit"
+	"github.com/sinlov-go/unittest-kit/env_kit"
 )
 
 // InitLog
