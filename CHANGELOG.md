@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.6.0](https://github.com/convention-change/convention-change-log/compare/1.5.1...v1.6.0) (2024-03-02)
+
+### ✨ Features
+
+* change to github.com/sinlov-go/unittest-kit v1.1.0 and update test case template ([76b0e68e](https://github.com/convention-change/convention-change-log/commit/76b0e68ea2c8e54b5807a812c983eafe31ec3fee))
+
+### 📝 Documentation
+
+* update cli usage doc ([639bf9a8](https://github.com/convention-change/convention-change-log/commit/639bf9a80bc29c80c6ba81d86b2a3694f96a1d83))
+
+### 👷‍ Build System
+
+* github.com/stretchr/testify v1.9.0 ([0340016d](https://github.com/convention-change/convention-change-log/commit/0340016db2c3408f23b5fa5ff8706fa6af6a0e91))
+
+* bump codecov/codecov-action from 4.0.0 to 4.1.0 ([58b4be16](https://github.com/convention-change/convention-change-log/commit/58b4be161fca33546e83160861ed7ca02254f0a2))
+
+* bump golangci/golangci-lint-action from 3 to 4 ([7ffdd6a0](https://github.com/convention-change/convention-change-log/commit/7ffdd6a01a1e3b1b60a5d5dde5db968603cc94d9))
+
+* bump codecov/codecov-action from 3.1.4 to 4.0.0 ([227a8680](https://github.com/convention-change/convention-change-log/commit/227a8680d16e55d15cd5f881c6292f74f980e856))
+
 ## [1.5.1](https://github.com/convention-change/convention-change-log/compare/1.5.0...v1.5.1) (2024-01-26)
 
 ### 📝 Documentation
