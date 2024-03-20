@@ -94,16 +94,21 @@ $ convention-change-log init
 
 ## generate change log, this must run repository root path and project must management by git
 # with dry run
-# check release note by dry run
+# check release note by dry run, after v1.7.0 default mode is dry-run
 $ convention-change-log --dry-run
+# close dry run
+$ convention-change-log --dry-run false
+# or use env var CLI_DRY_RUN_DISABLE=true
+$ convention-change-log --dry-run-disable
+
 # let release version as -r and dry run
 $ convention-change-log -r 0.1.0 --dry-run
 # change tag prefix
 $ convention-change-log -r 0.1.0 -t "" --dry-run
 
 # finish check then generate release note and tag
-$ convention-change-log -r 1.0.0
-# or add auto push to remote
+$ convention-change-log -r 1.0.0 --dry-run-disable
+# or add auto push to remote, after v1.7.0 default mode is --auto-push will ignore --dry-run
 $ convention-change-log --auto-push
 
 ## read-latest
