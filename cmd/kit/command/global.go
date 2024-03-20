@@ -67,6 +67,11 @@ func (c *GlobalCommand) globalExec() error {
 
 	slog.Debug("-> start GlobalAction")
 
+	if c.GenerateConfig.AutoPush {
+		c.DryRun = false
+		slog.Info("auto push is enable, will ignore --dry-run")
+	}
+
 	_, err := git_info.IsPathGitManagementRoot(c.GitRootPath)
 	if err != nil {
 		return exit_cli.Format("cli run path not git repository root, please check path at: %s", c.GitRootPath)
@@ -236,8 +241,14 @@ func (c *GlobalCommand) globalExec() error {
 		return exit_cli.Err(errAddTitle)
 	}
 
+	changelogNodesWithHead, err := changelog.AddMarkdownChangelogNodesHead(nodesGenerateWithTitle, changelogDesc, *c.ChangeLogSpec)
+	if err != nil {
+		slog.Error("AddMarkdownChangelogNodesHead err: %v", err)
+		return exit_cli.Err(err)
+	}
+
 	if c.DryRun {
-		latestMarkdownContent := sample_mk.GenerateText(nodesGenerateWithTitle)
+		latestMarkdownContent := sample_mk.GenerateText(changelogNodesWithHead)
 		color.Printf(constant.CmdHelpOutputting, c.GenerateConfig.Outfile)
 		color.Println("")
 
@@ -252,12 +263,6 @@ func (c *GlobalCommand) globalExec() error {
 		color.Printf(constant.CmdHelpFinishDryRun)
 		color.Println("")
 		return nil
-	}
-
-	changelogNodesWithHead, err := changelog.AddMarkdownChangelogNodesHead(nodesGenerateWithTitle, changelogDesc, *c.ChangeLogSpec)
-	if err != nil {
-		slog.Error("AddMarkdownChangelogNodesHead err: %v", err)
-		return exit_cli.Err(err)
 	}
 
 	// add history
@@ -448,6 +453,7 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		cliReleaseTag = fmt.Sprintf("%s%s", tagPrefix, cliReleaseAs)
 	}
 
+	isAutoPush := c.Bool("auto-push")
 	generateConfig := GenerateConfig{
 		GitCloneUrl: "",
 		ReleaseAs:   cliReleaseAs,
@@ -459,7 +465,7 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 
 		FromCommit: c.String("from-commit"),
 
-		AutoPush: c.Bool("auto-push"),
+		AutoPush: isAutoPush,
 	}
 
 	specFilePath := filepath.Join(gitRootFolder, constant.VersionRcFileName)
@@ -470,11 +476,17 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 
 	changeLogSpec.TagPrefix = tagPrefix
 
+	isDryRun := c.Bool("dry-run")
+	isDryRunDisable := c.Bool("dry-run-disable")
+	if isDryRunDisable {
+		isDryRun = false
+	}
+
 	p := GlobalCommand{
 		Name:    cliName,
 		Version: cliVersion,
 		Verbose: isVerbose,
-		DryRun:  c.Bool("dry-run"),
+		DryRun:  isDryRun,
 
 		GitRootPath:   gitRootFolder,
 		GitRemote:     c.String("git-remote"),

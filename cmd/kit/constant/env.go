@@ -9,6 +9,8 @@ const (
 	//	Provides the debug flag. This value is true when the command is open debug mode
 	EnvKeyCliVerbose = "CLI_VERBOSE"
 
+	EnvKeyDryRunDisable = "CLI_DRY_RUN_DISABLE"
+
 	// EnvKeyCliTimeoutSecond
 	//	Provides the timeout second flag
 	EnvKeyCliTimeoutSecond = "CLI_CONFIG_TIMEOUT_SECOND"

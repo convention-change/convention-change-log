@@ -46,7 +46,7 @@ func MainFlag() []cli.Flag {
 		},
 		&cli.BoolFlag{
 			Name:  "auto-push",
-			Usage: "enable auto git push after generating changelog",
+			Usage: "enable auto git push after generating changelog, and will ignore --dry-run",
 		},
 	}
 }
@@ -63,8 +63,14 @@ func GlobalFlag() []cli.Flag {
 		},
 		&cli.BoolFlag{
 			Name:  "dry-run",
-			Usage: "See the commands that running standard-version would run",
-			Value: false,
+			Usage: "enable dry-run mode. this will not change any file and git",
+			Value: true,
+		},
+		&cli.BoolFlag{
+			Name:    "dry-run-disable",
+			Usage:   "disable dry-run mode",
+			Value:   false,
+			EnvVars: []string{constant.EnvKeyDryRunDisable},
 		},
 	}
 }
