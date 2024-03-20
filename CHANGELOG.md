@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.7.0](https://github.com/convention-change/convention-change-log/compare/1.6.0...v1.7.0) (2024-03-20)
+
+### BREAKING CHANGE:
+
+* default in dry-run mode, disable by --dry-run-disable, --auto-push will ignore all
+
+### ✨ Features
+
+* default open dry-run mode, and disable by --dry-run-disable, --auto-push will ignore dry-run ([0f2be5c7](https://github.com/convention-change/convention-change-log/commit/0f2be5c7c8f125454c796305ca4004589b3109ce))
+
+### 📝 Documentation
+
+* change install version at README.md ([fb91939b](https://github.com/convention-change/convention-change-log/commit/fb91939bbfe77795562d6fd9469dd3e2966e109f))
+
+* update usage at README.md ([40ac75bb](https://github.com/convention-change/convention-change-log/commit/40ac75bb3fff59ef4d4db20307e8a228caf22fc7))
+
 ## [1.6.0](https://github.com/convention-change/convention-change-log/compare/1.5.1...v1.6.0) (2024-03-02)
 
 ### ✨ Features
