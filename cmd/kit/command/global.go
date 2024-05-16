@@ -127,7 +127,9 @@ func (c *GlobalCommand) globalExec() error {
 		c.GenerateConfig.ReleaseAs = convention.DefaultSemverVersion
 		c.GenerateConfig.ReleaseTag = fmt.Sprintf("%s%s", c.GenerateConfig.TagPrefix, c.GenerateConfig.ReleaseAs)
 	} else {
-		changeLogNodes = append(changeLogNodes, reader.HistoryNodes()...)
+		if len(reader.HistoryNodes()) > 0 {
+			changeLogNodes = append(changeLogNodes, reader.HistoryNodes()...)
+		}
 	}
 
 	historyFirstTagName := ""
@@ -187,7 +189,7 @@ func (c *GlobalCommand) globalExec() error {
 	if c.GenerateConfig.ReleaseAs != "" {
 		// check cli settings ReleaseAs tag it exists
 		oldReleaseTag, errOldReleaseTag := repository.CommitTagSearchByName(c.GenerateConfig.ReleaseTag)
-		if err != nil {
+		if errOldReleaseTag != nil {
 			slog.Debugf("not find tag: %s err: %v", c.GenerateConfig.ReleaseTag, errOldReleaseTag)
 		}
 		if oldReleaseTag != nil {
@@ -524,6 +526,11 @@ func GlobalBeforeAction(c *cli.Context) error {
 func GlobalAction(c *cli.Context) error {
 	if cmdGlobalEntry == nil {
 		panic(fmt.Errorf("not init GlobalBeforeAction success to new cmdGlobalEntry"))
+	}
+
+	isVerbose := c.Bool("verbose")
+	if isVerbose {
+		slog.Infof("-> start run command: %s, version %s", cmdGlobalEntry.Name, cmdGlobalEntry.Version)
 	}
 
 	err := cmdGlobalEntry.globalExec()
