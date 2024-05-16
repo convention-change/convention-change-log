@@ -34,7 +34,6 @@ on:
 permissions: # https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions#permissions
   contents: write
   discussions: write
-  packages: write
 
 jobs:
   version:
@@ -46,55 +45,24 @@ jobs:
     needs:
       - version
     uses: ./.github/workflows/golang-ci.yml
-    if: ${{ github.ref_type != 'tag' }}
     secrets: inherit
-    # if: ${{ github.event.pull_request.merged == true }}
 
   go-build-check-main:
     name: go-build-check-main
     needs:
       - version
       - golang-ci
-    if: ${{ github.ref_type != 'tag' }}
-    # if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || github.base_ref == 'main' }}
+    if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || github.base_ref == 'main' }}
     uses: ./.github/workflows/go-release-platform.yml
     secrets: inherit
     with:
       version_name: latest
 
-  docker-bake-basic-all-latest:
-    name: docker-bake-basic-all-latest
-    needs:
-      - version
-    uses: ./.github/workflows/docker-buildx-bake-hubdocker-latest.yml
-    if: ${{ github.ref_type != 'tag' }}
-    with:
-      # push_remote_flag: ${{ github.ref == 'refs/heads/main' }}
-      push_remote_flag: ${{ github.event.pull_request.merged == true }}
-      docker_bake_targets: 'image-basic'
-    secrets:
-      DOCKERHUB_TOKEN: "${{ secrets.DOCKERHUB_TOKEN }}"
-
-### deploy tag start
-
-  docker-bake-basic-all-tag:
-    name: docker-bake-basic-all-tag
-    needs:
-      - version
-    uses: ./.github/workflows/docker-buildx-bake-hubdocker-tag.yml
-    if: startsWith(github.ref, 'refs/tags/')
-    with:
-      docker_bake_targets: 'image-basic'
-      docker-metadata-flavor-suffix: '' # default is '', can add as: -alpine -debian
-      # push_remote_flag: true # default is true
-    secrets:
-      DOCKERHUB_TOKEN: "${{ secrets.DOCKERHUB_TOKEN }}"
-
   go-release-platform:
     name: go-release-platform
     needs:
       - version
-      - docker-bake-basic-all-tag
+      - golang-ci
     if: startsWith(github.ref, 'refs/tags/')
     uses: ./.github/workflows/go-release-platform.yml
     secrets: inherit
@@ -116,5 +84,3 @@ jobs:
       tag_name: ${{ needs.version.outputs.tag_name }}
       tag_changes: ${{ needs.version.outputs.cc_changes }}
       download_artifact_name: go-release # download artifact name, download from actions/upload-artifact, as: {download_artifact_name}-{tag_name}-*, empty is not download
-
-### deploy tag end
