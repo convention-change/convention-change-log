@@ -8,6 +8,8 @@
 [![GitHub latest SemVer tag)](https://img.shields.io/github/v/tag/convention-change/convention-change-log)](https://github.com/convention-change/convention-change-log/tags)
 [![GitHub release)](https://img.shields.io/github/v/release/convention-change/convention-change-log)](https://github.com/convention-change/convention-change-log/releases)
 
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/github.com/convention-change/convention-change-log/blob/main/README.md)
+
 ## for what
 
 - 约定式提交日志生成 规则文档 [https://www.conventionalcommits.org/zh-hans](https://www.conventionalcommits.org/zh-hans)
