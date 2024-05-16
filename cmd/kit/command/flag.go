@@ -72,6 +72,12 @@ func GlobalFlag() []cli.Flag {
 			Value:   false,
 			EnvVars: []string{constant.EnvKeyDryRunDisable},
 		},
+		&cli.StringFlag{
+			Name:    "git-info-scheme",
+			Usage:   "git info scheme, default is https can set as http",
+			Value:   "https",
+			EnvVars: []string{constant.EnvKeyGitInfoScheme},
+		},
 	}
 }
 
