@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.8.0](https://github.com/convention-change/convention-change-log/compare/1.7.0...v1.8.0) (2024-05-17)
+
+### 🐛 Bug Fixes
+
+* show log not find old tag at debug ([bdd6c4a8](https://github.com/convention-change/convention-change-log/commit/bdd6c4a84d0c55f6092e02e04ea26a46963d93a6))
+
+### ✨ Features
+
+* local repo is dirty and check git submodule is dirty ([db9f3918](https://github.com/convention-change/convention-change-log/commit/db9f3918809f48c37fba73b43ced87fd49314627)), feat [#40](https://github.com/convention-change/convention-change-log/issues/40)
+
+* `--git-info-scheme` and `.versionrc` `cover-git-info-scheme` to change log of git url ([cb02596a](https://github.com/convention-change/convention-change-log/commit/cb02596aa57733e9aaf10d975a51bd6fe85545b4))
+
+* update full build pipline ([81f6c5c7](https://github.com/convention-change/convention-change-log/commit/81f6c5c7c3eca60d636519a51950a71773cb2c3d))
+
+### 📝 Documentation
+
+* fix u18n link ([4f508855](https://github.com/convention-change/convention-change-log/commit/4f508855f958d2decac3e78cfa556177b8926d5d))
+
+* change badge to use 中文 ([64b65ebb](https://github.com/convention-change/convention-change-log/commit/64b65ebb3d9e54fb5c9fdd858728f6b5f75c7f53))
+
+* try i18n ([ec2f2273](https://github.com/convention-change/convention-change-log/commit/ec2f22732b1459ccf8c014d250a8e680a2e51e7e))
+
+* add usage of doc by i18n ([2cbc9d84](https://github.com/convention-change/convention-change-log/commit/2cbc9d84de3c60a117ec75f1a1a5d73878b17472))
+
+### ♻ Refactor
+
+* add `ChangeLogGenerator` to management change log ([e8426132](https://github.com/convention-change/convention-change-log/commit/e8426132931557f5e69a2f8863ed8eca4494ce35))
+
+### 👷‍ Build System
+
+* bump codecov/codecov-action from 4.3.0 to 4.4.0 ([71a4831b](https://github.com/convention-change/convention-change-log/commit/71a4831b428f4c1644134e0763227ae710cfbd13))
+
+* bump golangci/golangci-lint-action from 5 to 6 ([0a3a34b3](https://github.com/convention-change/convention-change-log/commit/0a3a34b306dc28db13b92e2c8769c7db687010c2))
+
+* bump codecov/codecov-action from 4.1.1 to 4.3.0 ([24170be0](https://github.com/convention-change/convention-change-log/commit/24170be032911f7f335151fa2756a94aa95f254f))
+
+* bump golangci/golangci-lint-action from 4 to 5 ([e70b6ab6](https://github.com/convention-change/convention-change-log/commit/e70b6ab600e63fd8271b05fde55d75c33be8e9c7))
+
+* bump convention-change/conventional-version-check ([1ae3c5ef](https://github.com/convention-change/convention-change-log/commit/1ae3c5ef8b3b5b44f79095a657d426cce3ba70ea))
+
+* bump github.com/urfave/cli/v2 from 2.27.1 to 2.27.2 ([8bbbec69](https://github.com/convention-change/convention-change-log/commit/8bbbec69a47cb084e657dcf48c2d3a340fe0c077))
+
+* bump github.com/go-git/go-git/v5 from 5.11.0 to 5.12.0 ([9916e040](https://github.com/convention-change/convention-change-log/commit/9916e0403c995c73017be3687ae8e53e7b98c713))
+
+* bump github.com/sinlov-go/go-common-lib from 1.6.0 to 1.7.0 ([77c1c084](https://github.com/convention-change/convention-change-log/commit/77c1c084182b6f8a9723ca35d31dd412e00baba2))
+
+* bump codecov/codecov-action from 4.1.0 to 4.1.1 ([2c6d2ac6](https://github.com/convention-change/convention-change-log/commit/2c6d2ac6a8e54d54c39c84cb003d700a2012c3e4))
+
 ## [1.7.0](https://github.com/convention-change/convention-change-log/compare/1.6.0...v1.7.0) (2024-03-20)
 
 ### BREAKING CHANGE:
