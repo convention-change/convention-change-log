@@ -8,6 +8,9 @@
 [![GitHub latest SemVer tag)](https://img.shields.io/github/v/tag/convention-change/convention-change-log)](https://github.com/convention-change/convention-change-log/tags)
 [![GitHub release)](https://img.shields.io/github/v/release/convention-change/convention-change-log)](https://github.com/convention-change/convention-change-log/releases)
 
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/github.com/convention-change/convention-change-log/blob/main/README.md)
+[![zh](https://img.shields.io/badge/lang-zh-red.svg)](https://github.com/github.com/convention-change/convention-change-log/blob/main/README-ZH.md)
+
 ## Features
 
 - [x] subcommand `init` to init config file
