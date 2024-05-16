@@ -9,7 +9,7 @@
 [![GitHub release)](https://img.shields.io/github/v/release/convention-change/convention-change-log)](https://github.com/convention-change/convention-change-log/releases)
 
 [![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/github.com/convention-change/convention-change-log/blob/main/README.md)
-[![zh](https://img.shields.io/badge/lang-%E4%B8%AD%E6%96%87-red)](https://github.com/github.com/convention-change/convention-change-log/blob/main/README.zh-Hans)
+[![zh](https://img.shields.io/badge/lang-%E4%B8%AD%E6%96%87-red)](https://github.com/github.com/convention-change/convention-change-log/blob/main/README.zh-Hans.md)
 
 ## Features
 
