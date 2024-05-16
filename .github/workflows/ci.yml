@@ -9,6 +9,7 @@ on:
       - 'release-*'
       - 'FE-*'
       - '*-feature-*'
+      - '*-enhancement-*'
       - 'BF-*'
       - '*-bug-*'
       - 'PU-*'
