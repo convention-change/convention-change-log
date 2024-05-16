@@ -6,7 +6,6 @@ import (
 	"github.com/bar-counter/slog"
 	"github.com/convention-change/convention-change-log/changelog"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/exit_cli"
-	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/convention-change/convention-change-log/convention"
 	"github.com/convention-change/convention-change-log/internal/pkgJson"
 	goGit "github.com/go-git/go-git/v5"
@@ -64,6 +63,30 @@ func (c *ChangeLogGenerator) CheckRepository() error {
 	}
 
 	c.gitRemoteInfo = gitRemoteInfo
+
+	submodules, errCheckHasSubmodules := c.repository.CheckHasSubmodules()
+	if errCheckHasSubmodules == nil && submodules {
+		dirty, errCheckSubmodulesIsDirty := c.repository.CheckSubmodulesIsDirty()
+		if errCheckSubmodulesIsDirty != nil {
+			color.Printf(cmdErrorHelperCheckRepositoryInGitSubModule)
+			color.Println("")
+			color.Println("")
+			return fmt.Errorf("check repo err, can not check submodules is dirty, error: %s", errCheckSubmodulesIsDirty)
+		} else if dirty {
+			color.Printf(cmdErrorHelperCheckRepositoryInGitSubModule)
+			color.Println("")
+			color.Println("")
+			return fmt.Errorf("check repo err, submodules is dirty, please commit submodules")
+		}
+	}
+	if dirty, errCheck := c.repository.CheckLocalBranchIsDirty(); errCheck != nil {
+		return fmt.Errorf("check repo err, can not check local branch is dirty, error: %s", errCheck)
+	} else if dirty {
+		color.Printf(cmdErrorHelperCheckRepositoryInNowIsDirty)
+		color.Println("")
+		color.Println("")
+		return fmt.Errorf("check repo err, local branch is dirty, please commit")
+	}
 
 	return nil
 }
@@ -200,8 +223,8 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 		Version:      c.genCfg.ReleaseTag,
 		When:         time.Now(),
 		Location:     time.Local,
-		ToolsKitName: constant.KitName,
-		ToolsKitURL:  constant.KitUrl,
+		ToolsKitName: KitName,
+		ToolsKitURL:  KitUrl,
 	}
 	if c.changeLogReader.HistoryFirstTagShort() != "" {
 		changelogDesc.PreviousTag = c.changeLogReader.HistoryFirstTagShort()
@@ -231,19 +254,32 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 
 func (c *ChangeLogGenerator) DryRun() {
 	latestMarkdownContent := sample_mk.GenerateText(c.changelogNodesWithHead)
-	color.Printf(constant.CmdHelpOutputting, c.genCfg.Outfile)
+	color.Printf(cmdHelpDryRunOutputting, c.genCfg.Outfile)
 	color.Println("")
 
-	color.Println(constant.LogLineSpe)
+	color.Println(LogLineSpe)
 	color.Grayf("%s\n", latestMarkdownContent)
-	color.Println(constant.LogLineSpe)
+	color.Println(LogLineSpe)
 
-	color.Printf(constant.CmdHelpCommitting, c.genCfg.Infile)
+	color.Printf(cmdHelpDryRunCommitting, c.genCfg.Infile)
 	color.Println("")
-	color.Printf(constant.CmdHelpTagRelease, c.genCfg.ReleaseTag)
+	color.Printf(cmdHelpDryRunTagRelease, c.genCfg.ReleaseTag)
 	color.Println("")
-	color.Printf(constant.CmdHelpFinishDryRun)
 	color.Println("")
+	color.Printf(cmdHelpFinishDryRun)
+	color.Println("")
+	color.Println("")
+
+	color.Printf(cmdHelperRepositorySafeTitle)
+	color.Println()
+	if c.headBranchName == "main" {
+		color.Printf(cmdHelperRepositorySafeFormBranchMain)
+		color.Println()
+	} else {
+		color.Printf(cmdHelperRepositorySafeFormBranchNow)
+		color.Println()
+	}
+	color.Println()
 }
 
 func (c *ChangeLogGenerator) DoChangeRepoFileByCommitLog() error {
@@ -313,23 +349,23 @@ func (c *ChangeLogGenerator) DoGitOperator() error {
 
 	errDoGit := c.doGit(c.headBranchName)
 	if errDoGit != nil {
-		color.Printf(constant.CmdHelpGitCommitFail)
+		color.Printf(cmdHelpGitCommitFail)
 		color.Println("")
-		color.Printf(constant.CmdHelpGitCommitFixHead)
-		color.Println("")
-		color.Println("")
-		color.Printf(constant.CmdHelpGitCommitCheckBranch)
-		color.Println("")
-		color.Printf(constant.CmdHelpGitPushTryAgain, c.headBranchName)
-		color.Println("")
-		color.Printf(constant.CmdHelpGitPushFailHint)
+		color.Printf(cmdHelpGitCommitFixHead)
 		color.Println("")
 		color.Println("")
-		color.Printf(constant.CmdHelpGitCommitErrorHint)
+		color.Printf(cmdHelpGitCommitCheckBranch)
 		color.Println("")
-		color.Printf(constant.CmdHelpGitCommitFixTag, c.genCfg.ReleaseTag)
+		color.Printf(cmdHelpGitPushTryAgain, c.headBranchName)
 		color.Println("")
-		color.Printf(constant.CmdHelpGitCommitResetSoft)
+		color.Printf(cmdHelpGitPushFailHint)
+		color.Println("")
+		color.Println("")
+		color.Printf(cmdHelpGitCommitErrorHint)
+		color.Println("")
+		color.Printf(cmdHelpGitCommitFixTag, c.genCfg.ReleaseTag)
+		color.Println("")
+		color.Printf(cmdHelpGitCommitResetSoft)
 		color.Println("")
 		color.Println("")
 		return errDoGit
@@ -347,9 +383,9 @@ func (c *ChangeLogGenerator) doGit(branchName string) error {
 	}
 	slog.Debugf("git add output:\n%s", cmdOutput)
 
-	color.Printf(constant.CmdHelpOutputting, c.genCfg.Outfile)
+	color.Printf(cmdHelpOutputting, c.genCfg.Outfile)
 	color.Println("")
-	color.Printf(constant.CmdHelpCommitting, c.genCfg.Infile)
+	color.Printf(cmdHelpCommitting, c.genCfg.Infile)
 	color.Println("")
 
 	releaseCommit := new(convention.ReleaseCommitMessageRenderTemplate)
@@ -366,7 +402,7 @@ func (c *ChangeLogGenerator) doGit(branchName string) error {
 	}
 	slog.Debugf("git commit output:\n%s", cmdOutput)
 
-	color.Printf(constant.CmdHelpTagRelease, c.genCfg.ReleaseTag)
+	color.Printf(cmdHelpTagRelease, c.genCfg.ReleaseTag)
 	color.Println("")
 
 	cmdOutput, err = exec.Command("git", "tag", c.genCfg.ReleaseTag, "-m", releaseCommitMsg).CombinedOutput()
@@ -384,14 +420,14 @@ func (c *ChangeLogGenerator) doGit(branchName string) error {
 		}
 
 		slog.Debugf("git push output:\n%s", cmdOutput)
-		color.Printf(constant.CmdHelpFinishGitPush, branchName)
+		color.Printf(cmdHelpFinishGitPush, branchName)
 		color.Println("")
-		color.Printf(constant.CmdHelpHasTagRelease, c.genCfg.ReleaseTag)
+		color.Printf(cmdHelpHasTagRelease, c.genCfg.ReleaseTag)
 		color.Println("")
 		return nil
 	}
 
-	color.Printf(constant.CmdHelpGitPushRun, branchName)
+	color.Printf(cmdHelpGitPushRun, branchName)
 	color.Println("")
 	return nil
 }
