@@ -1,16 +1,15 @@
 [![ci](https://github.com/convention-change/convention-change-log/actions/workflows/ci.yml/badge.svg)](https://github.com/convention-change/convention-change-log/actions/workflows/ci.yml)
-[![license](https://img.shields.io/github/license/convention-change/convention-change-log)](https://github.com/convention-change/convention-change-log)
+
 [![go mod version](https://img.shields.io/github/go-mod/go-version/convention-change/convention-change-log?label=go.mod)](https://github.com/convention-change/convention-change-log)
-[![GoDoc](https://godoc.org/github.com/convention-change/convention-change-log?status.png)](https://godoc.org/github.com/convention-change/convention-change-log/)
-[![GoReportCard](https://goreportcard.com/badge/github.com/convention-change/convention-change-log)](https://goreportcard.com/report/github.com/convention-change/convention-change-log)
-[![codecov](https://codecov.io/gh/convention-change/convention-change-log/branch/main/graph/badge.svg)](https://codecov.io/gh/convention-change/convention-change-log)
+[![GoDoc](https://godoc.org/github.com/convention-change/convention-change-log?status.png)](https://godoc.org/github.com/convention-change/convention-change-log)
+[![goreportcard](https://goreportcard.com/badge/github.com/convention-change/convention-change-log)](https://goreportcard.com/report/github.com/convention-change/convention-change-log)
+
+[![GitHub license](https://img.shields.io/github/license/convention-change/convention-change-log)](https://github.com/convention-change/convention-change-log)
+[![GitHub latest SemVer tag)](https://img.shields.io/github/v/tag/convention-change/convention-change-log)](https://github.com/convention-change/convention-change-log/tags)
 [![GitHub release)](https://img.shields.io/github/v/release/convention-change/convention-change-log)](https://github.com/convention-change/convention-change-log/releases)
 
-## for what
-
-- convention change log generate
-- convention change log reader
-- convention change log config by `.versionrc` file
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/github.com/convention-change/convention-change-log/blob/main/README.md)
+[![zh](https://img.shields.io/badge/lang-%E4%B8%AD%E6%96%87-red)](https://github.com/github.com/convention-change/convention-change-log/blob/main/README.zh-Hans.md)
 
 ## Features
 
@@ -20,61 +19,17 @@
 ```json
 {
   "types": [
-    {
-      "type": "feat",
-      "section": "✨ Features",
-      "hidden": false
-    },
-    {
-      "type": "fix",
-      "section": "🐛 Bug Fixes",
-      "hidden": false
-    },
-    {
-      "type": "docs",
-      "section": "📝 Documentation",
-      "hidden": true
-    },
-    {
-      "type": "style",
-      "section": "💄 Styles",
-      "hidden": true
-    },
-    {
-      "type": "refactor",
-      "section": "♻ Refactor",
-      "hidden": false
-    },
-    {
-      "type": "perf",
-      "section": "⚡ Performance Improvements",
-      "hidden": false
-    },
-    {
-      "type": "test",
-      "section": "✅ Tests",
-      "hidden": true
-    },
-    {
-      "type": "build",
-      "section": "👷‍ Build System",
-      "hidden": false
-    },
-    {
-      "type": "ci",
-      "section": "🔧 Continuous Integration",
-      "hidden": true
-    },
-    {
-      "type": "chore",
-      "section": "📦 Chores",
-      "hidden": true
-    },
-    {
-      "type": "revert",
-      "section": "⏪ Reverts",
-      "hidden": false
-    }
+    {"type": "feat", "section": "✨ Features", "hidden": false},
+    {"type": "fix", "section": "🐛 Bug Fixes", "hidden": false},
+    {"type": "docs", "section":"📝 Documentation", "hidden": false},
+    {"type": "style", "section":"💄 Styles", "hidden": true},
+    {"type": "refactor", "section":"♻ Refactor", "hidden": false},
+    {"type": "perf", "section":"⚡ Performance Improvements", "hidden": false},
+    {"type": "test", "section":"✅ Tests", "hidden": true},
+    {"type": "build", "section":"👷‍ Build System", "hidden": false},
+    {"type": "ci", "section":"🔧 Continuous Integration", "hidden": true},
+    {"type": "chore", "section":"📦 Chores", "hidden": true},
+    {"type": "revert", "section":"⏪ Reverts", "hidden": false}
   ],
   "tag-prefix": "v"
 }
@@ -119,72 +74,104 @@
     - use cli flag `--git-info-scheme` to change git info scheme, only support: https, http
     - in `.versionrc` has `cover-git-info-scheme` field as string, will change remote for example fill in `http`
 
-- [ ] more perfect test case coverage
-
 more use see `convention-change-log --help`
+
+## for what
+
+- convention change log generate from [https://www.conventionalcommits.org/](https://www.conventionalcommits.org/)
+- for [semver 2.0.0](https://semver.org)
+- The convention commit log generation configuration file is customized under each project through `.versionrc`
 
 ## usage
 
 ### cli
 
+[![GitHub release)](https://img.shields.io/github/v/release/convention-change/convention-change-log)](https://github.com/convention-change/convention-change-log/releases)
+
 ```bash
 # install at $(GO_PATH)/bin
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@latest
-# install version v1.7.0
-$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.7.0
+# install version v1.8.0
+$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.8.0
 ````
 
 - or install by [release](https://github.com/convention-change/convention-change-log/releases) and add environment
   variables `PATH`
 
-- please use cli at `git repository root path`
+- please use this tool in `git repository root path`
 
 ```bash
-## init config
-# init config file at git repository root path
+## initialize configuration
+# generate configuration in git repository root path
 $ convention-change-log init
+# files will be added `.versionrc`
 
-## generate change log, this must run repository root path and project must management by git
+## To generate the change log, this must run the repository root path and the project must be managed by git.
+# it is recommended to be implemented every time --dry-run check to prevent errors
 # with dry run
-# check release note by dry run, after v1.7.0 default mode is dry-run
+# after v1.7.0, it is turned on by default --dry-run
+# If the flag `-r` is not set, the type `feat` will be determined according to whether the commit contains'
+# if there is a log of type `feat`，then increment the MINOR version
+# if there is no log of type `feat`, then increment the PATCH version
 $ convention-change-log --dry-run
-# close dry run
-$ convention-change-log --dry-run false
-# or use env var CLI_DRY_RUN_DISABLE=true
-$ convention-change-log --dry-run-disable
 
-# let release version as -r and dry run
+# flat -r to set custom release version
 $ convention-change-log -r 0.1.0 --dry-run
 # change tag prefix
 $ convention-change-log -r 0.1.0 -t "" --dry-run
 
-# finish check then generate release note and tag
+# disable --dry-run mode to generate logs and tags locally
+$ convention-change-log --dry-run false
+# or using env CLI_DRY_RUN_DISABLE=true can also be closed
+$ convention-change-log --dry-run-disable
+# you can also write like this
 $ convention-change-log -r 1.0.0 --dry-run-disable
-# or add auto push to remote, after v1.7.0 default mode is --auto-push will ignore --dry-run
+
+# more practical automatic push to remote, after v1.7.0, open --auto-push will ignore --dry-run
 $ convention-change-log --auto-push
 
-## read-latest
+## read-latest can read the latest change log
 # read and output to stdout
 $ convention-change-log read-latest
-# read and output to file
+# read and output to file `CHANGELOG.txt`
 $ convention-change-log read-latest --read-latest-out
+# read output to a custom file
+$ convention-change-log read-latest --read-latest-out --read-latest-out-path CHANGELOG-1.txt
 ```
 
+### best practices
+
+- set `convention-change-log` to as alias `ccl`, bash or zsh as
+
+```rc
+alias gcmpt='git checkout $(git_main_branch) && git pull --verbose && git fetch --tags'
+alias ccl='convention-change-log'
+```
+
+- powershell set in `$PROFILE` file
+
+```ps1
+## alias gcmpt 'git checkout $(git_main_branch) && git pull && git fetch --tags'
+Function GitCheckOutMainAndFetchAllTagsFun {git checkout $(git config --get init.defaultBranch) ; git pull --verbose; git fetch --tags}
+Set-Alias -Name gcmpt -Value GitCheckOutMainAndFetchAllTagsFun
+
+## need install https://github.com/convention-change/convention-change-log
+# alias ccl='convention-change-log'
+Set-Alias -Name ccl -Value convention-change-log
+```
+
+- Please set up the `branch protection rule` and `tag protection rule` in the remote warehouse first to prevent false
+  submission or delete tag
+- Before generating CHANGELOG.md, it is best to merge into the main branch, the alias above `gcmpt` You can quickly
+  switch to the main branch and synchronize to the latest information (including tag synchronization)
+- Check the status of the current branch is available after the nail version
+- execution `ccl --dry-run` or `ccl --dry-run -r 1.2.3` Specify the target version and verify that the expected change
+  log is correct
+- after confirming that there are no errors execute `ccl --auto-push`
+- It is recommended to use the `release` branch to automatically merge and trigger CI automatic production to trigger
+  the generation of CHANGELOG.md to avoid thinking that the operation is wrong.
+
 # dev
-
-## env
-
-- minimum go version: go 1.19
-- change `go 1.19`, `^1.19`, `1.19.13` to new go version
-
-### libs
-
-| lib                                 | version |
-|:------------------------------------|:--------|
-| https://github.com/stretchr/testify | v1.9.0  |
-| https://github.com/sebdah/goldie    | v2.5.3  |
-
-- more libs see [go.mod](https://github.com/convention-change/convention-change-log/blob/main/go.mod)
 
 ## Contributing
 
@@ -197,44 +184,4 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 请阅读有关 [贡献者指南](.github/CONTRIBUTING_DOC/zh-CN/CONTRIBUTING.md) 以获取更多如何入门的信息
 
-## local dev
-
-```bash
-# It needs to be executed after the first use or update of dependencies.
-$ make init dep
-```
-
-- test code
-
-```bash
-$ make test testBenchmark
-```
-
-add main.go file and run
-
-```bash
-# run at env dev use cmd/main.go
-$ make dev
-```
-
-- ci to fast check
-
-```bash
-# check style at local
-$ make style
-
-# run ci at local
-$ make ci
-```
-
-## docker
-
-```bash
-# then test build as test/Dockerfile
-$ make dockerTestRestartLatest
-# clean test build
-$ make dockerTestPruneLatest
-
-# more info see
-$ make helpDocker
-```
+developer see doc at [doc/dev.md](doc/dev.md)

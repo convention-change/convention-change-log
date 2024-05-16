@@ -73,11 +73,13 @@ func (c *GlobalCommand) globalExec() error {
 
 	errLoadRepository := clGenerator.LoadRepository(c.GenerateConfig.GitCloneUrl, c.GitRemote)
 	if errLoadRepository != nil {
-		return exit_cli.Err(errLoadRepository)
+		slog.Error("load repository err: %v", errLoadRepository)
+		return errLoadRepository
 	}
 	errCheckRepository := clGenerator.CheckRepository()
 	if errCheckRepository != nil {
-		return exit_cli.Err(errCheckRepository)
+		slog.Error("check repository err: %v", errCheckRepository)
+		return errCheckRepository
 	}
 
 	if c.Verbose {
@@ -91,7 +93,8 @@ func (c *GlobalCommand) globalExec() error {
 
 	errChangeLogInit := clGenerator.ChangeLogInit(c.GenerateConfig, c.ChangeLogSpec)
 	if errChangeLogInit != nil {
-		return exit_cli.Err(errChangeLogInit)
+		slog.Error("change log init err: %v", errChangeLogInit)
+		return errChangeLogInit
 	}
 	slog.Debugf("historyFirstTagName: %s", clGenerator.GetHistoryFirstTagName())
 	slog.Debugf("c.GenerateConfig.FromCommit: %s", c.GenerateConfig.FromCommit)
@@ -99,7 +102,8 @@ func (c *GlobalCommand) globalExec() error {
 
 	errGenerateCommitNodes := clGenerator.GenerateCommitAsMdNodes()
 	if errGenerateCommitNodes != nil {
-		return exit_cli.Err(errGenerateCommitNodes)
+		slog.Error("generate commit nodes err: %v", errGenerateCommitNodes)
+		return errGenerateCommitNodes
 	}
 
 	if c.DryRun {
@@ -109,6 +113,7 @@ func (c *GlobalCommand) globalExec() error {
 
 	errDoChangeRepoFileByCommitLog := clGenerator.DoChangeRepoFileByCommitLog()
 	if errDoChangeRepoFileByCommitLog != nil {
+		slog.Errorf(errDoChangeRepoFileByCommitLog, "do change repo file by commit log is error")
 		return exit_cli.Err(errDoChangeRepoFileByCommitLog)
 	}
 	errDoGitOperator := clGenerator.DoGitOperator()
