@@ -1,64 +1,69 @@
 .PHONY: test check clean build dist all
 #TOP_DIR := $(shell pwd)
 # can change by env:ENV_CI_DIST_VERSION use and change by env:ENV_CI_DIST_MARK by CI
-ENV_DIST_VERSION=v0.1.2
+ENV_DIST_VERSION =v1.8.0
 ENV_DIST_MARK=
 
 ROOT_NAME?=convention-change-log
 
 ## MakeDocker.mk settings start
-ROOT_OWNER?=convention-change
-ROOT_PARENT_SWITCH_TAG=1.19.13
+ROOT_OWNER ?=template-zoo
+ROOT_PARENT_SWITCH_TAG =1.19.13
 # for image local build
-INFO_TEST_BUILD_DOCKER_PARENT_IMAGE=golang
+INFO_TEST_BUILD_DOCKER_PARENT_IMAGE =golang
 # for image running
-INFO_BUILD_DOCKER_FROM_IMAGE=alpine:3.17
-INFO_BUILD_DOCKER_FILE=Dockerfile
-INFO_TEST_BUILD_DOCKER_FILE=Dockerfile.s6
+INFO_BUILD_DOCKER_FROM_IMAGE =alpine:3.17
+INFO_BUILD_DOCKER_FILE =Dockerfile
+INFO_TEST_BUILD_DOCKER_FILE =build.dockerfile
 ## MakeDocker.mk settings end
 
 ## run info start
-ENV_RUN_INFO_HELP_ARGS= -h
+ENV_RUN_INFO_HELP_ARGS=-h
 ENV_RUN_INFO_ARGS=
 ## run info end
 
-## build dist env start
-# change to other build entrance
-ENV_ROOT_BUILD_ENTRANCE=cmd/convention-change-log/main.go
-ENV_ROOT_BUILD_BIN_NAME=${ROOT_NAME}
-ENV_ROOT_BUILD_PATH=build
-ENV_ROOT_BUILD_BIN_PATH=${ENV_ROOT_BUILD_PATH}/${ENV_ROOT_BUILD_BIN_NAME}
-ENV_ROOT_LOG_PATH=logs/
-# linux windows darwin  list as: go tool dist list
-ENV_DIST_GO_OS=linux
-# amd64 386
-ENV_DIST_GO_ARCH=amd64
-# mark for dist and tag helper
-ENV_ROOT_MANIFEST_PKG_JSON?=package.json
-ENV_ROOT_MAKE_FILE?=Makefile
-ENV_ROOT_CHANGELOG_PATH?=CHANGELOG.md
-## build dist env end
-
-## go test MakeGoTest.mk start
+## go test go-test.mk start
 # ignore used not matching mode
 # set ignore of test case like grep -v -E "vendor|go_fatal_error" to ignore vendor and go_fatal_error package
-ENV_ROOT_TEST_INVERT_MATCH?="vendor|go_fatal_error|robotn|shirou"
+ENV_ROOT_TEST_INVERT_MATCH ?="vendor|go_fatal_error|robotn|shirou"
 ifeq ($(OS),Windows_NT)
-ENV_ROOT_TEST_LIST?=./...
+ENV_ROOT_TEST_LIST ?=./...
 else
-ENV_ROOT_TEST_LIST?=$$(go list ./... | grep -v -E ${ENV_ROOT_TEST_INVERT_MATCH})
+ENV_ROOT_TEST_LIST ?=$$(go list ./... | grep -v -E ${ENV_ROOT_TEST_INVERT_MATCH})
 endif
 # test max time
-ENV_ROOT_TEST_MAX_TIME:=1m
-## go test MakeGoTest.mk end
+ENV_ROOT_TEST_MAX_TIME :=1m
+## go test go-test.mk end
+
+## clean args start
+ENV_ROOT_BUILD_PATH =build
+ENV_ROOT_LOG_PATH =logs/
+## clean args end
+
+## build args start
+ENV_ROOT_BUILD_ENTRANCE =cmd/convention-change-log/main.go
+ENV_ROOT_BUILD_PATH =build
+ENV_ROOT_BUILD_BIN_NAME =${ROOT_NAME}
+ENV_ROOT_BUILD_BIN_PATH =${ENV_ROOT_BUILD_PATH}/${ENV_ROOT_BUILD_BIN_NAME}
+## build args end
+
+## build dist args start
+# linux windows darwin  list as: go tool dist list
+ENV_DIST_GO_OS =linux
+# amd64 386
+ENV_DIST_GO_ARCH =amd64
+# mark for dist and tag helper
+ENV_ROOT_MANIFEST_PKG_JSON? =package.json
+ENV_ROOT_CHANGELOG_PATH ?=CHANGELOG.md
+## build dist args end
 
 include z-MakefileUtils/MakeBasicEnv.mk
 include z-MakefileUtils/MakeDistTools.mk
-include z-MakefileUtils/MakeGoList.mk
-include z-MakefileUtils/MakeGoMod.mk
-include z-MakefileUtils/MakeGoTest.mk
-include z-MakefileUtils/MakeGoTestIntegration.mk
-include z-MakefileUtils/MakeGoDist.mk
+include z-MakefileUtils/go-list.mk
+include z-MakefileUtils/go-mod.mk
+include z-MakefileUtils/go-test.mk
+include z-MakefileUtils/go-test-integration.mk
+include z-MakefileUtils/go-dist.mk
 # include MakeDockerRun.mk for docker run
 include z-MakefileUtils/MakeDocker.mk
 
@@ -87,19 +92,20 @@ endif
 	@echo "ENV_DIST_MARK                             ${ENV_DIST_MARK}"
 	@echo "== project env info end =="
 
+.PHONY: cleanBuild
 cleanBuild:
 	@$(RM) -r ${ENV_ROOT_BUILD_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_BUILD_PATH}"
 
+.PHONY: cleanLog
 cleanLog:
 	@$(RM) -r ${ENV_ROOT_LOG_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_LOG_PATH}"
 
-cleanTest:
-	@$(RM) coverage.txt
-	@$(RM) coverage.out
-	@$(RM) profile.txt
+.PHONY: cleanTest
+cleanTest: test.go.clean
 
+.PHONY: cleanTestData
 cleanTestData:
 	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
 	@$(RM) -r **/testdata
@@ -110,10 +116,12 @@ cleanTestData:
 	@$(RM) -r **/**/**/**/**/**/testdata
 	$(info -> finish clean folder [ testdata ])
 
+.PHONY: clean
 clean: cleanTest cleanBuild cleanLog
 	@echo "~> clean finish"
 
-cleanAll: clean cleanAllDist
+.PHONY: cleanAll
+cleanAll: clean
 	@echo "~> clean all finish"
 
 init:
@@ -125,19 +133,28 @@ init:
 	@echo "~> you can use [ make help ] see more task"
 	-go mod verify
 
-dep: modVerify modDownload modTidy
-	@echo "-> just check depends below"
+.PHONY: dep
+dep: go.mod.verify go.mod.download go.mod.tidy
 
-style: modTidy modVerify modFmt modLintRun
+.PHONY: style
+style: go.mod.verify go.mod.tidy go.mod.fmt go.mod.lint.run
 
-ci: modTidy modVerify modFmt modVet modLintRun test
+.PHONY: test
+test: test.go
 
-ciTestBenchmark: modTidy modVerify testBenchmark
+.PHONY: ci
+ci: style go.mod.vet test runHelp
 
-ciCoverageShow: modTidy modVerify modVet testCoverage testCoverageShow
+.PHONY: ci.test.benchmark
+ci.test.benchmark: test.go.benchmark
 
-ciAll: ci ciTestBenchmark ciCoverageShow
+.PHONY: ci.coverage.show
+ci.coverage.show: test.go.coverage.show
 
+.PHONY: ci.all
+ci.all: ci ci.test.benchmark ci.coverage.show
+
+.PHONY: buildMain
 buildMain:
 	@echo "-> start build local OS: ${PLATFORM} ${OS_BIT}"
 ifeq ($(OS),Windows_NT)
@@ -148,25 +165,8 @@ else
 	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
 endif
 
-buildCross:
-	@echo "-> start build OS:${ENV_DIST_GO_OS} ARCH:${ENV_DIST_GO_ARCH}"
-ifeq ($(ENV_DIST_GO_OS),windows)
-	@GOOS=$(ENV_DIST_GO_OS) GOARCH=$(ENV_DIST_GO_ARCH) go build \
-	-a \
-	-tags netgo \
-	-ldflags '-w -s --extldflags "-static -fpic"' \
-	-o ${ENV_ROOT_BUILD_BIN_PATH}.exe ${ENV_ROOT_BUILD_ENTRANCE}
-	@echo "-> finish build out path: $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe"
-else
-	@GOOS=$(ENV_DIST_GO_OS) GOARCH=$(ENV_DIST_GO_ARCH) go build \
-	-a \
-	-tags netgo \
-	-ldflags '-w -s --extldflags "-static -fpic"' \
-	-o ${ENV_ROOT_BUILD_BIN_PATH} ${ENV_ROOT_BUILD_ENTRANCE}
-	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
-endif
-
-devHelp: export CLI_VERBOSE=false
+.PHONY: devHelp
+devHelp: export CI_DEBUG=false
 devHelp: cleanBuild buildMain
 ifeq ($(OS),Windows_NT)
 	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_HELP_ARGS}
@@ -174,7 +174,8 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_HELP_ARGS}
 endif
 
-dev: export CLI_VERBOSE=true
+.PHONY: dev
+dev: export CI_DEBUG=true
 dev: cleanBuild buildMain
 ifeq ($(OS),Windows_NT)
 	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_ARGS}
@@ -182,6 +183,7 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
+.PHONY: devInstallLocal
 devInstallLocal: cleanBuild buildMain
 ifeq ($(shell go env GOPATH),)
 	$(error can not get go env GOPATH)
@@ -194,6 +196,12 @@ else
 	@cp ${ENV_ROOT_BUILD_BIN_PATH} ${ENV_GO_PATH}/bin
 endif
 
+.PHONY: runHelp
+runHelp: export CLI_VERBOSE=false
+runHelp:
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_HELP_ARGS}
+
+.PHONY: run
 run: cleanBuild buildMain
 	@echo "=> run start"
 ifeq ($(OS),Windows_NT)
@@ -202,10 +210,12 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
+.PHONY: cloc
 cloc:
 	@echo "see: https://stackoverflow.com/questions/26152014/cloc-ignore-exclude-list-file-clocignore"
 	cloc --exclude-list-file=.clocignore .
 
+.PHONY: helpProjectRoot
 helpProjectRoot:
 	@echo "Help: Project root Makefile"
 ifeq ($(OS),Windows_NT)
@@ -224,25 +234,38 @@ endif
 	@echo "-- now build name: ${ROOT_NAME} version: ${ENV_DIST_VERSION}"
 	@echo "-- distTestOS or distReleaseOS will out abi as: ${ENV_DIST_GO_OS} ${ENV_DIST_GO_ARCH} --"
 	@echo ""
-	@echo "~> make env                 - print env of this project"
-	@echo "~> make init                - check base env of this project"
-	@echo "~> make dep                 - check and install by go mod"
-	@echo "~> make clean               - remove build binary file, log files, and testdata"
-	@echo "~> make test                - run test case ignore --invert-match by config"
-	@echo "~> make testCoverage        - run test coverage case ignore --invert-match by config"
-	@echo "~> make testCoverageBrowser - see coverage at browser --invert-match by config"
-	@echo "~> make testBenchmark       - run go test benchmark case all"
-	@echo "~> make ci                  - run CI tools tasks"
-	@echo "~> make style               - run local code fmt and style check"
-	@echo "~> make devHelp             - run as develop mode show help"
+	@echo "~> make test                 - run test fast"
+	@echo "~> make ci.all               - run CI tasks all"
+	@echo "~> make ci.test.benchmark    - run CI tasks as test benchmark"
+	@echo "~> make ci.coverage.show     - run CI tasks as test coverage and show"
+	@echo ""
+	@echo "~> make env                  - print env of this project"
+	@echo "~> make init                 - check base env of this project"
+	@echo "~> make dep                  - check and install by go mod"
+	@echo "~> make clean                - remove build binary file, log files, and testdata"
+	@echo "~> make style                - run local code fmt and style check"
+	@echo "~> make ci                   - run CI tools tasks"
+	@echo ""
+	@echo "~> make devHelp             - run as develop mode see help with ${ENV_RUN_INFO_HELP_ARGS}"
 	@echo "~> make dev                 - run as develop mode"
 ifeq ($(OS),Windows_NT)
 	@echo "~> make devInstallLocal     - install at $(subst /,\,${ENV_GO_PATH}/bin)"
 else
 	@echo "~> make devInstallLocal     - install at ${ENV_GO_PATH}/bin"
 endif
+	@echo "~> make runHelp             - run use ${ENV_RUN_INFO_HELP_ARGS}"
 	@echo "~> make run                 - run as ordinary mode"
-
-help: helpGoMod helpGoTest helpGoDist helpDocker helpProjectRoot
 	@echo ""
-	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoTest.mk MakeGoTestIntegration.mk MakeGoDist.mk MakeDockerRun.mk MakeGoAction.mk --"
+
+.PHONY: help
+help: helpProjectRoot
+	@echo "== show more help"
+	@echo ""
+	@echo "$$ make helpGoDist"
+	@echo ""
+	@echo "$$ make help.test.go.integration"
+	@echo "$$ make help.test.go"
+	@echo "$$ make help.go.list"
+	@echo "$$ make help.go.mod"
+	@echo ""
+	@echo "-- more info see Makefile include --"

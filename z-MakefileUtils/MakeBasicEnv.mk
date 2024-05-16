@@ -43,8 +43,9 @@ endif
 
 # change mark from woodpecker-ci https://woodpecker-ci.org/docs/usage/environment
 ifneq ($(strip $(CI_COMMIT_TAG)),)
-$(info -> change ENV_DIST_MARK by CI_COMMIT_TAG)
-    ENV_DIST_MARK=-tag.${CI_COMMIT_TAG}
+$(info -> change ENV_DIST_VERSION by CI_COMMIT_TAG)
+    ENV_DIST_VERSION=${CI_COMMIT_TAG}
+    ENV_DIST_MARK=-tag.${CI_COMMIT_SHA}
 else
     ifneq ($(strip $(CI_COMMIT_SHA)),)
 $(info -> change ENV_DIST_MARK by CI_COMMIT_SHA)
@@ -54,7 +55,8 @@ endif
 # change mark from https://docs.drone.io/pipeline/environment/substitution/
 ifneq ($(strip $(DRONE_TAG)),)
 $(info -> change ENV_DIST_MARK by DRONE_TAG)
-    ENV_DIST_MARK=-tag.${DRONE_TAG}
+    ENV_DIST_VERSION=${DRONE_TAG}
+    ENV_DIST_MARK=-tag.${CI_COMMIT_SHA}
 else
     ifneq ($(strip $(DRONE_COMMIT)),)
 $(info -> change ENV_DIST_MARK by DRONE_COMMIT)
@@ -63,9 +65,16 @@ $(info -> change ENV_DIST_MARK by DRONE_COMMIT)
 endif
 
 # change mark from github actions https://docs.github.com/actions/learn-github-actions/environment-variables
-ifneq ($(strip $(GITHUB_SHA)),)
+# GITHUB_REF_NAME will be refs/tags/v1.0.0 as v1.0.0
+ifneq ($(strip $(GITHUB_REF_NAME)),)
+$(info -> change ENV_DIST_MARK by GITHUB_REF_NAME)
+    ENV_DIST_VERSION=${GITHUB_REF_NAME}
+    ENV_DIST_MARK=-tag.${GITHUB_SHA}
+else
+    ifneq ($(strip $(GITHUB_SHA)),)
 $(info -> change ENV_DIST_MARK by GITHUB_SHA)
     ENV_DIST_MARK=-${GITHUB_SHA}
+    endif
 endif
 
 # if above CI not set ENV_DIST_MARK, use git
@@ -86,6 +95,7 @@ $(info -> change ENV_DIST_VERSION by ENV_CI_DIST_VERSION)
     ENV_DIST_VERSION=${ENV_CI_DIST_VERSION}
 endif
 
+.PHONY: envHelp
 envBasic:
 	@echo ------- start show env basic---------
 	@echo ""
@@ -98,12 +108,13 @@ envBasic:
 	@echo ""
 	@echo ------- end  show env basic ---------
 
-
+.PHONY: envDistBasic
 envDistBasic:
 	@echo "ENV_DIST_VERSION :                        ${ENV_DIST_VERSION}"
 	@echo "ENV_DIST_MARK :                           ${ENV_DIST_MARK}"
 	@echo ""
 
+.PHONY: envHelp
 envHelp:
 ifeq ($(OS),Windows_NT)
 	@echo ""

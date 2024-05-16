@@ -24,7 +24,7 @@ on:
         required: false
         type: string
       download_artifact_name:
-        description: 'download artifact name, if not set will not use download_artifact'
+        description: 'download artifact name, download from actions/upload-artifact, as: {download_artifact_name}-{tag_name}-*, empty is not download'
         default: ''
         required: false
         type: string
@@ -51,6 +51,7 @@ jobs:
         if: ${{ inputs.download_artifact_name != null }}
         with:
           path: ${{ github.workspace }}/dist
+          ## https://github.com/actions/download-artifact/tree/v4?tab=readme-ov-file#breaking-changes
           pattern: ${{ inputs.download_artifact_name }}-${{inputs.tag_name}}*
           merge-multiple: true
 
@@ -69,6 +70,7 @@ jobs:
           prerelease: ${{inputs.prerelease}}
           body: "${{ inputs.tag_changes }}"
           # body_path: ${{ github.workspace }}/CHANGELOG.md
+          ## set release binaries, empty means do not upload files for release
           # https://github.com/isaacs/node-glob
           files: |
             **/*.zip
