@@ -5,6 +5,7 @@ import (
 	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/convention-change/convention-change-log/convention"
 	"github.com/urfave/cli/v2"
+	"strings"
 )
 
 // MainFlag
@@ -74,7 +75,7 @@ func GlobalFlag() []cli.Flag {
 		},
 		&cli.StringFlag{
 			Name:    "git-info-scheme",
-			Usage:   "git info scheme, default is https can set as http",
+			Usage:   fmt.Sprintf("git info scheme, only support: %s", strings.Join(gitInfoSchemeSupport, ", ")),
 			Value:   "https",
 			EnvVars: []string{constant.EnvKeyGitInfoScheme},
 		},

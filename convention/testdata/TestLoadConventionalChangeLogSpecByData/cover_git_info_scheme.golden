@@ -1,0 +1,28 @@
+{
+  "types": [
+    {
+      "type": "feat",
+      "section": "✨ Features",
+      "hidden": false,
+      "sort": 2
+    },
+    {
+      "type": "fix",
+      "section": "🐛 Bug Fixes",
+      "hidden": false,
+      "sort": 1
+    }
+  ],
+  "tag-prefix": "v",
+  "hash-length": 8,
+  "issuePrefixes": [
+    "#"
+  ],
+  "header": "Changelog",
+  "commitUrlFormat": "{{scheme}}://{{host}}/{{owner}}/{{repository}}/commit/{{hash}}",
+  "compareUrlFormat": "{{scheme}}://{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "{{scheme}}://{{host}}/{{owner}}/{{repository}}/issues/{{id}}",
+  "userUrlFormat": "{{scheme}://{{host}}/{{user}}",
+  "releaseCommitMessageFormat": "chore(release): {{currentTag}}",
+  "cover-git-info-scheme": "http"
+}

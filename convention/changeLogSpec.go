@@ -71,6 +71,10 @@ type ConventionalChangeLogSpec struct {
 	// this will cover all http host
 	CoverHttpHost string `json:"cover-http-host,omitempty"`
 
+	// CoverGitInfoScheme
+	// this will cover git url info scheme, like https / http
+	CoverGitInfoScheme string `json:"cover-git-info-scheme,omitempty"`
+
 	// MonoRepoPkgPathList
 	// monorepo package path list
 	MonoRepoPkgPathList []string `json:"monorepo-pkg-path,omitempty"`

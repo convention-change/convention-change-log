@@ -118,13 +118,18 @@ func (c *ChangeLogGenerator) ChangeLogInit(cfg GenerateConfig, spec *convention.
 	}
 	c.latestCommits = latestCommits
 
+	gitInfoScheme := c.genCfg.GitInfoScheme
+	if c.spec.CoverGitInfoScheme != "" {
+		gitInfoScheme = c.spec.CoverGitInfoScheme
+	}
+
 	gitHttpHost := c.gitRemoteInfo.Host
 	if c.spec.CoverHttpHost != "" {
 		gitHttpHost = c.spec.CoverHttpHost
 	}
 
 	gitHttpInfoDefault := convention.GitRepositoryHttpInfo{
-		Scheme:     c.genCfg.GitInfoScheme,
+		Scheme:     gitInfoScheme,
 		Host:       gitHttpHost,
 		Owner:      c.gitRemoteInfo.User,
 		Repository: c.gitRemoteInfo.Repo,

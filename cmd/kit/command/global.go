@@ -9,10 +9,12 @@ import (
 	"github.com/convention-change/convention-change-log/convention"
 	"github.com/convention-change/convention-change-log/internal/log"
 	"github.com/convention-change/convention-change-log/internal/pkgJson"
+	"github.com/sinlov-go/go-common-lib/pkg/string_tools"
 	"github.com/sinlov-go/go-git-tools/git_info"
 	"github.com/urfave/cli/v2"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type GlobalConfig struct {
@@ -147,9 +149,15 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 	}
 
 	isAutoPush := c.Bool("auto-push")
+	gitInfoScheme := c.String("git-info-scheme")
+
+	if !string_tools.StringInArr(gitInfoScheme, gitInfoSchemeSupport) {
+		return nil, exit_cli.Format("--git-info-scheme only support %s", strings.Join(gitInfoSchemeSupport, ", "))
+	}
+
 	generateConfig := GenerateConfig{
 		GitCloneUrl:   "",
-		GitInfoScheme: c.String("git-info-scheme"),
+		GitInfoScheme: gitInfoScheme,
 		ReleaseAs:     cliReleaseAs,
 		TagPrefix:     tagPrefix,
 		ReleaseTag:    cliReleaseTag,
