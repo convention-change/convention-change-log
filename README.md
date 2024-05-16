@@ -15,49 +15,96 @@
 ## Features
 
 - [x] subcommand `init` to init config file
-  - init `.versionrc` file at git repository root path, as default config file
+    - init `.versionrc` file at git repository root path, as default config file
+
 ```json
 {
   "types": [
-    {"type": "feat", "section": "✨ Features", "hidden": false},
-    {"type": "fix", "section": "🐛 Bug Fixes", "hidden": false},
-    {"type": "docs", "section":"📝 Documentation", "hidden": true},
-    {"type": "style", "section":"💄 Styles", "hidden": true},
-    {"type": "refactor", "section":"♻ Refactor", "hidden": false},
-    {"type": "perf", "section":"⚡ Performance Improvements", "hidden": false},
-    {"type": "test", "section":"✅ Tests", "hidden": true},
-    {"type": "build", "section":"👷‍ Build System", "hidden": false},
-    {"type": "ci", "section":"🔧 Continuous Integration", "hidden": true},
-    {"type": "chore", "section":"📦 Chores", "hidden": true},
-    {"type": "revert", "section":"⏪ Reverts", "hidden": false}
+    {
+      "type": "feat",
+      "section": "✨ Features",
+      "hidden": false
+    },
+    {
+      "type": "fix",
+      "section": "🐛 Bug Fixes",
+      "hidden": false
+    },
+    {
+      "type": "docs",
+      "section": "📝 Documentation",
+      "hidden": true
+    },
+    {
+      "type": "style",
+      "section": "💄 Styles",
+      "hidden": true
+    },
+    {
+      "type": "refactor",
+      "section": "♻ Refactor",
+      "hidden": false
+    },
+    {
+      "type": "perf",
+      "section": "⚡ Performance Improvements",
+      "hidden": false
+    },
+    {
+      "type": "test",
+      "section": "✅ Tests",
+      "hidden": true
+    },
+    {
+      "type": "build",
+      "section": "👷‍ Build System",
+      "hidden": false
+    },
+    {
+      "type": "ci",
+      "section": "🔧 Continuous Integration",
+      "hidden": true
+    },
+    {
+      "type": "chore",
+      "section": "📦 Chores",
+      "hidden": true
+    },
+    {
+      "type": "revert",
+      "section": "⏪ Reverts",
+      "hidden": false
+    }
   ],
   "tag-prefix": "v"
 }
 ```
 
 - [x] can read git root `.versionrc` for setting of change log generate
-    - support change log item sort by `versionrc` config `{{ .types[ .sort ] }}`, and default sort will auto set by this kit
+    - support change log item sort by `versionrc` config `{{ .types[ .sort ] }}`, and default sort will auto set by this
+      kit
     - more settings use `init --more` to generate `.versionrc` file
 - [x] subcommand `read-latest` read the latest change log or write latest change to file
     - `--read-latest-file` read change log file path (default: "CHANGELOG.md")
     - `--read-latest-out` flag can open output to file, not settings will not output
-      - `--read-latest-out-path` write last change file path (default: "CHANGELOG.txt")
+        - `--read-latest-out-path` write last change file path (default: "CHANGELOG.txt")
 - [x] global flag
-    - [x] `--dry-run` flag can see what change of new release 
+    - [x] `--dry-run` flag can see what change of new release
     - [x] `-r` or `--release-as` to set release version
-      - when not set will auto generate release version
-        - commit message contains `feat:` will update `MINOR` version
-        - commit message not contains `feat:` will update `MAJOR` version
+        - when not set will auto generate release version
+            - commit message contains `feat:` will update `MINOR` version
+            - commit message not contains `feat:` will update `MAJOR` version
     - [x] `--auto-push` flag can auto push tag to remote
     - [x] `--tag-prefix` flag can change tag prefix, default will use `.versionrc` config `tag-prefix`
 - generate from [conventional commits](https://www.conventionalcommits.org) for [semver.org](https://semver.org/)
-  - [x] default will update `PATCH` version
-  - [x] if the latest list has any `feat` message will update `MINOR` version
-  - [x] if you want change release version please use global flag `-r`
+    - [x] default will update `PATCH` version
+    - [x] if the latest list has any `feat` message will update `MINOR` version
+    - [x] if you want change release version please use global flag `-r`
 - auto update version resource
-  - [x] project has `package.json` file, will auto update `version` field
-  - [x] project has `package-lock.json` file, will try use `npm install` to update `package-lock.json` file
-  - [x] in `.versionrc` has `monorepo-pkg-path` field as string list, will auto update `package.json` file in `monorepo-pkg-path` path (v1.5.+)
+    - [x] project has `package.json` file, will auto update `version` field
+    - [x] project has `package-lock.json` file, will try use `npm install` to update `package-lock.json` file
+    - [x] in `.versionrc` has `monorepo-pkg-path` field as string list, will auto update `package.json` file
+      in `monorepo-pkg-path` path (v1.5.+)
 
 ```json
 {
@@ -67,6 +114,10 @@
   ]
 }
 ```
+
+- [x] git url scheme default is `https` can change.(v1.8+)
+    - use cli flag `--git-info-scheme` to change git info scheme, only support: https, http
+    - in `.versionrc` has `cover-git-info-scheme` field as string, will change remote for example fill in `http`
 
 - [ ] more perfect test case coverage
 
@@ -83,7 +134,8 @@ $ go install -v github.com/convention-change/convention-change-log/cmd/conventio
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.7.0
 ````
 
-- or install by [release](https://github.com/convention-change/convention-change-log/releases) and add environment variables `PATH`
+- or install by [release](https://github.com/convention-change/convention-change-log/releases) and add environment
+  variables `PATH`
 
 - please use cli at `git repository root path`
 

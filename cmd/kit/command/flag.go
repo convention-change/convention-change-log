@@ -5,6 +5,7 @@ import (
 	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/convention-change/convention-change-log/convention"
 	"github.com/urfave/cli/v2"
+	"strings"
 )
 
 // MainFlag
@@ -71,6 +72,12 @@ func GlobalFlag() []cli.Flag {
 			Usage:   "disable dry-run mode",
 			Value:   false,
 			EnvVars: []string{constant.EnvKeyDryRunDisable},
+		},
+		&cli.StringFlag{
+			Name:    "git-info-scheme",
+			Usage:   fmt.Sprintf("git info scheme, only support: %s", strings.Join(gitInfoSchemeSupport, ", ")),
+			Value:   "https",
+			EnvVars: []string{constant.EnvKeyGitInfoScheme},
 		},
 	}
 }

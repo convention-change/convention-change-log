@@ -5,10 +5,11 @@ on:
     paths-ignore:
       - '**/README.md'
     branches:
-      - 'main'
+      # - 'main'
       - 'release-*'
       - 'FE-*'
       - '*-feature-*'
+      - '*-enhancement-*'
       - 'BF-*'
       - '*-bug-*'
       - 'PU-*'
@@ -30,7 +31,7 @@ on:
     #   - 'DOC-*'
     #   - 'hotfix-*'
 
-permissions:
+permissions: # https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions#permissions
   contents: write
   discussions: write
 
@@ -78,7 +79,8 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     secrets: inherit
     with:
+      dry_run: false # open/close dry run
       prerelease: true
       tag_name: ${{ needs.version.outputs.tag_name }}
       tag_changes: ${{ needs.version.outputs.cc_changes }}
-      download_artifact_name: go-release
+      download_artifact_name: go-release # download artifact name, download from actions/upload-artifact, as: {download_artifact_name}-{tag_name}-*, empty is not download

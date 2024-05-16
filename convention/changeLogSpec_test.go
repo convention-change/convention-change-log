@@ -57,6 +57,24 @@ func TestLoadConventionalChangeLogSpecByData(t *testing.T) {
 }`),
 		},
 		{
+			name: "cover git info scheme",
+			c: []byte(`
+{
+  "types": [
+    {"type": "feat", "section": "✨ Features", "hidden": false},
+    {"type": "fix", "section": "🐛 Bug Fixes", "hidden": false}
+  ],
+  "tag-prefix": "",
+  "skip": {
+    "bump": false,
+    "changelog": false,
+    "commit": false,
+    "tag": false
+  },
+  "cover-git-info-scheme": "http"
+}`),
+		},
+		{
 			name: "cover http host",
 			c: []byte(`
 {

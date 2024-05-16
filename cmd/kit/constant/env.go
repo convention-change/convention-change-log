@@ -11,6 +11,8 @@ const (
 
 	EnvKeyDryRunDisable = "CLI_DRY_RUN_DISABLE"
 
+	EnvKeyGitInfoScheme = "CLI_GIT_INFO_SCHEME"
+
 	// EnvKeyCliTimeoutSecond
 	//	Provides the timeout second flag
 	EnvKeyCliTimeoutSecond = "CLI_CONFIG_TIMEOUT_SECOND"
@@ -32,9 +34,10 @@ const (
 
 var (
 	CmdOkEmoji          = color.Green.Render("✔")
+	CmdOkDryRunEmoji    = color.LightCyan.Render("✔")
 	CmdInfoEmoji        = color.Blue.Render("ℹ")
 	CmdWarnEmoji        = color.Warn.Render("ℹ")
-	CmdHelpFinishDryRun = CmdOkEmoji + " finish dry run"
+	CmdHelpFinishDryRun = CmdOkDryRunEmoji + " finish dry run, preview operation will not take effect, only the new collected change log will be printed."
 
 	CmdHelpOutputting = CmdOkEmoji + " outputting changes to %s"
 	CmdHelpCommitting = CmdOkEmoji + " committing %s"
