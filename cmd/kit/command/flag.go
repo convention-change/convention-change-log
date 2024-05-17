@@ -79,6 +79,11 @@ func GlobalFlag() []cli.Flag {
 			Value:   "https",
 			EnvVars: []string{constant.EnvKeyGitInfoScheme},
 		},
+		&cli.BoolFlag{
+			Name:    "skip-worktree-check",
+			Usage:   "skip git worktree dirty check",
+			EnvVars: []string{constant.EnvKeySkipWorktreeCheck},
+		},
 	}
 }
 

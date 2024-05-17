@@ -64,6 +64,10 @@ func (c *ChangeLogGenerator) CheckRepository() error {
 
 	c.gitRemoteInfo = gitRemoteInfo
 
+	return nil
+}
+
+func (c *ChangeLogGenerator) CheckWorktreeDirty() error {
 	submodules, errCheckHasSubmodules := c.repository.CheckHasSubmodules()
 	if errCheckHasSubmodules == nil && submodules {
 		dirty, errCheckSubmodulesIsDirty := c.repository.CheckSubmodulesIsDirty()
@@ -79,15 +83,24 @@ func (c *ChangeLogGenerator) CheckRepository() error {
 			return fmt.Errorf("check repo err, submodules is dirty, please commit submodules")
 		}
 	}
-	if dirty, errCheck := c.repository.CheckLocalBranchIsDirty(); errCheck != nil {
-		return fmt.Errorf("check repo err, can not check local branch is dirty, error: %s", errCheck)
-	} else if dirty {
-		color.Printf(cmdErrorHelperCheckRepositoryInNowIsDirty)
-		color.Println("")
-		color.Println("")
-		return fmt.Errorf("check repo err, local branch is dirty, please commit")
+	var isWorktreeDirty bool
+	var errWorktreeDirty error
+	if c.repository.IsCitCmdAvailable() {
+		isWorktreeDirty, errWorktreeDirty = c.repository.CheckWorkTreeIsDirtyWithGitCmd()
+	} else {
+		isWorktreeDirty, errWorktreeDirty = c.repository.CheckLocalBranchIsDirty()
 	}
 
+	if errWorktreeDirty != nil {
+		return fmt.Errorf("check repo err, can not check worktree is dirty, error: %s", errWorktreeDirty)
+	} else {
+		if isWorktreeDirty {
+			color.Printf(cmdErrorHelperCheckRepositoryInNowIsDirty)
+			color.Println("")
+			color.Println("")
+			return fmt.Errorf("check repo err, worktree is dirty, please check")
+		}
+	}
 	return nil
 }
 

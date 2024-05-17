@@ -11,6 +11,8 @@ const (
 
 	EnvKeyGitInfoScheme = "CLI_GIT_INFO_SCHEME"
 
+	EnvKeySkipWorktreeCheck = "CLI_SKIP_WORKTREE_CHECK"
+
 	// EnvKeyCliTimeoutSecond
 	//	Provides the timeout second flag
 	EnvKeyCliTimeoutSecond = "CLI_CONFIG_TIMEOUT_SECOND"

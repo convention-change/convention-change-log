@@ -48,6 +48,8 @@ $ convention-change-log init
 # 如果 含有 类型 `feat` 的日志，则在最后一个版本上 次版本号 +1
 # 如果 没有 类型 `feat` 的日志，则在最后一个版本上 修订号 +1
 $ convention-change-log --dry-run
+# --skip-worktree-check 将跳过检查 worktree (v1.8.1+)
+$ convention-change-log --dry-run --skip-worktree-check
 
 # 设置 -r 自定义发布版本
 $ convention-change-log -r 0.1.0 --dry-run
