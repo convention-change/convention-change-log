@@ -19,17 +19,61 @@
 ```json
 {
   "types": [
-    {"type": "feat", "section": "✨ Features", "hidden": false},
-    {"type": "fix", "section": "🐛 Bug Fixes", "hidden": false},
-    {"type": "docs", "section":"📝 Documentation", "hidden": false},
-    {"type": "style", "section":"💄 Styles", "hidden": true},
-    {"type": "refactor", "section":"♻ Refactor", "hidden": false},
-    {"type": "perf", "section":"⚡ Performance Improvements", "hidden": false},
-    {"type": "test", "section":"✅ Tests", "hidden": true},
-    {"type": "build", "section":"👷‍ Build System", "hidden": false},
-    {"type": "ci", "section":"🔧 Continuous Integration", "hidden": true},
-    {"type": "chore", "section":"📦 Chores", "hidden": true},
-    {"type": "revert", "section":"⏪ Reverts", "hidden": false}
+    {
+      "type": "feat",
+      "section": "✨ Features",
+      "hidden": false
+    },
+    {
+      "type": "fix",
+      "section": "🐛 Bug Fixes",
+      "hidden": false
+    },
+    {
+      "type": "docs",
+      "section": "📝 Documentation",
+      "hidden": false
+    },
+    {
+      "type": "style",
+      "section": "💄 Styles",
+      "hidden": true
+    },
+    {
+      "type": "refactor",
+      "section": "♻ Refactor",
+      "hidden": false
+    },
+    {
+      "type": "perf",
+      "section": "⚡ Performance Improvements",
+      "hidden": false
+    },
+    {
+      "type": "test",
+      "section": "✅ Tests",
+      "hidden": true
+    },
+    {
+      "type": "build",
+      "section": "👷‍ Build System",
+      "hidden": false
+    },
+    {
+      "type": "ci",
+      "section": "🔧 Continuous Integration",
+      "hidden": true
+    },
+    {
+      "type": "chore",
+      "section": "📦 Chores",
+      "hidden": true
+    },
+    {
+      "type": "revert",
+      "section": "⏪ Reverts",
+      "hidden": false
+    }
   ],
   "tag-prefix": "v"
 }
@@ -73,7 +117,8 @@
 - [x] git url scheme default is `https` can change.(v1.8+)
     - use cli flag `--git-info-scheme` to change git info scheme, only support: https, http
     - in `.versionrc` has `cover-git-info-scheme` field as string, will change remote for example fill in `http`
-- [x] local repository dirty check (v1.8+)
+- [x] check worktree is dirty (v1.8+)
+    - add flag `--skip-worktree-check` will skip check (v1.8.1+)
     - check repository is dirty like `git status --porcelain`
     - if repository has submodule, will check, like `git submodule status --recursive`
 
@@ -117,6 +162,8 @@ $ convention-change-log init
 # if there is a log of type `feat`，then increment the MINOR version
 # if there is no log of type `feat`, then increment the PATCH version
 $ convention-change-log --dry-run
+# --skip-worktree-check will skip check worktree (v1.8.1+)
+$ convention-change-log --dry-run --skip-worktree-check
 
 # flat -r to set custom release version
 $ convention-change-log -r 0.1.0 --dry-run

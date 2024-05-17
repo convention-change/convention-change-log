@@ -43,6 +43,8 @@ type ChangeLogGeneratorFunc interface {
 
 	CheckRepository() error
 
+	CheckWorktreeDirty() error
+
 	GetHeadBranchName() string
 
 	GetGitRemoteInfo() git_info.GitRemoteInfo
@@ -77,4 +79,6 @@ type GenerateConfig struct {
 	FromCommit string
 
 	AutoPush bool
+
+	SkipWorktreeDirtyCheck bool
 }

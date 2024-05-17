@@ -82,6 +82,14 @@ func (c *GlobalCommand) globalExec() error {
 		return errCheckRepository
 	}
 
+	if !c.GenerateConfig.SkipWorktreeDirtyCheck {
+		errCheckWorktreeDirty := clGenerator.CheckWorktreeDirty()
+		if errCheckWorktreeDirty != nil {
+			slog.Error("check worktree dirty err: %v", errCheckWorktreeDirty)
+			return errCheckWorktreeDirty
+		}
+	}
+
 	if c.Verbose {
 		bytes, errJson := json.Marshal(clGenerator.GetGitRemoteInfo())
 		if errJson != nil {
@@ -108,6 +116,9 @@ func (c *GlobalCommand) globalExec() error {
 
 	if c.DryRun {
 		clGenerator.DryRun()
+		if c.GenerateConfig.SkipWorktreeDirtyCheck {
+			slog.Warnf("skip worktree dirty check, this will let new tag not you want!")
+		}
 		return nil
 	}
 
@@ -116,10 +127,15 @@ func (c *GlobalCommand) globalExec() error {
 		slog.Errorf(errDoChangeRepoFileByCommitLog, "do change repo file by commit log is error")
 		return exit_cli.Err(errDoChangeRepoFileByCommitLog)
 	}
+
 	errDoGitOperator := clGenerator.DoGitOperator()
 	if errDoGitOperator != nil {
 		slog.Errorf(errDoGitOperator, "git operator is error")
 		return errDoGitOperator
+	}
+
+	if c.GenerateConfig.SkipWorktreeDirtyCheck {
+		slog.Warnf("skip worktree dirty check, this will let new tag not you want!")
 	}
 
 	return nil
@@ -173,6 +189,8 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		FromCommit: c.String("from-commit"),
 
 		AutoPush: isAutoPush,
+
+		SkipWorktreeDirtyCheck: c.Bool("skip-worktree-check"),
 	}
 
 	specFilePath := filepath.Join(gitRootFolder, constant.VersionRcFileName)
