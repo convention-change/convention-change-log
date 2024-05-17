@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.8.1](https://github.com/convention-change/convention-change-log/compare/1.8.0...v1.8.1) (2024-05-18)
+
+### 🐛 Bug Fixes
+
+* add flag `--skip-worktree-check` worktree dirty check will error or want skip ([9bfd3c15](https://github.com/convention-change/convention-change-log/commit/9bfd3c152a578b064ed7945035ad6c8f3c2bc31e)), fix [#42](https://github.com/convention-change/convention-change-log/issues/42)
+
+### 📝 Documentation
+
+* add local repository dirty check (v1.8+) features ([91e9597b](https://github.com/convention-change/convention-change-log/commit/91e9597b3d8b9137d81304d4cf39493ae5b6267b))
+
+### 👷‍ Build System
+
+* github.com/sinlov-go/go-git-tools v1.13.0 ([36eb1663](https://github.com/convention-change/convention-change-log/commit/36eb1663c200dadb1509645ec47e77084336e3df))
+
 ## [1.8.0](https://github.com/convention-change/convention-change-log/compare/1.7.0...v1.8.0) (2024-05-17)
 
 ### 🐛 Bug Fixes
