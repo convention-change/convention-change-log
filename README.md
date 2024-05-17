@@ -73,6 +73,9 @@
 - [x] git url scheme default is `https` can change.(v1.8+)
     - use cli flag `--git-info-scheme` to change git info scheme, only support: https, http
     - in `.versionrc` has `cover-git-info-scheme` field as string, will change remote for example fill in `http`
+- [x] local repository dirty check (v1.8+)
+    - check repository is dirty like `git status --porcelain`
+    - if repository has submodule, will check, like `git submodule status --recursive`
 
 more use see `convention-change-log --help`
 
