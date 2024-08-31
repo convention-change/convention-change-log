@@ -72,12 +72,12 @@ func (c *ChangeLogGenerator) CheckWorktreeDirty() error {
 	if errCheckHasSubmodules == nil && submodules {
 		dirty, errCheckSubmodulesIsDirty := c.repository.CheckSubmodulesIsDirty()
 		if errCheckSubmodulesIsDirty != nil {
-			color.Printf(cmdErrorHelperCheckRepositoryInGitSubModule)
+			color.Print(cmdErrorHelperCheckRepositoryInGitSubModule)
 			color.Println("")
 			color.Println("")
 			return fmt.Errorf("check repo err, can not check submodules is dirty, error: %s", errCheckSubmodulesIsDirty)
 		} else if dirty {
-			color.Printf(cmdErrorHelperCheckRepositoryInGitSubModule)
+			color.Print(cmdErrorHelperCheckRepositoryInGitSubModule)
 			color.Println("")
 			color.Println("")
 			return fmt.Errorf("check repo err, submodules is dirty, please commit submodules")
@@ -95,7 +95,7 @@ func (c *ChangeLogGenerator) CheckWorktreeDirty() error {
 		return fmt.Errorf("check repo err, can not check worktree is dirty, error: %s", errWorktreeDirty)
 	} else {
 		if isWorktreeDirty {
-			color.Printf(cmdErrorHelperCheckRepositoryInNowIsDirty)
+			color.Print(cmdErrorHelperCheckRepositoryInNowIsDirty)
 			color.Println("")
 			color.Println("")
 			return fmt.Errorf("check repo err, worktree is dirty, please check")
@@ -279,17 +279,17 @@ func (c *ChangeLogGenerator) DryRun() {
 	color.Printf(cmdHelpDryRunTagRelease, c.genCfg.ReleaseTag)
 	color.Println("")
 	color.Println("")
-	color.Printf(cmdHelpFinishDryRun)
+	color.Print(cmdHelpFinishDryRun)
 	color.Println("")
 	color.Println("")
 
-	color.Printf(cmdHelperRepositorySafeTitle)
+	color.Print(cmdHelperRepositorySafeTitle)
 	color.Println()
 	if c.headBranchName == "main" {
-		color.Printf(cmdHelperRepositorySafeFormBranchMain)
+		color.Print(cmdHelperRepositorySafeFormBranchMain)
 		color.Println()
 	} else {
-		color.Printf(cmdHelperRepositorySafeFormBranchNow)
+		color.Print(cmdHelperRepositorySafeFormBranchNow)
 		color.Println()
 	}
 	color.Println()
@@ -362,23 +362,23 @@ func (c *ChangeLogGenerator) DoGitOperator() error {
 
 	errDoGit := c.doGit(c.headBranchName)
 	if errDoGit != nil {
-		color.Printf(cmdHelpGitCommitFail)
+		color.Print(cmdHelpGitCommitFail)
 		color.Println("")
-		color.Printf(cmdHelpGitCommitFixHead)
+		color.Print(cmdHelpGitCommitFixHead)
 		color.Println("")
 		color.Println("")
-		color.Printf(cmdHelpGitCommitCheckBranch)
+		color.Print(cmdHelpGitCommitCheckBranch)
 		color.Println("")
 		color.Printf(cmdHelpGitPushTryAgain, c.headBranchName)
 		color.Println("")
-		color.Printf(cmdHelpGitPushFailHint)
+		color.Print(cmdHelpGitPushFailHint)
 		color.Println("")
 		color.Println("")
-		color.Printf(cmdHelpGitCommitErrorHint)
+		color.Print(cmdHelpGitCommitErrorHint)
 		color.Println("")
 		color.Printf(cmdHelpGitCommitFixTag, c.genCfg.ReleaseTag)
 		color.Println("")
-		color.Printf(cmdHelpGitCommitResetSoft)
+		color.Print(cmdHelpGitCommitResetSoft)
 		color.Println("")
 		color.Println("")
 		return errDoGit

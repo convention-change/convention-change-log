@@ -45,12 +45,12 @@ func (n *ReadLatestCommand) Exec() error {
 	color.Bluef("full tag: %s%s\n", changeLogSpec.TagPrefix, reader.HistoryFirstTagShort())
 	color.Bluef("sort tag: %s\n", reader.HistoryFirstTagShort())
 	color.Greenf("\n=> Last change title\n")
-	color.Grayf(reader.HistoryFirstTitle())
+	color.Grayp(reader.HistoryFirstTitle())
 	color.Greenf("\n\n=> Last change content\n")
-	color.Grayf(reader.HistoryFirstContent())
+	color.Grayp(reader.HistoryFirstContent())
 	if reader.HistoryFirstChangeUrl() != "" {
 		color.Greenf("\n\n=> Last change compare Url\n")
-		color.Grayf(reader.HistoryFirstChangeUrl())
+		color.Grayp(reader.HistoryFirstChangeUrl())
 	}
 	color.Println()
 
