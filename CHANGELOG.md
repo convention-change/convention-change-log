@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.8.2](https://github.com/convention-change/convention-change-log/compare/1.8.1...v1.8.2) (2024-08-31)
+
+### 🐛 Bug Fixes
+
+* files with execution permissions, and pass build ID to goldie for change log generation ([c99897a7](https://github.com/convention-change/convention-change-log/commit/c99897a7d80672d3ba60bf47babbb9283da87ca7))
+
+### ♻ Refactor
+
+* use color.Print for single line outputs ([4f1b9f64](https://github.com/convention-change/convention-change-log/commit/4f1b9f64d5a6846fae3814ded67dd1bd7ec84b0f))
+
+### 👷‍ Build System
+
+* bump codecov/codecov-action from 4.4.1 to 4.5.0 ([9c00265e](https://github.com/convention-change/convention-change-log/commit/9c00265eeb9b2ef75de85c500d03f603cf140d5b))
+
+* bump codecov/codecov-action from 4.4.0 to 4.4.1 ([758c23af](https://github.com/convention-change/convention-change-log/commit/758c23af532db982fcb759b978bd22c0a94f2b56))
+
 ## [1.8.1](https://github.com/convention-change/convention-change-log/compare/1.8.0...v1.8.1) (2024-05-18)
 
 ### 🐛 Bug Fixes
