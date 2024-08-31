@@ -311,7 +311,7 @@ func (c *ChangeLogGenerator) DoChangeRepoFileByCommitLog() error {
 }
 
 func (c *ChangeLogGenerator) changeRepoLocalFiles(fullChangeLogContent string) error {
-	errWriteFile := filepath_plus.WriteFileByByte(c.genCfg.Outfile, []byte(fullChangeLogContent), os.FileMode(0766), true)
+	errWriteFile := filepath_plus.WriteFileByByte(c.genCfg.Outfile, []byte(fullChangeLogContent), os.FileMode(0o666), true)
 	if errWriteFile != nil {
 		return fmt.Errorf("WriteFileByByte err: %v", errWriteFile)
 	}

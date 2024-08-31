@@ -11,9 +11,17 @@ import (
 	"os"
 )
 
+var buildID string
+
+func init() {
+	if buildID == "" {
+		buildID = "unknown"
+	}
+}
+
 func main() {
 	pkgJson.InitPkgJsonContent(convention_change_log.PackageJson)
-	app := cli.NewCliApp()
+	app := cli.NewCliApp(buildID)
 	args := os.Args
 	if len(args) < 2 {
 		fmt.Printf("%s %s --help\n", color.Yellow.Render("please see help as:"), app.Name)

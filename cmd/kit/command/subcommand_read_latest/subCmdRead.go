@@ -55,7 +55,7 @@ func (n *ReadLatestCommand) Exec() error {
 	color.Println()
 
 	if n.isWriteLastChangeFile {
-		errWrite := filepath_plus.WriteFileByByte(n.WriteLastChangeFileFullPath, []byte(reader.HistoryFirstContent()), os.FileMode(0766), true)
+		errWrite := filepath_plus.WriteFileByByte(n.WriteLastChangeFileFullPath, []byte(reader.HistoryFirstContent()), os.FileMode(0o666), true)
 		if errWrite != nil {
 			return exit_cli.Format("write last change to file: %s err: %v\n", n.WriteLastChangeFileFullPath, errWrite)
 		}

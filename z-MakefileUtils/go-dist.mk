@@ -22,6 +22,7 @@
 ENV_INFO_DIST_BIN_NAME=${ENV_ROOT_BUILD_BIN_NAME}
 ENV_INFO_DIST_VERSION=${ENV_DIST_VERSION}
 ENV_INFO_DIST_MARK=${ENV_DIST_MARK}
+ENV_INFO_DIST_CODE_MARK=${ENV_DIST_CODE_MARK}
 ENV_INFO_DIST_BUILD_ENTRANCE=${ENV_ROOT_BUILD_ENTRANCE}
 ENV_INFO_DIST_GO_OS=${ENV_DIST_GO_OS}
 ENV_INFO_DIST_GO_ARCH=${ENV_DIST_GO_ARCH}
@@ -79,6 +80,7 @@ distEnv:
 	@echo "ENV_INFO_DIST_BIN_NAME                    ${ENV_INFO_DIST_BIN_NAME}"
 	@echo "ENV_INFO_DIST_VERSION                     ${ENV_INFO_DIST_VERSION}"
 	@echo "ENV_INFO_DIST_MARK                        ${ENV_INFO_DIST_MARK}"
+	@echo "ENV_INFO_DIST_CODE_MARK                   ${ENV_INFO_DIST_CODE_MARK}"
 	@echo "ENV_INFO_DIST_BUILD_ENTRANCE              ${ENV_INFO_DIST_BUILD_ENTRANCE}"
 	@echo ""
 	@echo "ENV_INFO_DIST_GO_OS                       ${ENV_INFO_DIST_GO_OS}"
@@ -97,7 +99,7 @@ define go_local_binary_dist
 	@echo "      build out at path        : $(strip ${2})"
 	@echo "      build out binary path    : $(strip ${3})"
 	@echo "      build entrance           : $(strip ${4})"
-	go build -o $(strip ${3}) $(strip ${4})
+	go build -ldflags '-X main.buildID=${ENV_INFO_DIST_CODE_MARK}' -o $(strip ${3}) $(strip ${4})
 	@echo "go local binary out at: $(strip ${3})"
 endef
 
@@ -114,7 +116,7 @@ define go_static_binary_dist
 	GOOS=$(strip $(4)) GOARCH=$(strip $(5)) go build \
 	-a \
 	-tags netgo \
-	-ldflags '-w -s --extldflags "-static -fpic"' \
+	-ldflags '-X main.buildID=${ENV_INFO_DIST_CODE_MARK} -w -s --extldflags "-static -fpic"' \
 	-o $(strip $(6)) $(strip ${ENV_INFO_DIST_BUILD_ENTRANCE})
 	@echo "=> end $(strip $(6))"
 endef
@@ -135,7 +137,7 @@ $(warning "-> windows make shell cross compiling may be take mistake")
 	go build \
 	-a \
 	-tags netgo \
-	-ldflags '-w -s --extldflags "-static"' \
+	-ldflags '-X main.buildID=${ENV_INFO_DIST_CODE_MARK} -w -s --extldflags "-static"' \
 	-o $(strip $(6)) $(strip ${ENV_INFO_DIST_BUILD_ENTRANCE})
 	@echo "=> end $(strip $(6)).exe"
 endef

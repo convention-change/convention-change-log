@@ -39,7 +39,7 @@ func (n *InitCommand) Exec() error {
 
 	var spec *convention.ConventionalChangeLogSpec
 	if !n.MoreConfig {
-		err := filepath_plus.WriteFileByByte(n.TargetFile, []byte(convention_change_log.ResVersionRcBeautyJson), os.FileMode(0766), false)
+		err := filepath_plus.WriteFileByByte(n.TargetFile, []byte(convention_change_log.ResVersionRcBeautyJson), os.FileMode(0o666), false)
 		if err != nil {
 			slog.Error("init .versionrc file err: %v", err)
 			return exit_cli.Err(err)

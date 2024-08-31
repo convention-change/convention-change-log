@@ -13,12 +13,17 @@ on:
         default: ''
         required: false
         type: string
+      go_build_id:
+        description: 'setup go build id'
+        default: 'unknown'
+        required: false
+        type: string
 
 env:
   DIST_BINARY_NAME: convention-change-log # to change your binary name, windows will auto add .exe
   DIST_BUILD_ENTRANCE: cmd/convention-change-log/main.go # to change your build entrance
 
-permissions:
+permissions: # https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions#permissions
   contents: write
 
 jobs:
@@ -69,7 +74,7 @@ jobs:
           go mod verify
           go mod download -x
           go mod tidy -v
-
+          # go mod vendor
           # Replace with the name of your binary
           binary_name=${{ env.DIST_BINARY_NAME }}
 
@@ -80,7 +85,7 @@ jobs:
           dirname="${{ env.DIST_BINARY_NAME }}-${{ inputs.version_name }}-${{ matrix.go_os }}-${{ matrix.go_arch }}"
 
           # change build tag and ldflags if you need
-          go build -a -tags netgo -ldflags '-w -s --extldflags "-static -fpic"' -o $dirname/$binary_name ${{ env.DIST_BUILD_ENTRANCE }}
+          go build -a -tags netgo -ldflags '-X main.buildID=${{ inputs.go_build_id }} -w -s --extldflags "-static -fpic"' -o $dirname/$binary_name ${{ env.DIST_BUILD_ENTRANCE }}
 
           # add more resource to archive
           # mv doc/cmd.md "$dirname"
