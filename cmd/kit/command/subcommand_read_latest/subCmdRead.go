@@ -45,17 +45,17 @@ func (n *ReadLatestCommand) Exec() error {
 	color.Bluef("full tag: %s%s\n", changeLogSpec.TagPrefix, reader.HistoryFirstTagShort())
 	color.Bluef("sort tag: %s\n", reader.HistoryFirstTagShort())
 	color.Greenf("\n=> Last change title\n")
-	color.Grayf(reader.HistoryFirstTitle())
+	color.Grayp(reader.HistoryFirstTitle())
 	color.Greenf("\n\n=> Last change content\n")
-	color.Grayf(reader.HistoryFirstContent())
+	color.Grayp(reader.HistoryFirstContent())
 	if reader.HistoryFirstChangeUrl() != "" {
 		color.Greenf("\n\n=> Last change compare Url\n")
-		color.Grayf(reader.HistoryFirstChangeUrl())
+		color.Grayp(reader.HistoryFirstChangeUrl())
 	}
 	color.Println()
 
 	if n.isWriteLastChangeFile {
-		errWrite := filepath_plus.WriteFileByByte(n.WriteLastChangeFileFullPath, []byte(reader.HistoryFirstContent()), os.FileMode(0766), true)
+		errWrite := filepath_plus.WriteFileByByte(n.WriteLastChangeFileFullPath, []byte(reader.HistoryFirstContent()), os.FileMode(0o666), true)
 		if errWrite != nil {
 			return exit_cli.Format("write last change to file: %s err: %v\n", n.WriteLastChangeFileFullPath, errWrite)
 		}

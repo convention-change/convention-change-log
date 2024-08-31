@@ -5,7 +5,6 @@ import (
 	"github.com/convention-change/convention-change-log/cmd/kit/command"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/subcommand_init"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/subcommand_read_latest"
-	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/convention-change/convention-change-log/internal/pkgJson"
 	"github.com/convention-change/convention-change-log/internal/urfave_cli"
 	"github.com/urfave/cli/v2"
@@ -13,7 +12,11 @@ import (
 	"time"
 )
 
-func NewCliApp() *cli.App {
+const (
+	copyrightStartYear = "2023"
+)
+
+func NewCliApp(buildId string) *cli.App {
 
 	app := cli.NewApp()
 	app.EnableBashCompletion = true
@@ -26,8 +29,8 @@ func NewCliApp() *cli.App {
 
 	year := time.Now().Year()
 	jsonAuthor := pkgJson.GetPackageJsonAuthor()
-	app.Copyright = fmt.Sprintf("© %s-%d %s by: %s, run on %s %s",
-		constant.CopyrightStartYear, year, jsonAuthor.Name, runtime.Version(), runtime.GOOS, runtime.GOARCH)
+	app.Copyright = fmt.Sprintf("© %s-%d %s by: %s, build id: %s, run on %s %s",
+		copyrightStartYear, year, jsonAuthor.Name, runtime.Version(), buildId, runtime.GOOS, runtime.GOARCH)
 	author := &cli.Author{
 		Name:  jsonAuthor.Name,
 		Email: jsonAuthor.Email,

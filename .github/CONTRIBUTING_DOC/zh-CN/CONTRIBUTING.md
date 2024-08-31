@@ -22,9 +22,11 @@
 
 ### 新建 Issues
 
-如果您准备贡献，请单击此处 [issues/new/choose](../../../../issues/new/choose)
+如果您准备贡献，请单击此处 [issues/new/choose](../../../../../issues/new/choose)
 
-> 如果此repo已打开问题，请首先查看我们标记为 [`help wanted`](../../../../issues?q=is%3Aopen+is%3Aissue+label%3A"help+wanted") 或者 [`good first issue`](../../../../issues?q=is%3Aopen+is%3Aissue+label%3A"good+first+issue")
+> 如果此repo已打开问题，请首先查看我们标记为
+> [`help wanted`](../../../../../issues?q=is%3Aopen+is%3Aissue+label%3A"help+wanted")
+> 或者 [`good first issue`](../../../../../issues?q=is%3Aopen+is%3Aissue+label%3A"good+first+issue").
 
 你可以对这个问题发表评论，让别人知道你有兴趣解决这个问题，或者提出问题.
 

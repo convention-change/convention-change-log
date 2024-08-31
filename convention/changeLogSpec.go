@@ -210,7 +210,7 @@ func LoadConventionalChangeLogSpecByData(logSpec []byte) (*ConventionalChangeLog
 		spec.HashLength = 8
 	}
 
-	if spec.IssuePrefixes == nil || len(spec.IssuePrefixes) == 0 {
+	if len(spec.IssuePrefixes) == 0 {
 		spec.IssuePrefixes = []string{"#"}
 	}
 
