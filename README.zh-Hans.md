@@ -26,7 +26,7 @@
 # install at $(GO_PATH)/bin
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@latest
 # install version v1.8.1
-$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.8.1
+$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.8.3
 ````
 
 - 或在这里下载二进制包 [release](https://github.com/convention-change/convention-change-log/releases)

@@ -347,9 +347,10 @@ func (c *ChangeLogGenerator) changeRepoLocalFiles(fullChangeLogContent string) e
 					slog.Warnf("not find update submodule package.json path: %s", subModulePkgJsonPath)
 					continue
 				}
-				err := pkgJson.ReplaceJsonVersionByLine(pkgJsonPath, c.genCfg.ReleaseAs)
+				slog.Infof("update submodule package.json version in file: %s", subModulePkgJsonPath)
+				err := pkgJson.ReplaceJsonVersionByLine(subModulePkgJsonPath, c.genCfg.ReleaseAs)
 				if err != nil {
-					slog.Error("submodule package.json version ReplaceJsonVersionByLine", err)
+					return fmt.Errorf("submodule package.json change ReplaceJsonVersionByLine %v", err)
 				}
 			}
 		}
