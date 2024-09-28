@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.8.3](https://github.com/convention-change/convention-change-log/compare/1.8.2...v1.8.3) (2024-09-29)
+
+### 🐛 Bug Fixes
+
+* monorepo-pkg-path replace package.json error ([78db6282](https://github.com/convention-change/convention-change-log/commit/78db628238f190b7e37561e50a4e0ba3c95208a3)), fix [#48](https://github.com/convention-change/convention-change-log/issues/48)
+
+### 📝 Documentation
+
+* update README to reflect v1.8.3 installation ([513c7cb6](https://github.com/convention-change/convention-change-log/commit/513c7cb62c3cf0b9cf16b82b567a3e96002dfc9d))
+
 ## [1.8.2](https://github.com/convention-change/convention-change-log/compare/1.8.1...v1.8.2) (2024-08-31)
 
 ### 🐛 Bug Fixes
