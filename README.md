@@ -15,6 +15,7 @@
 
 - [x] subcommand `init` to init config file
     - init `.versionrc` file at git repository root path, as default config file
+        - `--dry-init` only show init config file content (1.9.+) 
 
 ```json
 {
@@ -139,8 +140,8 @@ more use see `convention-change-log --help`
 ```bash
 # install at $(GO_PATH)/bin
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@latest
-# install version v1.8.1
-$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.8.3
+# install version @v1.9.0
+$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.9.0
 ````
 
 - or install by [release](https://github.com/convention-change/convention-change-log/releases) and add environment
@@ -153,6 +154,8 @@ $ go install -v github.com/convention-change/convention-change-log/cmd/conventio
 # generate configuration in git repository root path
 $ convention-change-log init
 # files will be added `.versionrc`
+$ convention-change-log init --dry-init
+# only configuration files will be displayed
 
 ## To generate the change log, this must run the repository root path and the project must be managed by git.
 # it is recommended to be implemented every time --dry-run check to prevent errors

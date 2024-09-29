@@ -266,6 +266,7 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 }
 
 func (c *ChangeLogGenerator) DryRun() {
+
 	latestMarkdownContent := sample_mk.GenerateText(c.changelogNodesWithHead)
 	color.Printf(cmdHelpDryRunOutputting, c.genCfg.Outfile)
 	color.Println("")
@@ -291,6 +292,21 @@ func (c *ChangeLogGenerator) DryRun() {
 	} else {
 		color.Print(cmdHelperRepositorySafeFormBranchNow)
 		color.Println()
+	}
+	color.Println()
+
+	if len(c.spec.MonoRepoPkgPathList) > 0 {
+		// try update monorepo pkg list
+		color.Magentaf("will update [ monorepo-pkg-path ] package.json in file list:\n")
+		for _, pkgPath := range c.spec.MonoRepoPkgPathList {
+			// replace file line by regexp
+			subModulePkgJsonPath := filepath.Join(c.rootPath, pkgPath, "package.json")
+			color.Greenf("%s\n", subModulePkgJsonPath)
+			if !filepath_plus.PathExistsFast(subModulePkgJsonPath) {
+				slog.Warnf("not find update monorepo-pkg-path package.json path: %s", subModulePkgJsonPath)
+				continue
+			}
+		}
 	}
 	color.Println()
 }

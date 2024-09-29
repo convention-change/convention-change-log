@@ -6,6 +6,7 @@ import (
 	"github.com/convention-change/convention-change-log/cmd/kit/command/exit_cli"
 	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/convention-change/convention-change-log/convention"
+	"github.com/convention-change/convention-change-log/internal/tools"
 	"os"
 	"path/filepath"
 
@@ -23,7 +24,8 @@ const (
 var commandEntry *InitCommand
 
 type InitCommand struct {
-	isDebug bool
+	isDebug   bool
+	isDruInit bool
 
 	TargetFile string
 	MoreConfig bool
@@ -39,6 +41,13 @@ func (n *InitCommand) Exec() error {
 
 	var spec *convention.ConventionalChangeLogSpec
 	if !n.MoreConfig {
+
+		if n.isDruInit {
+			color.Greenln("will init at: %s", n.TargetFile)
+			color.Grayf("%s", convention_change_log.ResVersionRcBeautyJson)
+			return nil
+		}
+
 		err := filepath_plus.WriteFileByByte(n.TargetFile, []byte(convention_change_log.ResVersionRcBeautyJson), os.FileMode(0o666), false)
 		if err != nil {
 			slog.Error("init .versionrc file err: %v", err)
@@ -48,6 +57,18 @@ func (n *InitCommand) Exec() error {
 	}
 	logSpec := convention.DefaultConventionalChangeLogSpec()
 	spec = &logSpec
+
+	if n.isDruInit {
+		color.Greenln("will init at: %s", n.TargetFile)
+		res, errJsonMarshalBeauty := tools.JsonMarshalBeauty(spec)
+		if errJsonMarshalBeauty != nil {
+			return errJsonMarshalBeauty
+		}
+		color.Grayf("%s", res)
+
+		return nil
+	}
+
 	err := filepath_plus.WriteFileAsJsonBeauty(n.TargetFile, spec, false)
 	if err != nil {
 		slog.Error("write .versionrc file err: %v", err)
@@ -64,6 +85,10 @@ func flag() []cli.Flag {
 			Name:  "more",
 			Usage: "more config at init",
 		},
+		&cli.BoolFlag{
+			Name:  "dry-init",
+			Usage: "only show init config file content (1.9.+)",
+		},
 	}
 }
 
@@ -77,8 +102,9 @@ func withEntry(c *cli.Context) (*InitCommand, error) {
 	return &InitCommand{
 		isDebug: globalEntry.Verbose,
 
-		TargetFile: targetFile,
+		isDruInit: c.Bool("dry-init"),
 
+		TargetFile: targetFile,
 		MoreConfig: c.Bool("more"),
 	}, nil
 }
@@ -98,7 +124,7 @@ func Command() []*cli.Command {
 	return []*cli.Command{
 		{
 			Name:   commandName,
-			Usage:  "init convention change log config, this cli must run in git root folder",
+			Usage:  "init convention change log config, this cli must run in git root folder\ncan use --dry-run",
 			Action: action,
 			Flags:  flag(),
 		},

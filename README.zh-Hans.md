@@ -25,8 +25,8 @@
 ```bash
 # install at $(GO_PATH)/bin
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@latest
-# install version v1.8.1
-$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.8.3
+# install version @v1.9.0
+$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.9.0
 ````
 
 - 或在这里下载二进制包 [release](https://github.com/convention-change/convention-change-log/releases)
@@ -39,6 +39,8 @@ $ go install -v github.com/convention-change/convention-change-log/cmd/conventio
 # 在 git 存储库根路径生成配置
 $ convention-change-log init
 # 将添加文件 `.versionrc`
+$ convention-change-log init --dry-init
+# 只会显示 配置文件
 
 ## 生成更改日志，这必须运行存储库根路径和项目必须由git管理
 # 建议每次都执行 --dry-run 检查以防止错误
