@@ -1,12 +1,12 @@
 package convention
 
 import (
+	"github.com/go-git/go-git/v5/plumbing"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
 
-	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/sebdah/goldie/v2"
 	"github.com/sinlov-go/go-git-tools/git"
 	"github.com/stretchr/testify/assert"
@@ -41,6 +41,27 @@ func TestNewCommitWithOutType(t *testing.T) {
 			name: "Commit message with scope",
 			c: git.Commit{
 				Message: "feat(lang): add polish language",
+			},
+			gitHttpInfo: gitHttpInfoDefault,
+		},
+		{
+			name: "Commit message with more scope",
+			c: git.Commit{
+				Message: "feat(platform-switch): add macOS 64-bit standalone build support",
+			},
+			gitHttpInfo: gitHttpInfoDefault,
+		},
+		{
+			name: "Commit message with scope under line",
+			c: git.Commit{
+				Message: "build(ci_woodpecker): add macOS 64-bit standalone build support",
+			},
+			gitHttpInfo: gitHttpInfoDefault,
+		},
+		{
+			name: "Commit message with scope dot",
+			c: git.Commit{
+				Message: "build(ci.woodpecker): add macOS 64-bit standalone build support",
 			},
 			gitHttpInfo: gitHttpInfoDefault,
 		},

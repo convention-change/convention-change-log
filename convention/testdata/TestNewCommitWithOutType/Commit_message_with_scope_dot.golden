@@ -1,0 +1,13 @@
+{
+  "RawHeader": "add macOS 64-bit standalone build support",
+  "Type": "build",
+  "Scope": "ci.woodpecker",
+  "BreakingChanges": {
+    "Describe": ""
+  },
+  "IssueInfo": {
+    "IssueReference": "",
+    "IssuePrefix": "",
+    "IssueReferencesId": 0
+  }
+}
