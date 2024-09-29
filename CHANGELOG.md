@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.9.1](https://github.com/convention-change/convention-change-log/compare/1.9.0...v1.9.1) (2024-09-29)
+
+### 🐛 Bug Fixes
+
+* allow hyphens, dots, and underscores in type and scope ([f2a6f7b7](https://github.com/convention-change/convention-change-log/commit/f2a6f7b7fbd874f3a75d0c7dd8085d18af7bb8b1))
+
 ## [1.9.0](https://github.com/convention-change/convention-change-log/compare/1.8.3...v1.9.0) (2024-09-29)
 
 ### ✨ Features
