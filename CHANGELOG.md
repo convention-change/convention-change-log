@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.9.0](https://github.com/convention-change/convention-change-log/compare/1.8.3...v1.9.0) (2024-09-29)
+
+### ✨ Features
+
+* add --dry-init flag to display config content ([c8613207](https://github.com/convention-change/convention-change-log/commit/c86132078a1783a0d2cffa8ba6c202cc654396ac))
+
 ## [1.8.3](https://github.com/convention-change/convention-change-log/compare/1.8.2...v1.8.3) (2024-09-29)
 
 ### 🐛 Bug Fixes
