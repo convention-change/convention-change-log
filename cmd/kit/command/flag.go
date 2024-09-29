@@ -49,6 +49,11 @@ func MainFlag() []cli.Flag {
 			Name:  "auto-push",
 			Usage: "enable auto git push after generating changelog, and will ignore --dry-run",
 		},
+		&cli.BoolFlag{
+			Name:  "change-version",
+			Usage: "only change version, by versionrc settings (1.10+)",
+			Value: false,
+		},
 	}
 }
 

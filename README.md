@@ -122,6 +122,8 @@
     - add flag `--skip-worktree-check` will skip check (v1.8.1+)
     - check repository is dirty like `git status --porcelain`
     - if repository has submodule, will check, like `git submodule status --recursive`
+- [x] `--change-version` only change version file by versionrc config (1.10+)
+    - It is affected by `--dry-run` by default and can be executed through `--dry-run-disable`
 
 more use see `convention-change-log --help`
 
@@ -140,8 +142,8 @@ more use see `convention-change-log --help`
 ```bash
 # install at $(GO_PATH)/bin
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@latest
-# install version @v1.9.1
-$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.9.1
+# install version @v1.10.0
+$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.10.0
 ````
 
 - or install by [release](https://github.com/convention-change/convention-change-log/releases) and add environment
@@ -179,6 +181,11 @@ $ convention-change-log --dry-run false
 $ convention-change-log --dry-run-disable
 # you can also write like this
 $ convention-change-log -r 1.0.0 --dry-run-disable
+
+# only change version file by versionrc config (1.10+)
+$ convention-change-log --change-version --dry-run
+# It is affected by `--dry-run` by default and can be executed through `--dry-run-disable`
+$ convention-change-log --change-version --dry-run-disable
 
 # more practical automatic push to remote, after v1.7.0, open --auto-push will ignore --dry-run
 $ convention-change-log --auto-push

@@ -114,6 +114,20 @@ func (c *GlobalCommand) globalExec() error {
 		return errGenerateCommitNodes
 	}
 
+	if c.GenerateConfig.IsOnlyChangeVersion {
+
+		if c.DryRun {
+			clGenerator.DryRunChangeVersion()
+			return nil
+		}
+
+		errChangeVersion := clGenerator.ChangeVersion()
+		if errChangeVersion != nil {
+			return errChangeVersion
+		}
+		return nil
+	}
+
 	if c.DryRun {
 		clGenerator.DryRun()
 		if c.GenerateConfig.SkipWorktreeDirtyCheck {
@@ -191,6 +205,8 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		AutoPush: isAutoPush,
 
 		SkipWorktreeDirtyCheck: c.Bool("skip-worktree-check"),
+
+		IsOnlyChangeVersion: c.Bool("change-version"),
 	}
 
 	specFilePath := filepath.Join(gitRootFolder, constant.VersionRcFileName)

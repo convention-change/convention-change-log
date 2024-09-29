@@ -62,6 +62,10 @@ type ChangeLogGeneratorFunc interface {
 	DoChangeRepoFileByCommitLog() error
 
 	DoGitOperator() error
+
+	DryRunChangeVersion()
+
+	ChangeVersion() error
 }
 
 type GenerateConfig struct {
@@ -81,4 +85,5 @@ type GenerateConfig struct {
 	AutoPush bool
 
 	SkipWorktreeDirtyCheck bool
+	IsOnlyChangeVersion    bool
 }

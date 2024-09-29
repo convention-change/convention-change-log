@@ -294,21 +294,6 @@ func (c *ChangeLogGenerator) DryRun() {
 		color.Println()
 	}
 	color.Println()
-
-	if len(c.spec.MonoRepoPkgPathList) > 0 {
-		// try update monorepo pkg list
-		color.Magentaf("will update [ monorepo-pkg-path ] package.json in file list:\n")
-		for _, pkgPath := range c.spec.MonoRepoPkgPathList {
-			// replace file line by regexp
-			subModulePkgJsonPath := filepath.Join(c.rootPath, pkgPath, "package.json")
-			color.Greenf("%s\n", subModulePkgJsonPath)
-			if !filepath_plus.PathExistsFast(subModulePkgJsonPath) {
-				slog.Warnf("not find update monorepo-pkg-path package.json path: %s", subModulePkgJsonPath)
-				continue
-			}
-		}
-	}
-	color.Println()
 }
 
 func (c *ChangeLogGenerator) DoChangeRepoFileByCommitLog() error {
@@ -332,44 +317,9 @@ func (c *ChangeLogGenerator) changeRepoLocalFiles(fullChangeLogContent string) e
 		return fmt.Errorf("WriteFileByByte err: %v", errWriteFile)
 	}
 
-	if c.genCfg.ReleaseAs != "" {
-		// try update node
-		pkgJsonPath := filepath.Join(c.rootPath, "package.json")
-		if filepath_plus.PathExistsFast(pkgJsonPath) {
-			// replace file line by regexp
-			slog.Debugf("try update node version in file: %s", pkgJsonPath)
-			err := pkgJson.ReplaceJsonVersionByLine(pkgJsonPath, c.genCfg.ReleaseAs)
-			if err != nil {
-				slog.Error("ReplaceJsonVersionByLine", err)
-			}
-			pkgJsonLockPath := filepath.Join(c.rootPath, "package-lock.json")
-			if filepath_plus.PathExistsFast(pkgJsonLockPath) {
-				output, errNpmInstall := exec.Command("npm", "install").CombinedOutput()
-				if errNpmInstall != nil {
-					slog.Error("do Command npm install error", errNpmInstall)
-				}
-				slog.Debugf("npm install output:\n%s", output)
-			}
-		}
-
-		// try update monorepo
-		if len(c.spec.MonoRepoPkgPathList) > 0 {
-			// try update monorepo pkg list
-			for _, pkgPath := range c.spec.MonoRepoPkgPathList {
-				// replace file line by regexp
-				subModulePkgJsonPath := filepath.Join(c.rootPath, pkgPath, "package.json")
-				slog.Debugf("try update submodule package.json version in file: %s", subModulePkgJsonPath)
-				if !filepath_plus.PathExistsFast(subModulePkgJsonPath) {
-					slog.Warnf("not find update submodule package.json path: %s", subModulePkgJsonPath)
-					continue
-				}
-				slog.Infof("update submodule package.json version in file: %s", subModulePkgJsonPath)
-				err := pkgJson.ReplaceJsonVersionByLine(subModulePkgJsonPath, c.genCfg.ReleaseAs)
-				if err != nil {
-					return fmt.Errorf("submodule package.json change ReplaceJsonVersionByLine %v", err)
-				}
-			}
-		}
+	errChangeVersion := c.ChangeVersion()
+	if errChangeVersion != nil {
+		return errChangeVersion
 	}
 
 	return nil
@@ -400,6 +350,8 @@ func (c *ChangeLogGenerator) DoGitOperator() error {
 		color.Println("")
 		return errDoGit
 	}
+
+	c.DryRunChangeVersion()
 
 	return nil
 }
@@ -459,5 +411,68 @@ func (c *ChangeLogGenerator) doGit(branchName string) error {
 
 	color.Printf(cmdHelpGitPushRun, branchName)
 	color.Println("")
+	return nil
+}
+
+func (c *ChangeLogGenerator) DryRunChangeVersion() {
+	if len(c.spec.MonoRepoPkgPathList) > 0 {
+		// try update monorepo pkg list
+		color.Magentaf("will update [ monorepo-pkg-path ] package.json version to ( %s )in file list:\n", c.genCfg.ReleaseAs)
+		for _, pkgPath := range c.spec.MonoRepoPkgPathList {
+			// replace file line by regexp
+			subModulePkgJsonPath := filepath.Join(c.rootPath, pkgPath, "package.json")
+			color.Greenf("%s\n", subModulePkgJsonPath)
+			if !filepath_plus.PathExistsFast(subModulePkgJsonPath) {
+				slog.Warnf("not find update monorepo-pkg-path package.json path: %s", subModulePkgJsonPath)
+				continue
+			}
+		}
+	}
+	color.Println()
+}
+
+func (c *ChangeLogGenerator) ChangeVersion() error {
+
+	if c.genCfg.ReleaseAs != "" {
+		// try update node
+		pkgJsonPath := filepath.Join(c.rootPath, "package.json")
+		if filepath_plus.PathExistsFast(pkgJsonPath) {
+			// replace file line by regexp
+			slog.Debugf("try update node version in file: %s", pkgJsonPath)
+			err := pkgJson.ReplaceJsonVersionByLine(pkgJsonPath, c.genCfg.ReleaseAs)
+			if err != nil {
+				slog.Error("ReplaceJsonVersionByLine", err)
+			}
+			pkgJsonLockPath := filepath.Join(c.rootPath, "package-lock.json")
+			if filepath_plus.PathExistsFast(pkgJsonLockPath) {
+				output, errNpmInstall := exec.Command("npm", "install").CombinedOutput()
+				if errNpmInstall != nil {
+					slog.Error("do Command npm install error", errNpmInstall)
+				}
+				slog.Debugf("npm install output:\n%s", output)
+			}
+			slog.Infof("update root package.json version ( %s )  in file: %s", c.genCfg.ReleaseAs, pkgJsonPath)
+		}
+
+		// try update monorepo
+		if len(c.spec.MonoRepoPkgPathList) > 0 {
+			// try update monorepo pkg list
+			for _, pkgPath := range c.spec.MonoRepoPkgPathList {
+				// replace file line by regexp
+				subModulePkgJsonPath := filepath.Join(c.rootPath, pkgPath, "package.json")
+				slog.Debugf("try update submodule package.json version in file: %s", subModulePkgJsonPath)
+				if !filepath_plus.PathExistsFast(subModulePkgJsonPath) {
+					slog.Warnf("not find update submodule package.json path: %s", subModulePkgJsonPath)
+					continue
+				}
+				slog.Infof("update mono-repo package.json version ( %s )  in file: %s", c.genCfg.ReleaseAs, subModulePkgJsonPath)
+				err := pkgJson.ReplaceJsonVersionByLine(subModulePkgJsonPath, c.genCfg.ReleaseAs)
+				if err != nil {
+					return fmt.Errorf("submodule package.json change ReplaceJsonVersionByLine %v", err)
+				}
+			}
+		}
+	}
+
 	return nil
 }

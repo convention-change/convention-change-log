@@ -25,8 +25,8 @@
 ```bash
 # install at $(GO_PATH)/bin
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@latest
-# install version @v1.9.1
-$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.9.1
+# install version @v1.10.0
+$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.10.0
 ````
 
 - 或在这里下载二进制包 [release](https://github.com/convention-change/convention-change-log/releases)
@@ -64,6 +64,11 @@ $ convention-change-log --dry-run false
 $ convention-change-log --dry-run-disable
 # 也可以这么写
 $ convention-change-log -r 1.0.0 --dry-run-disable
+
+# 仅通过 versionrc 配置更改版本 文件 (1.10+)
+$ convention-change-log --change-version --dry-run
+# 默认会被 `--dry-run` 影响，可以通过 `--dry-run-disable` 执行
+$ convention-change-log --change-version --dry-run-disable
 
 # 更实用的自动推送到远程，v1.7.0 后，开启 --auto-push 会忽略 --dry-run
 $ convention-change-log --auto-push
