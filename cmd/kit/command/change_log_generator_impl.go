@@ -294,6 +294,8 @@ func (c *ChangeLogGenerator) DryRun() {
 		color.Println()
 	}
 	color.Println()
+
+	c.DryRunChangeVersion()
 }
 
 func (c *ChangeLogGenerator) DoChangeRepoFileByCommitLog() error {
@@ -350,8 +352,6 @@ func (c *ChangeLogGenerator) DoGitOperator() error {
 		color.Println("")
 		return errDoGit
 	}
-
-	c.DryRunChangeVersion()
 
 	return nil
 }

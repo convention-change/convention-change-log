@@ -142,8 +142,8 @@ more use see `convention-change-log --help`
 ```bash
 # install at $(GO_PATH)/bin
 $ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@latest
-# install version @v1.10.0
-$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.10.0
+# install version @v1.10.1
+$ go install -v github.com/convention-change/convention-change-log/cmd/convention-change-log@v1.10.1
 ````
 
 - or install by [release](https://github.com/convention-change/convention-change-log/releases) and add environment
