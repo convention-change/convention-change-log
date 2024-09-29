@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.10.1](https://github.com/convention-change/convention-change-log/compare/1.10.0...v1.10.1) (2024-09-29)
+
+### ♻ Refactor
+
+* move dry run version change to appropriate locationChange ([1eb49b69](https://github.com/convention-change/convention-change-log/commit/1eb49b699af46880e65724b709c8285bf42bfe93))
+
 ## [1.10.0](https://github.com/convention-change/convention-change-log/compare/1.9.1...v1.10.0) (2024-09-29)
 
 ### ✨ Features
