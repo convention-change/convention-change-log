@@ -7,7 +7,7 @@ import (
 	"github.com/convention-change/convention-change-log/changelog"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/exit_cli"
 	"github.com/convention-change/convention-change-log/convention"
-	"github.com/convention-change/convention-change-log/internal/pkgJson"
+	"github.com/convention-change/convention-change-log/internal/pkg_kit"
 	goGit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/storage/memory"
 	"github.com/gookit/color"
@@ -439,7 +439,7 @@ func (c *ChangeLogGenerator) ChangeVersion() error {
 		if filepath_plus.PathExistsFast(pkgJsonPath) {
 			// replace file line by regexp
 			slog.Debugf("try update node version in file: %s", pkgJsonPath)
-			err := pkgJson.ReplaceJsonVersionByLine(pkgJsonPath, c.genCfg.ReleaseAs)
+			err := pkg_kit.ReplaceJsonVersionByLine(pkgJsonPath, c.genCfg.ReleaseAs)
 			if err != nil {
 				slog.Error("ReplaceJsonVersionByLine", err)
 			}
@@ -466,7 +466,7 @@ func (c *ChangeLogGenerator) ChangeVersion() error {
 					continue
 				}
 				slog.Infof("update mono-repo package.json version ( %s )  in file: %s", c.genCfg.ReleaseAs, subModulePkgJsonPath)
-				err := pkgJson.ReplaceJsonVersionByLine(subModulePkgJsonPath, c.genCfg.ReleaseAs)
+				err := pkg_kit.ReplaceJsonVersionByLine(subModulePkgJsonPath, c.genCfg.ReleaseAs)
 				if err != nil {
 					return fmt.Errorf("submodule package.json change ReplaceJsonVersionByLine %v", err)
 				}

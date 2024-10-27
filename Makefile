@@ -67,6 +67,15 @@ include z-MakefileUtils/go-dist.mk
 # include MakeDockerRun.mk for docker run
 include z-MakefileUtils/MakeDocker.mk
 
+define buildGoBinaryLocal
+	@echo "=> start $(0)"
+	@echo "-> start build local OS: ${PLATFORM} ${OS_BIT}"
+	@echo "         build out path: ${1}"
+	@echo "         build entrance: ${2}"
+	@echo "         buildID: ${3}"
+	go build -ldflags "-X main.buildID=${3}" -o ${1} ${2}
+endef
+
 all: env
 
 env: distEnv
@@ -144,7 +153,7 @@ style: go.mod.verify go.mod.tidy go.mod.fmt go.mod.lint.run
 test: test.go
 
 .PHONY: ci
-ci: style go.mod.vet test runHelp
+ci: style go.mod.vet test run.help
 
 .PHONY: ci.test.benchmark
 ci.test.benchmark: test.go.benchmark
@@ -157,18 +166,18 @@ ci.all: ci ci.test.benchmark ci.coverage.show
 
 .PHONY: buildMain
 buildMain:
-	@echo "-> start build local OS: ${PLATFORM} ${OS_BIT}"
+	@echo "-> start buildMain local OS: ${PLATFORM} ${OS_BIT}"
 ifeq ($(OS),Windows_NT)
-	go build -ldflags "-X main.buildID=${ENV_DIST_CODE_MARK}" -o ${ENV_ROOT_BUILD_BIN_PATH}.exe ${ENV_ROOT_BUILD_ENTRANCE}
+	$(call buildGoBinaryLocal,${ENV_ROOT_BUILD_BIN_PATH}.exe,${ENV_ROOT_BUILD_ENTRANCE},${ENV_DIST_CODE_MARK})
 	@echo "-> finish build out path: $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe"
 else
-	@go build -ldflags "-X main.buildID=${ENV_DIST_CODE_MARK}" -o ${ENV_ROOT_BUILD_BIN_PATH} ${ENV_ROOT_BUILD_ENTRANCE}
+	$(call buildGoBinaryLocal,${ENV_ROOT_BUILD_BIN_PATH},${ENV_ROOT_BUILD_ENTRANCE},${ENV_DIST_CODE_MARK})
 	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
 endif
 
-.PHONY: devHelp
-devHelp: export CI_DEBUG=false
-devHelp: cleanBuild buildMain
+.PHONY: dev.help
+dev.help: export CI_DEBUG=false
+dev.help: cleanBuild buildMain
 ifeq ($(OS),Windows_NT)
 	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_HELP_ARGS}
 else
@@ -197,18 +206,29 @@ else
 	@cp ${ENV_ROOT_BUILD_BIN_PATH} ${ENV_GO_PATH}/bin
 endif
 
-.PHONY: runHelp
-runHelp: export CLI_VERBOSE=false
-runHelp:
+.PHONY: run.help
+run.help: export CLI_VERBOSE=false
+run.help:
 	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_HELP_ARGS}
 
 .PHONY: run
-run: cleanBuild buildMain
+run: export CLI_VERBOSE=false
+run:
 	@echo "=> run start"
 ifeq ($(OS),Windows_NT)
-	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_ARGS}
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_ARGS}
 else
-	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_ARGS}
+endif
+
+.PHONY: run
+run.debug: export CLI_VERBOSE=true
+run.debug:
+	@echo "=> run start"
+ifeq ($(OS),Windows_NT)
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_ARGS}
+else
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_ARGS}
 endif
 
 .PHONY: cloc
@@ -247,15 +267,16 @@ endif
 	@echo "~> make style                - run local code fmt and style check"
 	@echo "~> make ci                   - run CI tools tasks"
 	@echo ""
-	@echo "~> make devHelp             - run as develop mode see help with ${ENV_RUN_INFO_HELP_ARGS}"
-	@echo "~> make dev                 - run as develop mode"
+	@echo "~> make dev.help             - run as develop mode see help with ${ENV_RUN_INFO_HELP_ARGS}"
+	@echo "~> make dev                  - run as develop mode"
 ifeq ($(OS),Windows_NT)
-	@echo "~> make devInstallLocal     - install at $(subst /,\,${ENV_GO_PATH}/bin)"
+	@echo "~> make devInstallLocal      - install at $(subst /,\,${ENV_GO_PATH}/bin)"
 else
-	@echo "~> make devInstallLocal     - install at ${ENV_GO_PATH}/bin"
+	@echo "~> make devInstallLocal      - install at ${ENV_GO_PATH}/bin"
 endif
-	@echo "~> make runHelp             - run use ${ENV_RUN_INFO_HELP_ARGS}"
-	@echo "~> make run                 - run as ordinary mode"
+	@echo "~> make run.help             - run use ${ENV_RUN_INFO_HELP_ARGS}"
+	@echo "~> make run                  - run as ordinary mode"
+	@echo "~> make run.debug            - run as debug mode open by env:CLI_VERBOSE=true"
 	@echo ""
 
 .PHONY: help

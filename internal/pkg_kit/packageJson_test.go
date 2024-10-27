@@ -1,4 +1,4 @@
-package pkgJson
+package pkg_kit
 
 import (
 	"github.com/stretchr/testify/assert"
