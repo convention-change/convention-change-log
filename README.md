@@ -114,6 +114,7 @@
   ]
 }
 ```
+- [x] `--append-monorepo` will append changelog to monorepo path (v1.11.+), this path must in setting `.monorepo-pkg-path at config file.
 
 - [x] git url scheme default is `https` can change.(v1.8+)
     - use cli flag `--git-info-scheme` to change git info scheme, only support: https, http
@@ -181,6 +182,11 @@ $ convention-change-log --dry-run false
 $ convention-change-log --dry-run-disable
 # you can also write like this
 $ convention-change-log -r 1.0.0 --dry-run-disable
+
+# will append changelog to monorepo path out --outfile, default is CHANGELOG.md (v1.11+)
+$ convention-change-log --dry-run --append-monorepo foo/bar --append-monorepo foo/baz
+# you can also write like this
+$ convention-change-log --dry-run --append-monorepo foo/bar,foo/baz
 
 # only change version file by versionrc config (1.10+)
 $ convention-change-log --change-version --dry-run

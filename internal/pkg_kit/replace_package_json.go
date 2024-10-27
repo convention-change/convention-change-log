@@ -1,4 +1,4 @@
-package pkgJson
+package pkg_kit
 
 import (
 	"bufio"

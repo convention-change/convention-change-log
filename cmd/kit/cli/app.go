@@ -5,32 +5,23 @@ import (
 	"github.com/convention-change/convention-change-log/cmd/kit/command"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/subcommand_init"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/subcommand_read_latest"
-	"github.com/convention-change/convention-change-log/internal/pkgJson"
+	"github.com/convention-change/convention-change-log/internal/pkg_kit"
 	"github.com/convention-change/convention-change-log/internal/urfave_cli"
 	"github.com/urfave/cli/v2"
-	"runtime"
-	"time"
 )
 
-const (
-	copyrightStartYear = "2023"
-)
-
-func NewCliApp(buildId string) *cli.App {
+func NewCliApp(bdInfo pkg_kit.BuildInfo) *cli.App {
 
 	app := cli.NewApp()
 	app.EnableBashCompletion = true
-	app.Version = pkgJson.GetPackageJsonVersionGoStyle(false)
-	app.Name = pkgJson.GetPackageJsonName()
-	if pkgJson.GetPackageJsonHomepage() != "" {
-		app.Usage = fmt.Sprintf("see: %s", pkgJson.GetPackageJsonHomepage())
+	app.Name = bdInfo.PgkNameString()
+	app.Version = bdInfo.VersionString()
+	if pkg_kit.GetPackageJsonHomepage() != "" {
+		app.Usage = fmt.Sprintf("see: %s", pkg_kit.GetPackageJsonHomepage())
 	}
-	app.Description = pkgJson.GetPackageJsonDescription()
-
-	year := time.Now().Year()
-	jsonAuthor := pkgJson.GetPackageJsonAuthor()
-	app.Copyright = fmt.Sprintf("© %s-%d %s by: %s, build id: %s, run on %s %s",
-		copyrightStartYear, year, jsonAuthor.Name, runtime.Version(), buildId, runtime.GOOS, runtime.GOARCH)
+	app.Description = pkg_kit.GetPackageJsonDescription()
+	jsonAuthor := pkg_kit.GetPackageJsonAuthor()
+	app.Copyright = bdInfo.String()
 	author := &cli.Author{
 		Name:  jsonAuthor.Name,
 		Email: jsonAuthor.Email,

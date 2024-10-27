@@ -8,7 +8,7 @@ import (
 	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/convention-change/convention-change-log/convention"
 	"github.com/convention-change/convention-change-log/internal/log"
-	"github.com/convention-change/convention-change-log/internal/pkgJson"
+	"github.com/convention-change/convention-change-log/internal/pkg_kit"
 	"github.com/sinlov-go/go-common-lib/pkg/string_tools"
 	"github.com/sinlov-go/go-git-tools/git_info"
 	"github.com/urfave/cli/v2"
@@ -207,6 +207,8 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		SkipWorktreeDirtyCheck: c.Bool("skip-worktree-check"),
 
 		IsOnlyChangeVersion: c.Bool("change-version"),
+
+		AppendMonoRepoPath: c.StringSlice("append-monorepo"),
 	}
 
 	specFilePath := filepath.Join(gitRootFolder, constant.VersionRcFileName)
@@ -247,11 +249,11 @@ func GlobalBeforeAction(c *cli.Context) error {
 	if err != nil {
 		panic(err)
 	}
-	cliVersion := pkgJson.GetPackageJsonVersionGoStyle(false)
+	cliVersion := pkg_kit.GetPackageJsonVersionGoStyle(false)
 	if isVerbose {
 		slog.Warnf("-> open verbose, and now command version is: %s", cliVersion)
 	}
-	appName := pkgJson.GetPackageJsonName()
+	appName := pkg_kit.GetPackageJsonName()
 	cmdGlobalEntry, err = withGlobalFlag(c, cliVersion, appName)
 	if err != nil {
 		return err

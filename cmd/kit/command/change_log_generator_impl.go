@@ -7,11 +7,12 @@ import (
 	"github.com/convention-change/convention-change-log/changelog"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/exit_cli"
 	"github.com/convention-change/convention-change-log/convention"
-	"github.com/convention-change/convention-change-log/internal/pkgJson"
+	"github.com/convention-change/convention-change-log/internal/pkg_kit"
 	goGit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/storage/memory"
 	"github.com/gookit/color"
 	"github.com/sinlov-go/go-common-lib/pkg/filepath_plus"
+	"github.com/sinlov-go/go-common-lib/pkg/string_tools"
 	"github.com/sinlov-go/go-git-tools/git"
 	"github.com/sinlov-go/go-git-tools/git_info"
 	"github.com/sinlov-go/sample-markdown/sample_mk"
@@ -128,7 +129,7 @@ func (c *ChangeLogGenerator) ChangeLogInit(cfg GenerateConfig, spec *convention.
 		}
 	}
 	c.changeLogReader = reader
-	c.changeLogNodes = changeLogNodes
+	c.changeLogHistoryNodes = changeLogNodes
 
 	historyFirstTagName := ""
 	if c.genCfg.FromCommit == "" {
@@ -251,6 +252,7 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 		changelogDesc,
 		*c.spec,
 	)
+	c.changeLogNowNodes = nodesGenerateWithTitle
 
 	if errAddTitle != nil {
 		return fmt.Errorf("AddMarkdownChangelogNodesTitle err: %v", errAddTitle)
@@ -260,14 +262,14 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 	if err != nil {
 		return fmt.Errorf("AddMarkdownChangelogNodesHead err: %v", err)
 	}
-	c.changelogNodesWithHead = changelogNodesWithHead
+	c.changelogNowWithTitleNodes = changelogNodesWithHead
 
 	return nil
 }
 
 func (c *ChangeLogGenerator) DryRun() {
 
-	latestMarkdownContent := sample_mk.GenerateText(c.changelogNodesWithHead)
+	latestMarkdownContent := sample_mk.GenerateText(c.changelogNowWithTitleNodes)
 	color.Printf(cmdHelpDryRunOutputting, c.genCfg.Outfile)
 	color.Println("")
 
@@ -300,16 +302,70 @@ func (c *ChangeLogGenerator) DryRun() {
 
 func (c *ChangeLogGenerator) DoChangeRepoFileByCommitLog() error {
 
-	// add history
-	c.changeLogNodes = append(c.changelogNodesWithHead, c.changeLogNodes...)
+	errCheckLocalFileChange := c.checkLocalFileChangeByArgs()
+	if errCheckLocalFileChange != nil {
+		return fmt.Errorf("checkLocalFileChangeByArgs fail: %v", errCheckLocalFileChange)
+	}
 
-	fullMarkdownContent := sample_mk.GenerateText(c.changeLogNodes)
+	// add history
+	c.changeLogHistoryNodes = append(c.changelogNowWithTitleNodes, c.changeLogHistoryNodes...)
+
+	fullMarkdownContent := sample_mk.GenerateText(c.changeLogHistoryNodes)
 
 	errChangeLocalFile := c.changeRepoLocalFiles(fullMarkdownContent)
 	if errChangeLocalFile != nil {
 		return fmt.Errorf("changeRepoLocalFiles err: %v", errChangeLocalFile)
 	}
 
+	errAppendChangeLocalFile := c.appendMonoRepoFiles(c.changeLogNowNodes, c.changeLogHistoryNodes)
+	if errAppendChangeLocalFile != nil {
+		return fmt.Errorf("appendMonoRepoFiles err: %v", errAppendChangeLocalFile)
+	}
+
+	return nil
+}
+
+func (c *ChangeLogGenerator) checkLocalFileChangeByArgs() error {
+	if len(c.genCfg.AppendMonoRepoPath) > 0 {
+		for _, appendPath := range c.genCfg.AppendMonoRepoPath {
+			if !string_tools.StringInArr(appendPath, c.spec.MonoRepoPkgPathList) {
+				return fmt.Errorf("args [ --append-monorepo %s ] not in config { .monorepo-pkg-path } list", appendPath)
+			}
+		}
+	}
+
+	return nil
+}
+
+func (c *ChangeLogGenerator) appendMonoRepoFiles(newNodes []sample_mk.Node, oldNodes []sample_mk.Node) error {
+
+	if len(c.genCfg.AppendMonoRepoPath) == 0 {
+		return nil
+	}
+
+	headMarkdownContent := sample_mk.GenerateText(newNodes)
+
+	color.Magentaf("will append change log version to ( %s ) to file:", c.genCfg.ReleaseAs)
+
+	for _, appendPath := range c.genCfg.AppendMonoRepoPath {
+		if !string_tools.StringInArr(appendPath, c.spec.MonoRepoPkgPathList) {
+			color.Warnf("append mono-repo-path %s not in spec [ monorepo-pkg-path ] list, ignore", appendPath)
+			continue
+		}
+		monoRepoChangeLogPath := filepath.Join(c.rootPath, appendPath, c.genCfg.Outfile)
+		if filepath_plus.PathExistsFast(monoRepoChangeLogPath) {
+			errAppendChangeHead := filepath_plus.AppendFileHead(monoRepoChangeLogPath, []byte(headMarkdownContent))
+			if errAppendChangeHead != nil {
+				return fmt.Errorf("append change log head to file failed, %v", errAppendChangeHead)
+			}
+		} else {
+			errWriteFile := filepath_plus.WriteFileByByte(monoRepoChangeLogPath, []byte(headMarkdownContent), os.FileMode(0o666), true)
+			if errWriteFile != nil {
+				return fmt.Errorf("WriteFileByByte err: %v", errWriteFile)
+			}
+		}
+		color.Greenf("append change log head at: %s\n", monoRepoChangeLogPath)
+	}
 	return nil
 }
 
@@ -428,6 +484,19 @@ func (c *ChangeLogGenerator) DryRunChangeVersion() {
 			}
 		}
 	}
+
+	if len(c.genCfg.AppendMonoRepoPath) > 0 {
+		color.Magentaf("will append change log version to ( %s ) to file:\n", c.genCfg.ReleaseAs)
+		for _, appendPath := range c.genCfg.AppendMonoRepoPath {
+			if !string_tools.StringInArr(appendPath, c.spec.MonoRepoPkgPathList) {
+				color.Warnf("append mono-repo-path %s not in spec [ monorepo-pkg-path ] list, ignore", appendPath)
+				continue
+			}
+			subModuleChangeLogPath := filepath.Join(c.rootPath, appendPath, c.genCfg.Outfile)
+			color.Greenf("%s\n", subModuleChangeLogPath)
+		}
+	}
+
 	color.Println()
 }
 
@@ -439,7 +508,7 @@ func (c *ChangeLogGenerator) ChangeVersion() error {
 		if filepath_plus.PathExistsFast(pkgJsonPath) {
 			// replace file line by regexp
 			slog.Debugf("try update node version in file: %s", pkgJsonPath)
-			err := pkgJson.ReplaceJsonVersionByLine(pkgJsonPath, c.genCfg.ReleaseAs)
+			err := pkg_kit.ReplaceJsonVersionByLine(pkgJsonPath, c.genCfg.ReleaseAs)
 			if err != nil {
 				slog.Error("ReplaceJsonVersionByLine", err)
 			}
@@ -466,7 +535,7 @@ func (c *ChangeLogGenerator) ChangeVersion() error {
 					continue
 				}
 				slog.Infof("update mono-repo package.json version ( %s )  in file: %s", c.genCfg.ReleaseAs, subModulePkgJsonPath)
-				err := pkgJson.ReplaceJsonVersionByLine(subModulePkgJsonPath, c.genCfg.ReleaseAs)
+				err := pkg_kit.ReplaceJsonVersionByLine(subModulePkgJsonPath, c.genCfg.ReleaseAs)
 				if err != nil {
 					return fmt.Errorf("submodule package.json change ReplaceJsonVersionByLine %v", err)
 				}
