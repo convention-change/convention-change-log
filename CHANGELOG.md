@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.11.0](https://github.com/convention-change/convention-change-log/compare/1.10.1...v1.11.0) (2024-10-27)
+
+### ✨ Features
+
+* add option to append changelog to monorepo paths ([1691cb94](https://github.com/convention-change/convention-change-log/commit/1691cb94c39288b1c7e87a4bfbe937c58dfccd1f)), feat [#50](https://github.com/convention-change/convention-change-log/issues/50)
+
+### ♻ Refactor
+
+* implement detailed build information and version handling ([ddcd449d](https://github.com/convention-change/convention-change-log/commit/ddcd449d06033b9f578d34dc1b2a18ea134476fe))
+
 ## [1.10.1](https://github.com/convention-change/convention-change-log/compare/1.10.0...v1.10.1) (2024-09-29)
 
 ### ♻ Refactor
