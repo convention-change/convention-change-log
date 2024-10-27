@@ -345,7 +345,7 @@ func (c *ChangeLogGenerator) appendMonoRepoFiles(newNodes []sample_mk.Node, oldN
 
 	headMarkdownContent := sample_mk.GenerateText(newNodes)
 
-	color.Magentaf("will append change log version to ( %s ) to file:", c.genCfg.ReleaseAs)
+	color.Magentaf("will append change log version to ( %s ) to file:\n", c.genCfg.ReleaseAs)
 
 	for _, appendPath := range c.genCfg.AppendMonoRepoPath {
 		if !string_tools.StringInArr(appendPath, c.spec.MonoRepoPkgPathList) {
@@ -353,13 +353,14 @@ func (c *ChangeLogGenerator) appendMonoRepoFiles(newNodes []sample_mk.Node, oldN
 			continue
 		}
 		monoRepoChangeLogPath := filepath.Join(c.rootPath, appendPath, c.genCfg.Outfile)
+		appendContent := []byte(headMarkdownContent + "\n")
 		if filepath_plus.PathExistsFast(monoRepoChangeLogPath) {
-			errAppendChangeHead := filepath_plus.AppendFileHead(monoRepoChangeLogPath, []byte(headMarkdownContent))
+			errAppendChangeHead := filepath_plus.AppendFileHead(monoRepoChangeLogPath, appendContent)
 			if errAppendChangeHead != nil {
 				return fmt.Errorf("append change log head to file failed, %v", errAppendChangeHead)
 			}
 		} else {
-			errWriteFile := filepath_plus.WriteFileByByte(monoRepoChangeLogPath, []byte(headMarkdownContent), os.FileMode(0o666), true)
+			errWriteFile := filepath_plus.WriteFileByByte(monoRepoChangeLogPath, appendContent, os.FileMode(0o666), true)
 			if errWriteFile != nil {
 				return fmt.Errorf("WriteFileByByte err: %v", errWriteFile)
 			}
