@@ -65,6 +65,11 @@ $ convention-change-log --dry-run-disable
 # 也可以这么写
 $ convention-change-log -r 1.0.0 --dry-run-disable
 
+# 将 changelog 附加到 monorepo 路径 --outfile，默认值为 CHANGELOG.md (v1.11+)
+$ convention-change-log --dry-run --append-monorepo foo/bar --append-monorepo foo/baz
+# 也可以这么写
+$ convention-change-log --dry-run --append-monorepo foo/bar,foo/baz
+
 # 仅通过 versionrc 配置更改版本 文件 (1.10+)
 $ convention-change-log --change-version --dry-run
 # 默认会被 `--dry-run` 影响，可以通过 `--dry-run-disable` 执行

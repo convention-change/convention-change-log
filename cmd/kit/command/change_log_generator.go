@@ -22,14 +22,15 @@ type ChangeLogGenerator struct {
 	genCfg GenerateConfig
 	spec   *convention.ConventionalChangeLogSpec
 
-	historyFirstTagName    string
-	gitHttpInfoDefault     convention.GitRepositoryHttpInfo
-	latestCommits          []git.Commit
-	changeLogNodes         []sample_mk.Node
-	generateMarkdownNodes  []sample_mk.Node
-	featNodes              []sample_mk.Node
-	changelogNodesWithHead []sample_mk.Node
-	changelogDesc          changelog.ConventionalChangeLogDesc
+	historyFirstTagName        string
+	gitHttpInfoDefault         convention.GitRepositoryHttpInfo
+	latestCommits              []git.Commit
+	changeLogHistoryNodes      []sample_mk.Node
+	generateMarkdownNodes      []sample_mk.Node
+	featNodes                  []sample_mk.Node
+	changeLogNowNodes          []sample_mk.Node
+	changelogNowWithTitleNodes []sample_mk.Node
+	changelogDesc              changelog.ConventionalChangeLogDesc
 }
 
 func NewChangeLogGenerator(rootPath string) *ChangeLogGenerator {
@@ -86,4 +87,6 @@ type GenerateConfig struct {
 
 	SkipWorktreeDirtyCheck bool
 	IsOnlyChangeVersion    bool
+
+	AppendMonoRepoPath []string
 }

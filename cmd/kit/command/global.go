@@ -207,6 +207,8 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		SkipWorktreeDirtyCheck: c.Bool("skip-worktree-check"),
 
 		IsOnlyChangeVersion: c.Bool("change-version"),
+
+		AppendMonoRepoPath: c.StringSlice("append-monorepo"),
 	}
 
 	specFilePath := filepath.Join(gitRootFolder, constant.VersionRcFileName)

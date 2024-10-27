@@ -54,6 +54,11 @@ func MainFlag() []cli.Flag {
 			Usage: "only change version, by versionrc settings (1.10+)",
 			Value: false,
 		},
+
+		&cli.StringSliceFlag{
+			Name:  "append-monorepo",
+			Usage: "append changelog to monorepo path, like: --append-monorepo=packages/a --append-monorepo=packages/b, this must define at config file .monorepo-pkg-path, (v1.11.+)",
+		},
 	}
 }
 
