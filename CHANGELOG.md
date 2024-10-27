@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.11.1](https://github.com/convention-change/convention-change-log/compare/1.11.0...v1.11.1) (2024-10-28)
+
+### ♻ Refactor
+
+* improve output formatting for change log generation ([edf1fd61](https://github.com/convention-change/convention-change-log/commit/edf1fd61c10fa9cac0fd7da662fffb0746a40d5e))
+
 ## [1.11.0](https://github.com/convention-change/convention-change-log/compare/1.10.1...v1.11.0) (2024-10-27)
 
 ### ✨ Features
