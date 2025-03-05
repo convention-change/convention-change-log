@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.12.0](https://github.com/convention-change/convention-change-log/compare/1.11.1...v1.12.0) (2025-03-06)
+
+### ✨ Features
+
+* support synonymous breaking change tokens ([c1b3e858](https://github.com/convention-change/convention-change-log/commit/c1b3e8587093736476cb58b0958b25297b0a57ca))
+
+### 📝 Documentation
+
+* update configuration and documentation ([de19f685](https://github.com/convention-change/convention-change-log/commit/de19f6850a0354856b177163cabc75bdb570e65f))
+
+### 👷‍ Build System
+
+* bump codecov/codecov-action from 5.3.1 to 5.4.0 ([5f5f9ab6](https://github.com/convention-change/convention-change-log/commit/5f5f9ab671fbc6b44249c7b956a20a816eb50b3f))
+
+* bump codecov/codecov-action from 5.1.2 to 5.3.1 ([813fe486](https://github.com/convention-change/convention-change-log/commit/813fe4864e2de887ab856cf2c109c0758c9a8380))
+
+* bump codecov/codecov-action from 5.0.7 to 5.1.2 ([0ebe1ed6](https://github.com/convention-change/convention-change-log/commit/0ebe1ed6d0ac94d1a760d076671ffcceb238e75b))
+
+* bump codecov/codecov-action from 4.6.0 to 5.0.7 ([787b99d4](https://github.com/convention-change/convention-change-log/commit/787b99d4741b0dba260708ab03fffeb7eaa9995c))
+
+* bump codecov/codecov-action from 4.5.0 to 4.6.0 ([efad7fc0](https://github.com/convention-change/convention-change-log/commit/efad7fc053847054b06c8ec75e4194968637d269))
+
 ## [1.11.1](https://github.com/convention-change/convention-change-log/compare/1.11.0...v1.11.1) (2024-10-28)
 
 ### ♻ Refactor
