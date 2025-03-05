@@ -123,8 +123,11 @@
     - add flag `--skip-worktree-check` will skip check (v1.8.1+)
     - check repository is dirty like `git status --porcelain`
     - if repository has submodule, will check, like `git submodule status --recursive`
-- [x] `--change-version` only change version file by versionrc config (1.10+)
+- [x] `--change-version` only change version file by versionrc config (v1.10+)
     - It is affected by `--dry-run` by default and can be executed through `--dry-run-disable`
+- [x] braking change log generate token in a footer support (v1.12+)
+    - `BREAKING CHANGE: ` default 
+    - `BREAKING-CHANGE: ` support
 
 more use see `convention-change-log --help`
 

@@ -94,7 +94,7 @@ func GenerateMarkdownNodes(
 		}
 	}
 
-	// add BREAKING CHANGE:
+	// add BREAKING CHANGE: or BREAKING-CHANGE:
 	if len(breakingChanges) > 0 {
 		bkNode := []sample_mk.Node{
 			sample_mk.NewHeader(thirdLevel, convention.MarkdownBreakingChangesToken),
