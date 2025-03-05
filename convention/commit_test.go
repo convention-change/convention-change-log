@@ -81,6 +81,14 @@ func TestNewCommitWithOutType(t *testing.T) {
 			},
 			gitHttpInfo: gitHttpInfoDefault,
 		},
+		{
+			name: "Commit message with hash and synonymous breaking change",
+			c: git.Commit{
+				Message: "feat: new api env:CI env:CI_DEBUG support\n\nBREAKING-CHANGE: this is env:CI env:CI_DEBUG api breaking changes\n\nfix #1",
+				Hash:    plumbing.NewHash("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"),
+			},
+			gitHttpInfo: gitHttpInfoDefault,
+		},
 	}
 
 	for _, tc := range tests {
