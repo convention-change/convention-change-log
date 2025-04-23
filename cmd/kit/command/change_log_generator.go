@@ -58,6 +58,8 @@ type ChangeLogGeneratorFunc interface {
 
 	GenerateCommitAsMdNodes() error
 
+	CheckLocalFileChangeByArgs() error
+
 	DryRun()
 
 	DoChangeRepoFileByCommitLog() error

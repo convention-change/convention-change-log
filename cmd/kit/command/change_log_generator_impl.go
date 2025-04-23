@@ -301,12 +301,6 @@ func (c *ChangeLogGenerator) DryRun() {
 }
 
 func (c *ChangeLogGenerator) DoChangeRepoFileByCommitLog() error {
-
-	errCheckLocalFileChange := c.checkLocalFileChangeByArgs()
-	if errCheckLocalFileChange != nil {
-		return fmt.Errorf("checkLocalFileChangeByArgs fail: %v", errCheckLocalFileChange)
-	}
-
 	// add history
 	c.changeLogHistoryNodes = append(c.changelogNowWithTitleNodes, c.changeLogHistoryNodes...)
 
@@ -325,7 +319,7 @@ func (c *ChangeLogGenerator) DoChangeRepoFileByCommitLog() error {
 	return nil
 }
 
-func (c *ChangeLogGenerator) checkLocalFileChangeByArgs() error {
+func (c *ChangeLogGenerator) CheckLocalFileChangeByArgs() error {
 	// if open --append-monorepo-all will replace all mono-repo-pkg-path
 	if c.genCfg.AppendMonoRepoAll {
 		c.genCfg.AppendMonoRepoPath = c.spec.MonoRepoPkgPathList

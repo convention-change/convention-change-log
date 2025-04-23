@@ -128,6 +128,11 @@ func (c *GlobalCommand) globalExec() error {
 		return nil
 	}
 
+	errCheckLocalFileChange := clGenerator.CheckLocalFileChangeByArgs()
+	if errCheckLocalFileChange != nil {
+		return fmt.Errorf("CheckLocalFileChangeByArgs fail: %v", errCheckLocalFileChange)
+	}
+
 	if c.DryRun {
 		clGenerator.DryRun()
 		if c.GenerateConfig.SkipWorktreeDirtyCheck {
