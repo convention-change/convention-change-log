@@ -19,3 +19,19 @@ updates:
 #    - dependency-name: foo
 #      versions:
 #      - ">= 2.a, < 3"
+
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "sunday"
+    commit-message:
+      prefix: "build(action)"
+      prefix-development: "build(action-dev)"
+      # include: "scope"
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: github.com/swaggo/gin-swagger
+      - dependency-name: github.com/swaggo/files
+      - dependency-name: github.com/swaggo/swag/v2
+      - dependency-name: github.com/urfave/cli/v3

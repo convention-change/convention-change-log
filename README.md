@@ -115,6 +115,7 @@
 }
 ```
 - [x] `--append-monorepo` will append changelog to monorepo path (v1.11.+), this path must in setting `.monorepo-pkg-path at config file.
+- [ ] `--append-monorepo-all` will append changelog to all monorepo path (v1.13.+), this path must in setting `.monorepo-pkg-path at config file.
 
 - [x] git url scheme default is `https` can change.(v1.8+)
     - use cli flag `--git-info-scheme` to change git info scheme, only support: https, http

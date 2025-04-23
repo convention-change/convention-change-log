@@ -210,13 +210,13 @@ All notable changes to this project will be documented in this file. See [conven
 
 * update golang full action CI pipline ([500860a4](https://github.com/convention-change/convention-change-log/commit/500860a4935ca1278a0b4e9566ef43e54620195b))
 
-* support actions/upload-artifact/tree/v4 and let action goversion ^1.19 ([1bd7ff4f](https://github.com/convention-change/convention-change-log/commit/1bd7ff4fbb7b5b64ed22280c2f794f7cc0b52eca))
+* support actions/upload-artifact/tree/v4 and let action goversion ^1.23 ([1bd7ff4f](https://github.com/convention-change/convention-change-log/commit/1bd7ff4fbb7b5b64ed22280c2f794f7cc0b52eca))
 
 * bump github.com/go-git/go-git/v5 from 5.10.0 to 5.11.0 ([08a2d841](https://github.com/convention-change/convention-change-log/commit/08a2d841bd7d34afe2fa70edc430c1ba5b981757))
 
 * bump github.com/sinlov-go/go-git-tools from 1.9.1 to 1.10.0 ([e728183d](https://github.com/convention-change/convention-change-log/commit/e728183db9685c82816949ef0a557ff104d9532a))
 
-* update to go 1.19+ to suppot new version of build ([bb977d0d](https://github.com/convention-change/convention-change-log/commit/bb977d0d6d6dd9db14b629e8a6634a154d99428f))
+* update to go 1.23+ to suppot new version of build ([bb977d0d](https://github.com/convention-change/convention-change-log/commit/bb977d0d6d6dd9db14b629e8a6634a154d99428f))
 
 * bump github.com/urfave/cli/v2 from 2.25.7 to 2.27.1 ([45550366](https://github.com/convention-change/convention-change-log/commit/455503663af6fdc537051b85d80a5d6e6aa72851))
 

@@ -59,6 +59,11 @@ func MainFlag() []cli.Flag {
 			Name:  "append-monorepo",
 			Usage: "append changelog to monorepo path, like: --append-monorepo=packages/a --append-monorepo=packages/b, this must define at config file .monorepo-pkg-path, (v1.11.+)",
 		},
+
+		&cli.BoolFlag{
+			Name:  "append-monorepo-all",
+			Usage: "append changelog to all monorepo path, this will ignore --append-monorepo config, (1.13.+)",
+		},
 	}
 }
 

@@ -89,4 +89,5 @@ type GenerateConfig struct {
 	IsOnlyChangeVersion    bool
 
 	AppendMonoRepoPath []string
+	AppendMonoRepoAll  bool
 }

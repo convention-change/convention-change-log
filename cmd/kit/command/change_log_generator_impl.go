@@ -326,6 +326,12 @@ func (c *ChangeLogGenerator) DoChangeRepoFileByCommitLog() error {
 }
 
 func (c *ChangeLogGenerator) checkLocalFileChangeByArgs() error {
+	// if open --append-monorepo-all will replace all mono-repo-pkg-path
+	if c.genCfg.AppendMonoRepoAll {
+		c.genCfg.AppendMonoRepoPath = c.spec.MonoRepoPkgPathList
+		slog.Info("now use all path by setting `.monorepo-pkg-path at config file.")
+		return nil
+	}
 	if len(c.genCfg.AppendMonoRepoPath) > 0 {
 		for _, appendPath := range c.genCfg.AppendMonoRepoPath {
 			if !string_tools.StringInArr(appendPath, c.spec.MonoRepoPkgPathList) {
