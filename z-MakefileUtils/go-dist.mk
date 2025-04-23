@@ -697,7 +697,8 @@ distPlatformTarAll: distPlatformTarAllLinux distPlatformTarAllMacos distPlatform
 
 .PHONY: helpGoDist
 helpGoDist:
-	@echo "Help: MakeGoDist.mk"
+	@echo "Help: go-dist.mk"
+	@echo ""
 	@echo "-- distTestOS or distReleaseOS will out abi as: $(ENV_INFO_DIST_GO_OS) $(ENV_INFO_DIST_GO_ARCH) --"
 	@echo "~> make cleanAllDist             - clean all dist at $(ENV_PATH_INFO_ROOT_DIST)"
 	@echo "~> make distTest                 - build dist at ${ENV_PATH_INFO_ROOT_DIST_LOCAL_TEST} in local OS"

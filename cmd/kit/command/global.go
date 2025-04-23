@@ -209,6 +209,7 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		IsOnlyChangeVersion: c.Bool("change-version"),
 
 		AppendMonoRepoPath: c.StringSlice("append-monorepo"),
+		AppendMonoRepoAll:  c.Bool("append-monorepo-all"),
 	}
 
 	specFilePath := filepath.Join(gitRootFolder, constant.VersionRcFileName)

@@ -1,14 +1,14 @@
 .PHONY: test check clean build dist all
 #TOP_DIR := $(shell pwd)
 # can change by env:ENV_CI_DIST_VERSION use and change by env:ENV_CI_DIST_MARK by CI
-ENV_DIST_VERSION =v1.8.0
+ENV_DIST_VERSION =v1.13.0
 ENV_DIST_MARK=
 
 ROOT_NAME?=convention-change-log
 
 ## MakeDocker.mk settings start
 ROOT_OWNER ?=template-zoo
-ROOT_PARENT_SWITCH_TAG =1.19.13
+ROOT_PARENT_SWITCH_TAG =1.23.5
 # for image local build
 INFO_TEST_BUILD_DOCKER_PARENT_IMAGE =golang
 # for image running

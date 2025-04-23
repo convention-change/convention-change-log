@@ -26,7 +26,7 @@ go.list.this.deps:
 
 .PHONY: help.go.list
 help.go.list:
-	@echo "Help: MakeGoList.mk"
+	@echo "Help: go-list.mk"
 	@echo ""
 	@echo "-> go list document at: https://go.dev/ref/mod"
 	@echo "this project use go mod, so golang version must 1.12+"

@@ -68,6 +68,23 @@ go.mod.tidy:
 go.mod.download:
 	@go mod download -x
 
+.PHONY: go.mod.update
+go.mod.update:
+	@go get -u
+	@go mod tidy -v
+
+.PHONY: go.mod.update.recursively
+go.mod.update.recursively:
+	@go get -u ./...
+	@go mod tidy -v
+
+.PHONY: go.mod.update.all
+go.mod.update.all:
+	@echo "-> update all modules from the build list from go.mod"
+	@echo "more info see: https://go.dev/ref/mod#glos-build-list"
+	@go get -u all
+	@go mod tidy -v
+
 .PHONY: go.mod.vendor
 go.mod.vendor:
 	@go mod vendor
@@ -109,7 +126,8 @@ go.mod.lint.run:
 
 .PHONY: help.go.mod
 help.go.mod:
-	@echo "Help: MakeGoMod.mk"
+	@echo "Help: go-mod.mk"
+	@echo ""
 	@echo "-> go mod document at: https://go.dev/ref/mod"
 	@echo "this project use go mod, so golang version must 1.12+"
 	@echo "~> make go.mod.name                  - will show this go mod name"
@@ -119,5 +137,8 @@ help.go.mod:
 	@echo "~> make go.mod.verify                - verify as: go mod verify"
 	@echo "~> make go.mod.download              - download as: go mod download and go mod vendor"
 	@echo "~> make go.mod.tidy                  - tidy depends graph of project as go mod tidy"
+	@echo "~> make go.mod.update                - update depends as: go get -u"
+	@echo "~> make go.mod.update.recursively    - update depends recursively as: go get -u ./..."
+	@echo "~> make go.mod.update.all            - update depends modules from the build list from go.mod as: go get -u all"
 	@echo "~> make go.mod.fetch                 - check last version of one lib"
 	@echo ""

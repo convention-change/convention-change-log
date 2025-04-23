@@ -1,6 +1,8 @@
 module github.com/convention-change/convention-change-log
 
-go 1.19
+go 1.23
+
+toolchain go1.23.5
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1

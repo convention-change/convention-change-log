@@ -126,7 +126,7 @@ test.go.integration.reporting.html: pathCheckRootDist
 
 .PHONY: help.test.go.integration
 help.test.go.integration:
-	@echo "== go-test-integration.mk =="
+	@echo "Help: go-test-integration.mk"
 	@echo ""
 	@echo "integration tests coverage see: https://go.dev/testing/coverage/"
 	@echo ""

@@ -125,8 +125,9 @@ test.go.coverage.atomic.browser: test.go.coverage.atomic
 
 .PHONY: help.test.go
 help.test.go:
-	@echo "#=> MakeGoTest.mk tools for golang test task"
+	@echo "Help: go-test.mk"
 	@echo ""
+	@echo "#=> tools for golang test task"
 	@echo "sample of golang test task cover"
 	@echo "cover script set"
 	@echo "go test -cover -coverprofile ${ENV_GO_TEST_COVERAGE_PROFILE} -covermode set -coverpkg ./... -v ${ENV_ROOT_TEST_LIST}"
