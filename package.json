@@ -1,6 +1,6 @@
 {
   "name": "convention-change-log",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "generate changelog from conventional commits",
   "repository": {
     "type": "git",

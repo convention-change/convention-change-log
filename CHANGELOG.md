@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.13.0](https://github.com/convention-change/convention-change-log/compare/1.12.0...v1.13.0) (2025-04-23)
+
+### ✨ Features
+
+* add append-monorepo-all flag update Go version to 1.23 ([29c6b8f6](https://github.com/convention-change/convention-change-log/commit/29c6b8f6df2a04e569019b1ecbf627ace0b7977c))
+
+### 👷‍ Build System
+
+* bump codecov/codecov-action from 5.4.0 to 5.4.2 ([12dabfd6](https://github.com/convention-change/convention-change-log/commit/12dabfd68621c1029627f4588acdc996f4f96895))
+
+* update Go dependencies to latest versions ([3e7ca29f](https://github.com/convention-change/convention-change-log/commit/3e7ca29fb2cdae3d6faf64325abd21cc648b046d))
+
 ## [1.12.0](https://github.com/convention-change/convention-change-log/compare/1.11.1...v1.12.0) (2025-03-06)
 
 ### ✨ Features
