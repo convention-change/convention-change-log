@@ -147,7 +147,7 @@ init:
 dep: go.mod.verify go.mod.download go.mod.tidy
 
 .PHONY: style
-style: go.mod.verify go.mod.tidy go.mod.fmt go.mod.lint.run
+style: go.mod.verify go.mod.tidy go.mod.fmt go.mod.lint.run.v2
 
 .PHONY: test
 test: test.go

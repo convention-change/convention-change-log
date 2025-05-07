@@ -1,7 +1,13 @@
 package command
 
 import (
+	"errors"
 	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"time"
+
 	"github.com/Masterminds/semver/v3"
 	"github.com/bar-counter/slog"
 	"github.com/convention-change/convention-change-log/changelog"
@@ -16,24 +22,18 @@ import (
 	"github.com/sinlov-go/go-git-tools/git"
 	"github.com/sinlov-go/go-git-tools/git_info"
 	"github.com/sinlov-go/sample-markdown/sample_mk"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"time"
 )
 
-// LoadRepository
-// load git repository info
+// load git repository info.
 func (c *ChangeLogGenerator) LoadRepository(gitCloneUrl, remote string) error {
 	c.repoGitRemote = remote
 	if gitCloneUrl == "" {
-
 		repositoryOpen, errOpen := git.NewRepositoryRemoteByPath(remote, c.rootPath)
 		if errOpen != nil {
 			return exit_cli.Format("load local git repository error: %s", errOpen)
 		}
-		c.repository = repositoryOpen
 
+		c.repository = repositoryOpen
 	} else {
 		repositoryClone, errClone := git.NewRepositoryRemoteClone(remote, memory.NewStorage(), nil, &goGit.CloneOptions{
 			URL:        gitCloneUrl,
@@ -42,10 +42,12 @@ func (c *ChangeLogGenerator) LoadRepository(gitCloneUrl, remote string) error {
 		if errClone != nil {
 			return exit_cli.Format("clone git repository %s \nerror: %s", gitCloneUrl, errClone)
 		}
+
 		c.repository = repositoryClone
 	}
+
 	if c.repository == nil {
-		return fmt.Errorf("can not load git repository")
+		return errors.New("can not load git repository")
 	}
 
 	return nil
@@ -54,8 +56,11 @@ func (c *ChangeLogGenerator) LoadRepository(gitCloneUrl, remote string) error {
 func (c *ChangeLogGenerator) CheckRepository() error {
 	headBranchName, err := c.repository.HeadBranchName()
 	if err != nil {
-		return fmt.Errorf("check repo err, can not get branch name by HEAD, please check now branch is in HEAD")
+		return errors.New(
+			"check repo err, can not get branch name by HEAD, please check now branch is in HEAD",
+		)
 	}
+
 	c.headBranchName = headBranchName
 
 	gitRemoteInfo, err := c.repository.RemoteInfo(c.repoGitRemote, 0)
@@ -76,15 +81,22 @@ func (c *ChangeLogGenerator) CheckWorktreeDirty() error {
 			color.Print(cmdErrorHelperCheckRepositoryInGitSubModule)
 			color.Println("")
 			color.Println("")
-			return fmt.Errorf("check repo err, can not check submodules is dirty, error: %s", errCheckSubmodulesIsDirty)
+
+			return fmt.Errorf(
+				"check repo err, can not check submodules is dirty, error: %s",
+				errCheckSubmodulesIsDirty,
+			)
 		} else if dirty {
 			color.Print(cmdErrorHelperCheckRepositoryInGitSubModule)
 			color.Println("")
 			color.Println("")
-			return fmt.Errorf("check repo err, submodules is dirty, please commit submodules")
+
+			return errors.New("check repo err, submodules is dirty, please commit submodules")
 		}
 	}
+
 	var isWorktreeDirty bool
+
 	var errWorktreeDirty error
 	if c.repository.IsCitCmdAvailable() {
 		isWorktreeDirty, errWorktreeDirty = c.repository.CheckWorkTreeIsDirtyWithGitCmd()
@@ -93,15 +105,20 @@ func (c *ChangeLogGenerator) CheckWorktreeDirty() error {
 	}
 
 	if errWorktreeDirty != nil {
-		return fmt.Errorf("check repo err, can not check worktree is dirty, error: %s", errWorktreeDirty)
+		return fmt.Errorf(
+			"check repo err, can not check worktree is dirty, error: %s",
+			errWorktreeDirty,
+		)
 	} else {
 		if isWorktreeDirty {
 			color.Print(cmdErrorHelperCheckRepositoryInNowIsDirty)
 			color.Println("")
 			color.Println("")
-			return fmt.Errorf("check repo err, worktree is dirty, please check")
+
+			return errors.New("check repo err, worktree is dirty, please check")
 		}
 	}
+
 	return nil
 }
 
@@ -113,12 +130,15 @@ func (c *ChangeLogGenerator) GetGitRemoteInfo() git_info.GitRemoteInfo {
 	return *c.gitRemoteInfo
 }
 
-func (c *ChangeLogGenerator) ChangeLogInit(cfg GenerateConfig, spec *convention.ConventionalChangeLogSpec) error {
-
+func (c *ChangeLogGenerator) ChangeLogInit(
+	cfg GenerateConfig,
+	spec *convention.ConventionalChangeLogSpec,
+) error {
 	c.genCfg = cfg
 	c.spec = spec
 
 	changeLogNodes := make([]sample_mk.Node, 0)
+
 	reader, errHistory := changelog.NewReader(c.genCfg.Infile, *c.spec)
 	if errHistory != nil && c.genCfg.ReleaseAs == "" {
 		c.genCfg.ReleaseAs = convention.DefaultSemverVersion
@@ -128,16 +148,19 @@ func (c *ChangeLogGenerator) ChangeLogInit(cfg GenerateConfig, spec *convention.
 			changeLogNodes = append(changeLogNodes, reader.HistoryNodes()...)
 		}
 	}
+
 	c.changeLogReader = reader
 	c.changeLogHistoryNodes = changeLogNodes
 
 	historyFirstTagName := ""
+
 	if c.genCfg.FromCommit == "" {
 		if errHistory != nil {
 			// this not find any tag and history
 			c.genCfg.FromCommit = ""
 		} else {
 			historyFirstTag := reader.HistoryFirstTag()
+
 			tagSearchByName, errTagSearchByName := c.repository.CommitTagSearchByName(historyFirstTag)
 			if errTagSearchByName != nil {
 				c.genCfg.FromCommit = ""
@@ -147,12 +170,14 @@ func (c *ChangeLogGenerator) ChangeLogInit(cfg GenerateConfig, spec *convention.
 			}
 		}
 	}
+
 	c.historyFirstTagName = historyFirstTagName
 
 	latestCommits, errLatestCommits := c.repository.Log("", c.genCfg.FromCommit)
 	if errLatestCommits != nil {
 		return errLatestCommits
 	}
+
 	c.latestCommits = latestCommits
 
 	gitInfoScheme := c.genCfg.GitInfoScheme
@@ -186,10 +211,15 @@ func (c *ChangeLogGenerator) GetLatestCommits() []git.Commit {
 }
 
 func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
-	conventionCommits, errConvert := convention.ConvertGitCommits2ConventionCommits(c.latestCommits, *c.spec, c.gitHttpInfoDefault)
+	conventionCommits, errConvert := convention.ConvertGitCommits2ConventionCommits(
+		c.latestCommits,
+		*c.spec,
+		c.gitHttpInfoDefault,
+	)
 	if errConvert != nil {
 		return fmt.Errorf("ConvertGitCommits2ConventionCommits err: %v", errConvert)
 	}
+
 	generateMarkdownNodes, featNodes, errConvert := changelog.GenerateMarkdownNodes(
 		c.gitHttpInfoDefault,
 		conventionCommits,
@@ -208,8 +238,14 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 		if errOldReleaseTag != nil {
 			slog.Debugf("not find tag: %s err: %v", c.genCfg.ReleaseTag, errOldReleaseTag)
 		}
+
 		if oldReleaseTag != nil {
-			errReleaseTagExist := fmt.Errorf("want release tag is exist: %s, tag message is %s", c.genCfg.ReleaseTag, oldReleaseTag.Message)
+			errReleaseTagExist := fmt.Errorf(
+				"want release tag is exist: %s, tag message is %s",
+				c.genCfg.ReleaseTag,
+				oldReleaseTag.Message,
+			)
+
 			return errReleaseTagExist
 		}
 		// check version as semver
@@ -223,12 +259,14 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 		if errHistorySemver != nil {
 			return fmt.Errorf("find new version as semver by historyFirstTagName err: %v", errHistorySemver)
 		}
+
 		var version semver.Version
 		if len(featNodes) > 0 {
 			version = historyVersion.IncMinor()
 		} else {
 			version = historyVersion.IncPatch()
 		}
+
 		c.genCfg.ReleaseAs = version.String()
 		c.genCfg.ReleaseTag = fmt.Sprintf("%s%s", c.genCfg.TagPrefix, c.genCfg.ReleaseAs)
 	}
@@ -241,7 +279,11 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 		ToolsKitURL:  KitUrl,
 	}
 	if c.changeLogReader.HistoryFirstTagShort() != "" {
-		changelogDesc.PreviousTag = fmt.Sprintf("%s%s", c.genCfg.TagPrefix, c.changeLogReader.HistoryFirstTagShort())
+		changelogDesc.PreviousTag = fmt.Sprintf(
+			"%s%s",
+			c.genCfg.TagPrefix,
+			c.changeLogReader.HistoryFirstTagShort(),
+		)
 	}
 
 	c.changelogDesc = changelogDesc
@@ -258,17 +300,21 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 		return fmt.Errorf("AddMarkdownChangelogNodesTitle err: %v", errAddTitle)
 	}
 
-	changelogNodesWithHead, err := changelog.AddMarkdownChangelogNodesHead(nodesGenerateWithTitle, changelogDesc, *c.spec)
+	changelogNodesWithHead, err := changelog.AddMarkdownChangelogNodesHead(
+		nodesGenerateWithTitle,
+		changelogDesc,
+		*c.spec,
+	)
 	if err != nil {
 		return fmt.Errorf("AddMarkdownChangelogNodesHead err: %v", err)
 	}
+
 	c.changelogNowWithTitleNodes = changelogNodesWithHead
 
 	return nil
 }
 
 func (c *ChangeLogGenerator) DryRun() {
-
 	latestMarkdownContent := sample_mk.GenerateText(c.changelogNowWithTitleNodes)
 	color.Printf(cmdHelpDryRunOutputting, c.genCfg.Outfile)
 	color.Println("")
@@ -288,6 +334,7 @@ func (c *ChangeLogGenerator) DryRun() {
 
 	color.Print(cmdHelperRepositorySafeTitle)
 	color.Println()
+
 	if c.headBranchName == "main" {
 		color.Print(cmdHelperRepositorySafeFormBranchMain)
 		color.Println()
@@ -295,6 +342,7 @@ func (c *ChangeLogGenerator) DryRun() {
 		color.Print(cmdHelperRepositorySafeFormBranchNow)
 		color.Println()
 	}
+
 	color.Println()
 
 	c.DryRunChangeVersion()
@@ -323,13 +371,19 @@ func (c *ChangeLogGenerator) CheckLocalFileChangeByArgs() error {
 	// if open --append-monorepo-all will replace all mono-repo-pkg-path
 	if c.genCfg.AppendMonoRepoAll {
 		c.genCfg.AppendMonoRepoPath = c.spec.MonoRepoPkgPathList
+
 		slog.Info("now use all path by setting `.monorepo-pkg-path at config file.")
+
 		return nil
 	}
+
 	if len(c.genCfg.AppendMonoRepoPath) > 0 {
 		for _, appendPath := range c.genCfg.AppendMonoRepoPath {
 			if !string_tools.StringInArr(appendPath, c.spec.MonoRepoPkgPathList) {
-				return fmt.Errorf("args [ --append-monorepo %s ] not in config { .monorepo-pkg-path } list", appendPath)
+				return fmt.Errorf(
+					"args [ --append-monorepo %s ] not in config { .monorepo-pkg-path } list",
+					appendPath,
+				)
 			}
 		}
 	}
@@ -337,8 +391,10 @@ func (c *ChangeLogGenerator) CheckLocalFileChangeByArgs() error {
 	return nil
 }
 
-func (c *ChangeLogGenerator) appendMonoRepoFiles(newNodes []sample_mk.Node, oldNodes []sample_mk.Node) error {
-
+func (c *ChangeLogGenerator) appendMonoRepoFiles(
+	newNodes []sample_mk.Node,
+	oldNodes []sample_mk.Node,
+) error {
 	if len(c.genCfg.AppendMonoRepoPath) == 0 {
 		return nil
 	}
@@ -349,13 +405,22 @@ func (c *ChangeLogGenerator) appendMonoRepoFiles(newNodes []sample_mk.Node, oldN
 
 	for _, appendPath := range c.genCfg.AppendMonoRepoPath {
 		if !string_tools.StringInArr(appendPath, c.spec.MonoRepoPkgPathList) {
-			color.Warnf("append mono-repo-path %s not in spec [ monorepo-pkg-path ] list, ignore", appendPath)
+			color.Warnf(
+				"append mono-repo-path %s not in spec [ monorepo-pkg-path ] list, ignore",
+				appendPath,
+			)
+
 			continue
 		}
+
 		monoRepoChangeLogPath := filepath.Join(c.rootPath, appendPath, c.genCfg.Outfile)
 		appendContent := []byte(headMarkdownContent + "\n")
+
 		if filepath_plus.PathExistsFast(monoRepoChangeLogPath) {
-			errAppendChangeHead := filepath_plus.AppendFileHead(monoRepoChangeLogPath, appendContent)
+			errAppendChangeHead := filepath_plus.AppendFileHead(
+				monoRepoChangeLogPath,
+				appendContent,
+			)
 			if errAppendChangeHead != nil {
 				return fmt.Errorf("append change log head to file failed, %v", errAppendChangeHead)
 			}
@@ -365,13 +430,20 @@ func (c *ChangeLogGenerator) appendMonoRepoFiles(newNodes []sample_mk.Node, oldN
 				return fmt.Errorf("WriteFileByByte err: %v", errWriteFile)
 			}
 		}
+
 		color.Greenf("append change log head at: %s\n", monoRepoChangeLogPath)
 	}
+
 	return nil
 }
 
 func (c *ChangeLogGenerator) changeRepoLocalFiles(fullChangeLogContent string) error {
-	errWriteFile := filepath_plus.WriteFileByByte(c.genCfg.Outfile, []byte(fullChangeLogContent), os.FileMode(0o666), true)
+	errWriteFile := filepath_plus.WriteFileByByte(
+		c.genCfg.Outfile,
+		[]byte(fullChangeLogContent),
+		os.FileMode(0o666),
+		true,
+	)
 	if errWriteFile != nil {
 		return fmt.Errorf("WriteFileByByte err: %v", errWriteFile)
 	}
@@ -385,7 +457,6 @@ func (c *ChangeLogGenerator) changeRepoLocalFiles(fullChangeLogContent string) e
 }
 
 func (c *ChangeLogGenerator) DoGitOperator() error {
-
 	errDoGit := c.doGit(c.headBranchName)
 	if errDoGit != nil {
 		color.Print(cmdHelpGitCommitFail)
@@ -407,6 +478,7 @@ func (c *ChangeLogGenerator) DoGitOperator() error {
 		color.Print(cmdHelpGitCommitResetSoft)
 		color.Println("")
 		color.Println("")
+
 		return errDoGit
 	}
 
@@ -415,11 +487,11 @@ func (c *ChangeLogGenerator) DoGitOperator() error {
 
 func (c *ChangeLogGenerator) doGit(branchName string) error {
 	// disable git-go repository issues until https://github.com/go-git/go-git/issues/180 is fixed
-
 	cmdOutput, err := exec.Command("git", "add", "--all").CombinedOutput()
 	if err != nil {
 		return err
 	}
+
 	slog.Debugf("git add output:\n%s", cmdOutput)
 
 	color.Printf(cmdHelpOutputting, c.genCfg.Outfile)
@@ -429,7 +501,11 @@ func (c *ChangeLogGenerator) doGit(branchName string) error {
 
 	releaseCommit := new(convention.ReleaseCommitMessageRenderTemplate)
 	releaseCommit.CurrentTag = c.genCfg.ReleaseAs
-	releaseCommitMsg, errRender := convention.RaymondRender(c.spec.ReleaseCommitMessageFormat, releaseCommit)
+
+	releaseCommitMsg, errRender := convention.RaymondRender(
+		c.spec.ReleaseCommitMessageFormat,
+		releaseCommit,
+	)
 	if errRender != nil {
 		return errRender
 	}
@@ -437,24 +513,31 @@ func (c *ChangeLogGenerator) doGit(branchName string) error {
 	cmdOutput, err = exec.Command("git", "commit", "-m", releaseCommitMsg).CombinedOutput()
 	if err != nil {
 		slog.Errorf(err, "git commit output:\n%s", cmdOutput)
+
 		return err
 	}
+
 	slog.Debugf("git commit output:\n%s", cmdOutput)
 
 	color.Printf(cmdHelpTagRelease, c.genCfg.ReleaseTag)
 	color.Println("")
 
-	cmdOutput, err = exec.Command("git", "tag", c.genCfg.ReleaseTag, "-m", releaseCommitMsg).CombinedOutput()
+	cmdOutput, err = exec.Command("git", "tag", c.genCfg.ReleaseTag, "-m", releaseCommitMsg).
+		CombinedOutput()
 	if err != nil {
 		slog.Errorf(err, "git tag output:\n%s", cmdOutput)
+
 		return err
 	}
+
 	slog.Debugf("git tag output:\n%s", cmdOutput)
 
 	if c.genCfg.AutoPush {
-		cmdOutput, err = exec.Command("git", "push", "--follow-tags", "origin", branchName).CombinedOutput()
+		cmdOutput, err = exec.Command("git", "push", "--follow-tags", "origin", branchName).
+			CombinedOutput()
 		if err != nil {
 			slog.Error("git push error", err)
+
 			return err
 		}
 
@@ -463,24 +546,35 @@ func (c *ChangeLogGenerator) doGit(branchName string) error {
 		color.Println("")
 		color.Printf(cmdHelpHasTagRelease, c.genCfg.ReleaseTag)
 		color.Println("")
+
 		return nil
 	}
 
 	color.Printf(cmdHelpGitPushRun, branchName)
 	color.Println("")
+
 	return nil
 }
 
 func (c *ChangeLogGenerator) DryRunChangeVersion() {
 	if len(c.spec.MonoRepoPkgPathList) > 0 {
 		// try update monorepo pkg list
-		color.Magentaf("will update [ monorepo-pkg-path ] package.json version to ( %s )in file list:\n", c.genCfg.ReleaseAs)
+		color.Magentaf(
+			"will update [ monorepo-pkg-path ] package.json version to ( %s )in file list:\n",
+			c.genCfg.ReleaseAs,
+		)
+
 		for _, pkgPath := range c.spec.MonoRepoPkgPathList {
 			// replace file line by regexp
 			subModulePkgJsonPath := filepath.Join(c.rootPath, pkgPath, "package.json")
 			color.Greenf("%s\n", subModulePkgJsonPath)
+
 			if !filepath_plus.PathExistsFast(subModulePkgJsonPath) {
-				slog.Warnf("not find update monorepo-pkg-path package.json path: %s", subModulePkgJsonPath)
+				slog.Warnf(
+					"not find update monorepo-pkg-path package.json path: %s",
+					subModulePkgJsonPath,
+				)
+
 				continue
 			}
 		}
@@ -488,11 +582,17 @@ func (c *ChangeLogGenerator) DryRunChangeVersion() {
 
 	if len(c.genCfg.AppendMonoRepoPath) > 0 {
 		color.Magentaf("will append change log version to ( %s ) to file:\n", c.genCfg.ReleaseAs)
+
 		for _, appendPath := range c.genCfg.AppendMonoRepoPath {
 			if !string_tools.StringInArr(appendPath, c.spec.MonoRepoPkgPathList) {
-				color.Warnf("append mono-repo-path %s not in spec [ monorepo-pkg-path ] list, ignore", appendPath)
+				color.Warnf(
+					"append mono-repo-path %s not in spec [ monorepo-pkg-path ] list, ignore",
+					appendPath,
+				)
+
 				continue
 			}
+
 			subModuleChangeLogPath := filepath.Join(c.rootPath, appendPath, c.genCfg.Outfile)
 			color.Greenf("%s\n", subModuleChangeLogPath)
 		}
@@ -502,26 +602,33 @@ func (c *ChangeLogGenerator) DryRunChangeVersion() {
 }
 
 func (c *ChangeLogGenerator) ChangeVersion() error {
-
 	if c.genCfg.ReleaseAs != "" {
 		// try update node
 		pkgJsonPath := filepath.Join(c.rootPath, "package.json")
 		if filepath_plus.PathExistsFast(pkgJsonPath) {
 			// replace file line by regexp
 			slog.Debugf("try update node version in file: %s", pkgJsonPath)
+
 			err := pkg_kit.ReplaceJsonVersionByLine(pkgJsonPath, c.genCfg.ReleaseAs)
 			if err != nil {
 				slog.Error("ReplaceJsonVersionByLine", err)
 			}
+
 			pkgJsonLockPath := filepath.Join(c.rootPath, "package-lock.json")
 			if filepath_plus.PathExistsFast(pkgJsonLockPath) {
 				output, errNpmInstall := exec.Command("npm", "install").CombinedOutput()
 				if errNpmInstall != nil {
 					slog.Error("do Command npm install error", errNpmInstall)
 				}
+
 				slog.Debugf("npm install output:\n%s", output)
 			}
-			slog.Infof("update root package.json version ( %s )  in file: %s", c.genCfg.ReleaseAs, pkgJsonPath)
+
+			slog.Infof(
+				"update root package.json version ( %s )  in file: %s",
+				c.genCfg.ReleaseAs,
+				pkgJsonPath,
+			)
 		}
 
 		// try update monorepo
@@ -530,15 +637,32 @@ func (c *ChangeLogGenerator) ChangeVersion() error {
 			for _, pkgPath := range c.spec.MonoRepoPkgPathList {
 				// replace file line by regexp
 				subModulePkgJsonPath := filepath.Join(c.rootPath, pkgPath, "package.json")
-				slog.Debugf("try update submodule package.json version in file: %s", subModulePkgJsonPath)
+				slog.Debugf(
+					"try update submodule package.json version in file: %s",
+					subModulePkgJsonPath,
+				)
+
 				if !filepath_plus.PathExistsFast(subModulePkgJsonPath) {
-					slog.Warnf("not find update submodule package.json path: %s", subModulePkgJsonPath)
+					slog.Warnf(
+						"not find update submodule package.json path: %s",
+						subModulePkgJsonPath,
+					)
+
 					continue
 				}
-				slog.Infof("update mono-repo package.json version ( %s )  in file: %s", c.genCfg.ReleaseAs, subModulePkgJsonPath)
+
+				slog.Infof(
+					"update mono-repo package.json version ( %s )  in file: %s",
+					c.genCfg.ReleaseAs,
+					subModulePkgJsonPath,
+				)
+
 				err := pkg_kit.ReplaceJsonVersionByLine(subModulePkgJsonPath, c.genCfg.ReleaseAs)
 				if err != nil {
-					return fmt.Errorf("submodule package.json change ReplaceJsonVersionByLine %v", err)
+					return fmt.Errorf(
+						"submodule package.json change ReplaceJsonVersionByLine %v",
+						err,
+					)
 				}
 			}
 		}

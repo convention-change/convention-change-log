@@ -124,6 +124,12 @@ go.mod.lint.run:
 	@golangci-lint --version
 	golangci-lint run -c .golangci.yaml
 
+.PHONY: go.mod.lint.run.v2
+go.mod.lint.run.v2:
+	@echo "-> if run error try fix: make go.mod.ci.lint.install"
+	@golangci-lint --version
+	golangci-lint run -c .golangci-v2.yaml
+
 .PHONY: help.go.mod
 help.go.mod:
 	@echo "Help: go-mod.mk"
