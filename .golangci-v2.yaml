@@ -49,7 +49,7 @@ formatters:
   # Formatters settings.
   settings:
     # See the dedicated "formatters.settings" documentation section.
-    option: value
+    # option: value
   exclusions:
     # Log a warning if an exclusion path is unused.
     # Default: false
