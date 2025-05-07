@@ -2,13 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
-## [1.13.1](https://github.com/convention-change/convention-change-log/compare/1.13.0...v1.13.1) (2025-04-23)
+## [1.13.1](https://github.com/convention-change/convention-change-log/compare/v1.13.0...v1.13.1) (2025-04-23)
 
 ### ♻ Refactor
 
 * improve error handling for local file changes ([295833e8](https://github.com/convention-change/convention-change-log/commit/295833e87a382509a7c6b9f3827aeb479cdc5ddf))
 
-## [1.13.0](https://github.com/convention-change/convention-change-log/compare/1.12.0...v1.13.0) (2025-04-23)
+## [1.13.0](https://github.com/convention-change/convention-change-log/compare/v1.12.0...v1.13.0) (2025-04-23)
 
 ### ✨ Features
 
@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * update Go dependencies to latest versions ([3e7ca29f](https://github.com/convention-change/convention-change-log/commit/3e7ca29fb2cdae3d6faf64325abd21cc648b046d))
 
-## [1.12.0](https://github.com/convention-change/convention-change-log/compare/1.11.1...v1.12.0) (2025-03-06)
+## [1.12.0](https://github.com/convention-change/convention-change-log/compare/v1.11.1...v1.12.0) (2025-03-06)
 
 ### ✨ Features
 
@@ -42,13 +42,13 @@ All notable changes to this project will be documented in this file. See [conven
 
 * bump codecov/codecov-action from 4.5.0 to 4.6.0 ([efad7fc0](https://github.com/convention-change/convention-change-log/commit/efad7fc053847054b06c8ec75e4194968637d269))
 
-## [1.11.1](https://github.com/convention-change/convention-change-log/compare/1.11.0...v1.11.1) (2024-10-28)
+## [1.11.1](https://github.com/convention-change/convention-change-log/compare/v1.11.0...v1.11.1) (2024-10-28)
 
 ### ♻ Refactor
 
 * improve output formatting for change log generation ([edf1fd61](https://github.com/convention-change/convention-change-log/commit/edf1fd61c10fa9cac0fd7da662fffb0746a40d5e))
 
-## [1.11.0](https://github.com/convention-change/convention-change-log/compare/1.10.1...v1.11.0) (2024-10-27)
+## [1.11.0](https://github.com/convention-change/convention-change-log/compare/v1.10.1...v1.11.0) (2024-10-27)
 
 ### ✨ Features
 
@@ -58,31 +58,31 @@ All notable changes to this project will be documented in this file. See [conven
 
 * implement detailed build information and version handling ([ddcd449d](https://github.com/convention-change/convention-change-log/commit/ddcd449d06033b9f578d34dc1b2a18ea134476fe))
 
-## [1.10.1](https://github.com/convention-change/convention-change-log/compare/1.10.0...v1.10.1) (2024-09-29)
+## [1.10.1](https://github.com/convention-change/convention-change-log/compare/v1.10.0...v1.10.1) (2024-09-29)
 
 ### ♻ Refactor
 
 * move dry run version change to appropriate locationChange ([1eb49b69](https://github.com/convention-change/convention-change-log/commit/1eb49b699af46880e65724b709c8285bf42bfe93))
 
-## [1.10.0](https://github.com/convention-change/convention-change-log/compare/1.9.1...v1.10.0) (2024-09-29)
+## [1.10.0](https://github.com/convention-change/convention-change-log/compare/v1.9.1...v1.10.0) (2024-09-29)
 
 ### ✨ Features
 
 * add --change-version flag to only change versions ([db4eba29](https://github.com/convention-change/convention-change-log/commit/db4eba2966ceb2d2163d55c7680fa2cb925420e7))
 
-## [1.9.1](https://github.com/convention-change/convention-change-log/compare/1.9.0...v1.9.1) (2024-09-29)
+## [1.9.1](https://github.com/convention-change/convention-change-log/compare/v1.9.0...v1.9.1) (2024-09-29)
 
 ### 🐛 Bug Fixes
 
 * allow hyphens, dots, and underscores in type and scope ([f2a6f7b7](https://github.com/convention-change/convention-change-log/commit/f2a6f7b7fbd874f3a75d0c7dd8085d18af7bb8b1))
 
-## [1.9.0](https://github.com/convention-change/convention-change-log/compare/1.8.3...v1.9.0) (2024-09-29)
+## [1.9.0](https://github.com/convention-change/convention-change-log/compare/v1.8.3...v1.9.0) (2024-09-29)
 
 ### ✨ Features
 
 * add --dry-init flag to display config content ([c8613207](https://github.com/convention-change/convention-change-log/commit/c86132078a1783a0d2cffa8ba6c202cc654396ac))
 
-## [1.8.3](https://github.com/convention-change/convention-change-log/compare/1.8.2...v1.8.3) (2024-09-29)
+## [1.8.3](https://github.com/convention-change/convention-change-log/compare/v1.8.2...v1.8.3) (2024-09-29)
 
 ### 🐛 Bug Fixes
 
@@ -92,7 +92,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * update README to reflect v1.8.3 installation ([513c7cb6](https://github.com/convention-change/convention-change-log/commit/513c7cb62c3cf0b9cf16b82b567a3e96002dfc9d))
 
-## [1.8.2](https://github.com/convention-change/convention-change-log/compare/1.8.1...v1.8.2) (2024-08-31)
+## [1.8.2](https://github.com/convention-change/convention-change-log/compare/v1.8.1...v1.8.2) (2024-08-31)
 
 ### 🐛 Bug Fixes
 
@@ -108,7 +108,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * bump codecov/codecov-action from 4.4.0 to 4.4.1 ([758c23af](https://github.com/convention-change/convention-change-log/commit/758c23af532db982fcb759b978bd22c0a94f2b56))
 
-## [1.8.1](https://github.com/convention-change/convention-change-log/compare/1.8.0...v1.8.1) (2024-05-18)
+## [1.8.1](https://github.com/convention-change/convention-change-log/compare/v1.8.0...v1.8.1) (2024-05-18)
 
 ### 🐛 Bug Fixes
 
@@ -122,7 +122,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * github.com/sinlov-go/go-git-tools v1.13.0 ([36eb1663](https://github.com/convention-change/convention-change-log/commit/36eb1663c200dadb1509645ec47e77084336e3df))
 
-## [1.8.0](https://github.com/convention-change/convention-change-log/compare/1.7.0...v1.8.0) (2024-05-17)
+## [1.8.0](https://github.com/convention-change/convention-change-log/compare/v1.7.0...v1.8.0) (2024-05-17)
 
 ### 🐛 Bug Fixes
 
@@ -170,7 +170,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * bump codecov/codecov-action from 4.1.0 to 4.1.1 ([2c6d2ac6](https://github.com/convention-change/convention-change-log/commit/2c6d2ac6a8e54d54c39c84cb003d700a2012c3e4))
 
-## [1.7.0](https://github.com/convention-change/convention-change-log/compare/1.6.0...v1.7.0) (2024-03-20)
+## [1.7.0](https://github.com/convention-change/convention-change-log/compare/v1.6.0...v1.7.0) (2024-03-20)
 
 ### BREAKING CHANGE:
 
@@ -186,7 +186,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * update usage at README.md ([40ac75bb](https://github.com/convention-change/convention-change-log/commit/40ac75bb3fff59ef4d4db20307e8a228caf22fc7))
 
-## [1.6.0](https://github.com/convention-change/convention-change-log/compare/1.5.1...v1.6.0) (2024-03-02)
+## [1.6.0](https://github.com/convention-change/convention-change-log/compare/v1.5.1...v1.6.0) (2024-03-02)
 
 ### ✨ Features
 
@@ -206,7 +206,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * bump codecov/codecov-action from 3.1.4 to 4.0.0 ([227a8680](https://github.com/convention-change/convention-change-log/commit/227a8680d16e55d15cd5f881c6292f74f980e856))
 
-## [1.5.1](https://github.com/convention-change/convention-change-log/compare/1.5.0...v1.5.1) (2024-01-26)
+## [1.5.1](https://github.com/convention-change/convention-change-log/compare/v1.5.0...v1.5.1) (2024-01-26)
 
 ### 📝 Documentation
 
@@ -214,7 +214,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * update doc ([03a9d1f9](https://github.com/convention-change/convention-change-log/commit/03a9d1f9e1b4dfea10343e8d192621ea739ec162))
 
-## [1.5.0](https://github.com/convention-change/convention-change-log/compare/1.4.2...v1.5.0) (2024-01-23)
+## [1.5.0](https://github.com/convention-change/convention-change-log/compare/v1.4.2...v1.5.0) (2024-01-23)
 
 ### ✨ Features
 
@@ -254,37 +254,37 @@ All notable changes to this project will be documented in this file. See [conven
 
 * bump github.com/go-git/go-git/v5 from 5.8.1 to 5.9.0 ([8fec5b90](https://github.com/convention-change/convention-change-log/commit/8fec5b90184b322b5087bc659955a793e1b361d5))
 
-## [1.4.2](https://github.com/convention-change/convention-change-log/compare/1.4.1...v1.4.2) (2023-08-15)
+## [1.4.2](https://github.com/convention-change/convention-change-log/compare/v1.4.1...v1.4.2) (2023-08-15)
 
 ### 🐛 Bug Fixes
 
 * add more error log show at do git ([2249d141](https://github.com/convention-change/convention-change-log/commit/2249d14178809a29f8e8cdf4e419c4c1ff370ffc))
 
-## [1.4.1](https://github.com/convention-change/convention-change-log/compare/1.4.0...v1.4.1) (2023-08-09)
+## [1.4.1](https://github.com/convention-change/convention-change-log/compare/v1.4.0...v1.4.1) (2023-08-09)
 
 ### ♻ Refactor
 
 * let out log more clear and show more fix info at flag --auto-push ([7fdfa0c9](https://github.com/convention-change/convention-change-log/commit/7fdfa0c9b98571bbeabb29fd593c88bccffbc430))
 
-## [1.4.0](https://github.com/convention-change/convention-change-log/compare/1.3.1...v1.4.0) (2023-08-07)
+## [1.4.0](https://github.com/convention-change/convention-change-log/compare/v1.3.1...v1.4.0) (2023-08-07)
 
 ### ✨ Features
 
 * convention.NewCommitWithLogSpec generate head at word `:` support ([9540a3a4](https://github.com/convention-change/convention-change-log/commit/9540a3a43f4f16c627d4cdb03d4d2e6c550f8b15))
 
-## [1.3.1](https://github.com/convention-change/convention-change-log/compare/1.3.0...v1.3.1) (2023-08-05)
+## [1.3.1](https://github.com/convention-change/convention-change-log/compare/v1.3.0...v1.3.1) (2023-08-05)
 
 ### 🐛 Bug Fixes
 
 * fix doc not set at subcommand at read-latest ([6780aacf](https://github.com/convention-change/convention-change-log/commit/6780aacfb493c1cee17efc88b3ddcd54570e5a2b))
 
-## [1.3.0](https://github.com/convention-change/convention-change-log/compare/1.2.0...v1.3.0) (2023-08-05)
+## [1.3.0](https://github.com/convention-change/convention-change-log/compare/v1.2.0...v1.3.0) (2023-08-05)
 
 ### ✨ Features
 
 * add git command error can use command notice ([f02bb653](https://github.com/convention-change/convention-change-log/commit/f02bb653112152ad1e3f1fcf1973185919ca89b0))
 
-## [1.2.0](https://github.com/convention-change/convention-change-log/compare/1.1.0...v1.2.0) (2023-08-01)
+## [1.2.0](https://github.com/convention-change/convention-change-log/compare/v1.1.0...v1.2.0) (2023-08-01)
 
 ### BREAKING CHANGE:
 
@@ -302,25 +302,25 @@ All notable changes to this project will be documented in this file. See [conven
 
 * use convention.LoadConventionalChangeLogSpecByPath to init ConventionalChangeLogSpec ([07ed5be0](https://github.com/convention-change/convention-change-log/commit/07ed5be0b3aea50a23bad29a58fd0f70ab8a15a7))
 
-## [1.1.0](https://github.com/convention-change/convention-change-log/compare/v1.0.3...v1.1.0) (2023-07-31)
+## [1.1.0](https://github.com/convention-change/convention-change-log/compare/vv1.0.3...v1.1.0) (2023-07-31)
 
 ### 👷‍ Build System
 
 * **gomod:** github.com/sinlov-go/go-git-tools v1.9.1 ([248572a](https://github.com/convention-change/convention-change-log/commit/248572a30b8460d8804e0b275476ba31f7b1f8cd))
 
-## [1.0.3](https://github.com/convention-change/convention-change-log/compare/1.0.2...v1.0.3) (2023-07-30)
+## [1.0.3](https://github.com/convention-change/convention-change-log/compare/v1.0.2...v1.0.3) (2023-07-30)
 
 ### 🐛 Bug Fixes
 
 * change go-build-check-main for test (2023-07-30) [80f7d59c](https://github.com/convention-change/convention-change-log/commit/80f7d59c84ad0460344307e824de5442d286e243)
 
-## [1.0.2](https://github.com/convention-change/convention-change-log/compare/1.0.1...v1.0.2) (2023-07-30)
+## [1.0.2](https://github.com/convention-change/convention-change-log/compare/v1.0.1...v1.0.2) (2023-07-30)
 
 ### 🐛 Bug Fixes
 
 * fix go-release-platform.yml build of archive (2023-07-30) [ed57f54b](https://github.com/convention-change/convention-change-log/commit/ed57f54b450c2d7588bfa7e4edb0e7bea93cdd69)
 
-## [1.0.1](https://github.com/convention-change/convention-change-log/compare/1.0.0...v1.0.1) (2023-07-30)
+## [1.0.1](https://github.com/convention-change/convention-change-log/compare/v1.0.0...v1.0.1) (2023-07-30)
 
 ### 🐛 Bug Fixes
 
