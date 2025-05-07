@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.13.2](https://github.com/convention-change/convention-change-log/compare/v1.13.1...v1.13.2) (2025-05-08)
+
+### 🐛 Bug Fixes
+
+* add tag prefix to previous tag in changelog description ([7f30fe79](https://github.com/convention-change/convention-change-log/commit/7f30fe796cc27d07b060d25fca214b388c6d9c3d))
+
+### 📝 Documentation
+
+* fix typo in CHANGELOG.md version comparison link ([347d3756](https://github.com/convention-change/convention-change-log/commit/347d375675f591e565c598151db1b1f7c4fd10ab))
+
+* update CHANGELOG.md with correct version tags ([eb18033c](https://github.com/convention-change/convention-change-log/commit/eb18033c4fc0f06f13172ea9c879f7158dc713d2))
+
+### 👷‍ Build System
+
+* bump github.com/sinlov-go/go-git-tools ([1a6d706a](https://github.com/convention-change/convention-change-log/commit/1a6d706a8fbb7151705b7bf869b37d26be5fb7ff))
+
+* update Go version to go1.23.8 ([6f8c72fa](https://github.com/convention-change/convention-change-log/commit/6f8c72fa59bd6437a3cbc245c26d3e6d3bf30c83))
+
 ## [1.13.1](https://github.com/convention-change/convention-change-log/compare/v1.13.0...v1.13.1) (2025-04-23)
 
 ### ♻ Refactor
