@@ -3,7 +3,7 @@
 ## env
 
 - minimum go version: go 1.23
-- change `go 1.23`, `^1.23`, `1.23.5` to new go version
+- change `go 1.23`, `^1.23`, `1.23.8` to new go version
 
 ### libs
 
