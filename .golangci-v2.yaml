@@ -8,15 +8,17 @@ linters:
   # Disable specific linter.
   # https://golangci-lint.run/usage/linters/#disabled-by-default
   disable:
+    - bodyclose
     - cyclop
     - depguard
     - err113
+    - errname
+    - exhaustruct
+    - errorlint
     - forbidigo
     - forcetypeassert
     - funcorder
     - funlen
-    - revive
-    - exhaustruct
     - gochecknoglobals
     - gochecknoinits
     - godox
@@ -24,18 +26,22 @@ linters:
     - gosmopolitan
     - gocritic
     - gocognit
-    - wrapcheck
-    - varnamelen
-    - tagliatelle
-    - unparam
-    - nonamedreturns
-    - nilnesserr
-    - nestif
+    - prealloc
+    - interfacebloat
     - ireturn
     - lll
     - mnd
+    - nestif
+    - nilnesserr
+    - nonamedreturns
+    - noctx
     - nolintlint
-    - errorlint
+    - revive
+    - staticcheck
+    - tagliatelle
+    - unparam
+    - varnamelen
+    - wrapcheck
 
 formatters:
   # Enable specific formatter.
