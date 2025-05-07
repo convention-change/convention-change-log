@@ -302,7 +302,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * use convention.LoadConventionalChangeLogSpecByPath to init ConventionalChangeLogSpec ([07ed5be0](https://github.com/convention-change/convention-change-log/commit/07ed5be0b3aea50a23bad29a58fd0f70ab8a15a7))
 
-## [1.1.0](https://github.com/convention-change/convention-change-log/compare/vv1.0.3...v1.1.0) (2023-07-31)
+## [1.1.0](https://github.com/convention-change/convention-change-log/compare/v1.0.3...v1.1.0) (2023-07-31)
 
 ### 👷‍ Build System
 
