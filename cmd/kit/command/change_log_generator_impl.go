@@ -241,7 +241,7 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 		ToolsKitURL:  KitUrl,
 	}
 	if c.changeLogReader.HistoryFirstTagShort() != "" {
-		changelogDesc.PreviousTag = c.changeLogReader.HistoryFirstTagShort()
+		changelogDesc.PreviousTag = fmt.Sprintf("%s%s", c.genCfg.TagPrefix, c.changeLogReader.HistoryFirstTagShort())
 	}
 
 	c.changelogDesc = changelogDesc
