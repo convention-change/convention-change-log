@@ -2,7 +2,7 @@ module github.com/convention-change/convention-change-log
 
 go 1.23.0
 
-toolchain go1.23.5
+toolchain go1.23.8
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.1
