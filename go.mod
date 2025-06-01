@@ -12,7 +12,7 @@ require (
 	github.com/go-git/go-git/v5 v5.16.0
 	github.com/gookit/color v1.5.4
 	github.com/sebdah/goldie/v2 v2.5.5
-	github.com/sinlov-go/go-common-lib v1.7.1
+	github.com/sinlov-go/go-common-lib v1.9.0
 	github.com/sinlov-go/go-git-tools v1.14.0
 	github.com/sinlov-go/sample-markdown v1.4.0
 	github.com/sinlov-go/unittest-kit v1.2.1

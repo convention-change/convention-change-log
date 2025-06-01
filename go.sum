@@ -77,8 +77,8 @@ github.com/sebdah/goldie/v2 v2.5.5/go.mod h1:oZ9fp0+se1eapSRjfYbsV/0Hqhbuu3bJVvK
 github.com/sergi/go-diff v1.0.0/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
 github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 h1:n661drycOFuPLCN3Uc8sB6B/s6Z4t2xvBgU1htSHuq8=
 github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3/go.mod h1:A0bzQcvG0E7Rwjx0REVgAGH58e96+X0MeOfepqsbeW4=
-github.com/sinlov-go/go-common-lib v1.7.1 h1:slVwwM/TiA7wzYYqRYMOHCOPmRLQn3NTU652fT2QWIE=
-github.com/sinlov-go/go-common-lib v1.7.1/go.mod h1:e+kY8eyLMnvayGezaWi3nU1VF5xsnMQ+DQUVdUC6Xbw=
+github.com/sinlov-go/go-common-lib v1.9.0 h1:FaPDG6fxzy5LgR6+APO6Cc4pfiaUyKFZVHpy0jHVJrA=
+github.com/sinlov-go/go-common-lib v1.9.0/go.mod h1:VodAtrLTtKgRd89soIA4DcWYk9m4wvzJt1bq9PQBcD4=
 github.com/sinlov-go/go-git-tools v1.14.0 h1:kmdjfyRr9LnEF/OjgiAJW0v8OyNV6AOjqm/44WxsduM=
 github.com/sinlov-go/go-git-tools v1.14.0/go.mod h1:TzDbDxhd3xdt7BzyZ/zYo1IhEalquf+aHy7ufqJIvUE=
 github.com/sinlov-go/sample-markdown v1.4.0 h1:79fVH3Asz7cGvPuPkqMVtPV8FVqoAymqMW0z3extQBU=
