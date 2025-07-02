@@ -110,7 +110,10 @@ Set-Alias -Name ccl -Value convention-change-log
 
 - 请先在远程仓库，设置好 `分支保护规则` 和 `tag 保护规则`，防止误提交，或者删除 tag
 - 生成 CHANGELOG.md 前，最好合并到 主分支, 上面的别名 `gcmpt` 就可以快速切到主分支，并同步到最新信息（包括 tag 同步）
-- 检查当前分支的状态是可以进行钉版本后
+- 检查当前分支的状态是可以进行固定版本后
 - 执行 `ccl --dry-run` 或者 `ccl --dry-run -r 1.2.3` 指定目标版本，确认 预期生成的 change log 是否是正确的
+    - 未设置生成发行版本，则开启自动生成版本规则
+        - 提交消息包含 `feat:` 将更新 `MINOR` 版本
+        - 提交消息不包含 `feat:` 将更新 `PATCH` 版本
 - 确认没有错误后，执行 `ccl --auto-push`
-- 更建议通过 `release` 分支，自动合并触发 CI 自动生产的方式，来触发生成 CHANGELOG.md，避免认为操作错误
+- 更建议通过 `release` 分支，自动合并触发 CI 自动生产的方式，来触发生成 CHANGELOG.md，避免人为操作错误

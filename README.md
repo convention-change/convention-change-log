@@ -15,7 +15,7 @@
 
 - [x] subcommand `init` to init config file
     - init `.versionrc` file at git repository root path, as default config file
-        - `--dry-init` only show init config file content (1.9.+) 
+        - `--dry-init` only show init config file content (1.9.+)
 
 ```json
 {
@@ -93,7 +93,7 @@
     - [x] `-r` or `--release-as` to set release version
         - when not set will auto generate release version
             - commit message contains `feat:` will update `MINOR` version
-            - commit message not contains `feat:` will update `MAJOR` version
+            - commit message not contains `feat:` will update `PATCH` version
     - [x] `--auto-push` flag can auto push tag to remote
     - [x] `--tag-prefix` flag can change tag prefix, default will use `.versionrc` config `tag-prefix`
 - generate from [conventional commits](https://www.conventionalcommits.org) for [semver.org](https://semver.org/)
@@ -114,8 +114,11 @@
   ]
 }
 ```
-- [x] `--append-monorepo` will append changelog to monorepo path (v1.11.+), this path must in setting `.monorepo-pkg-path at config file.
-- [ ] `--append-monorepo-all` will append changelog to all monorepo path (v1.13.+), this path must in setting `.monorepo-pkg-path at config file.
+
+- [x] `--append-monorepo` will append changelog to monorepo path (v1.11.+), this path must in setting `
+  .monorepo-pkg-path at config file.
+- [x] `--append-monorepo-all` will append changelog to all monorepo path (v1.13.+), this path must in setting `
+  .monorepo-pkg-path at config file.
 
 - [x] git url scheme default is `https` can change.(v1.8+)
     - use cli flag `--git-info-scheme` to change git info scheme, only support: https, http
@@ -127,7 +130,7 @@
 - [x] `--change-version` only change version file by versionrc config (v1.10+)
     - It is affected by `--dry-run` by default and can be executed through `--dry-run-disable`
 - [x] braking change log generate token in a footer support (v1.12+)
-    - `BREAKING CHANGE: ` default 
+    - `BREAKING CHANGE: ` default
     - `BREAKING-CHANGE: ` support
 
 more use see `convention-change-log --help`
@@ -237,6 +240,9 @@ Set-Alias -Name ccl -Value convention-change-log
 - Check the status of the current branch is available after the nail version
 - execution `ccl --dry-run` or `ccl --dry-run -r 1.2.3` Specify the target version and verify that the expected change
   log is correct
+    - If no release version generation is set, the automatic version generation rule is enabled.
+        - commit message contains `feat:` will update `MINOR` version
+        - commit message not contains `feat:` will update `PATCH` version
 - after confirming that there are no errors execute `ccl --auto-push`
 - It is recommended to use the `release` branch to automatically merge and trigger CI automatic production to trigger
   the generation of CHANGELOG.md to avoid thinking that the operation is wrong.
