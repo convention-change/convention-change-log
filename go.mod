@@ -11,7 +11,7 @@ require (
 	github.com/elliotchance/orderedmap/v2 v2.7.0
 	github.com/go-git/go-git/v5 v5.16.2
 	github.com/gookit/color v1.5.4
-	github.com/sebdah/goldie/v2 v2.5.5
+	github.com/sebdah/goldie/v2 v2.7.1
 	github.com/sinlov-go/go-common-lib v1.9.0
 	github.com/sinlov-go/go-git-tools v1.14.0
 	github.com/sinlov-go/sample-markdown v1.4.0
