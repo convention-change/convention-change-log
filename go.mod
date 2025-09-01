@@ -16,7 +16,7 @@ require (
 	github.com/sinlov-go/go-git-tools v1.14.0
 	github.com/sinlov-go/sample-markdown v1.4.0
 	github.com/sinlov-go/unittest-kit v1.2.1
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 	github.com/urfave/cli/v2 v2.27.7
 )
 
