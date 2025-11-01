@@ -9,7 +9,7 @@ require (
 	github.com/aymerick/raymond v2.0.2+incompatible
 	github.com/bar-counter/slog v1.4.1
 	github.com/elliotchance/orderedmap/v2 v2.7.0
-	github.com/go-git/go-git/v5 v5.16.2
+	github.com/go-git/go-git/v5 v5.16.3
 	github.com/gookit/color v1.6.0
 	github.com/sebdah/goldie/v2 v2.7.1
 	github.com/sinlov-go/go-common-lib v1.9.0
