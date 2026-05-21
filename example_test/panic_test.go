@@ -1,9 +1,10 @@
 package example_test
 
 import (
-	"fmt"
-	"github.com/stretchr/testify/assert"
+	"errors"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestExampleShouldPanicFast(t *testing.T) {
@@ -37,7 +38,7 @@ func TestExampleShouldPanicErrorWithStr(t *testing.T) {
 	errString := "new error"
 	if !assert.PanicsWithError(t, errString, func() {
 		// do TestExampleShouldPanicErrorWithStr
-		panic(fmt.Errorf(errString))
+		panic(errors.New(errString))
 	}) {
 		// verify TestExampleShouldPanicErrorWithStr
 		t.Fatalf("TestExampleShouldPanic should panic")

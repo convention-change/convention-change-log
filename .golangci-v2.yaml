@@ -4,7 +4,7 @@ linters:
   # Default set of linters.
   # The value can be: `standard`, `all`, `none`, or `fast`.
   # Default: standard
-  default: all
+  default: standard
   # Disable specific linter.
   # https://golangci-lint.run/usage/linters/#disabled-by-default
   disable:

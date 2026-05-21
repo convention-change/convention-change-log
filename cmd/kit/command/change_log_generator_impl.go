@@ -24,6 +24,7 @@ import (
 	"github.com/sinlov-go/sample-markdown/sample_mk"
 )
 
+// LoadRepository
 // load git repository info.
 func (c *ChangeLogGenerator) LoadRepository(gitCloneUrl, remote string) error {
 	c.repoGitRemote = remote
@@ -35,10 +36,15 @@ func (c *ChangeLogGenerator) LoadRepository(gitCloneUrl, remote string) error {
 
 		c.repository = repositoryOpen
 	} else {
-		repositoryClone, errClone := git.NewRepositoryRemoteClone(remote, memory.NewStorage(), nil, &goGit.CloneOptions{
-			URL:        gitCloneUrl,
-			RemoteName: remote,
-		})
+		repositoryClone, errClone := git.NewRepositoryRemoteClone(
+			remote,
+			memory.NewStorage(),
+			nil,
+			&goGit.CloneOptions{
+				URL:        gitCloneUrl,
+				RemoteName: remote,
+			},
+		)
 		if errClone != nil {
 			return exit_cli.Format("clone git repository %s \nerror: %s", gitCloneUrl, errClone)
 		}
@@ -161,7 +167,9 @@ func (c *ChangeLogGenerator) ChangeLogInit(
 		} else {
 			historyFirstTag := reader.HistoryFirstTag()
 
-			tagSearchByName, errTagSearchByName := c.repository.CommitTagSearchByName(historyFirstTag)
+			tagSearchByName, errTagSearchByName := c.repository.CommitTagSearchByName(
+				historyFirstTag,
+			)
 			if errTagSearchByName != nil {
 				c.genCfg.FromCommit = ""
 			} else {
@@ -257,7 +265,10 @@ func (c *ChangeLogGenerator) GenerateCommitAsMdNodes() error {
 		// find new version as semver by historyFirstTagName
 		historyVersion, errHistorySemver := semver.NewVersion(c.historyFirstTagName)
 		if errHistorySemver != nil {
-			return fmt.Errorf("find new version as semver by historyFirstTagName err: %v", errHistorySemver)
+			return fmt.Errorf(
+				"find new version as semver by historyFirstTagName err: %v",
+				errHistorySemver,
+			)
 		}
 
 		var version semver.Version
@@ -425,7 +436,12 @@ func (c *ChangeLogGenerator) appendMonoRepoFiles(
 				return fmt.Errorf("append change log head to file failed, %v", errAppendChangeHead)
 			}
 		} else {
-			errWriteFile := filepath_plus.WriteFileByByte(monoRepoChangeLogPath, appendContent, os.FileMode(0o666), true)
+			errWriteFile := filepath_plus.WriteFileByByte(
+				monoRepoChangeLogPath,
+				appendContent,
+				os.FileMode(0o666),
+				true,
+			)
 			if errWriteFile != nil {
 				return fmt.Errorf("WriteFileByByte err: %v", errWriteFile)
 			}
