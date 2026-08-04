@@ -2,6 +2,82 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.13.3](https://github.com/convention-change/convention-change-log/compare/v1.13.2...v1.13.3) (2026-08-05)
+
+### 📝 Documentation
+
+* add some doc ([ad634764](https://github.com/convention-change/convention-change-log/commit/ad634764dee2d5e3c204e126cb0e05e3ba77b4e2))
+
+* fix typos in README.md ([2ff1a41d](https://github.com/convention-change/convention-change-log/commit/2ff1a41d5ad37051a37440dc5f7db7b014bb4cc7))
+
+* clarify version bump rules and update formatting ([95c7af33](https://github.com/convention-change/convention-change-log/commit/95c7af336a5fbc9e5c8146223a5ba7f5f103a9de))
+
+### 👷‍ Build System
+
+* bump github.com/go-git/go-git/v5 from 5.19.1 to 5.19.2 ([c3b7bec6](https://github.com/convention-change/convention-change-log/commit/c3b7bec62cf10643950ed0876e37b7c60756da04))
+
+* bump actions/setup-go from 5 to 7 ([7eefc241](https://github.com/convention-change/convention-change-log/commit/7eefc241164b89c7049905298130e9d783a6030b))
+
+* update Go version to 1.25 across workflows and documentation ([d54ac08a](https://github.com/convention-change/convention-change-log/commit/d54ac08a8cc3b6fd1eca505330eddad8226990ab))
+
+* bump actions/checkout from 4 to 7 ([85a1dff4](https://github.com/convention-change/convention-change-log/commit/85a1dff4f3beff8d0cd95d3e891d30e9eeeae9b2))
+
+* bump convention-change/conventional-version-check ([54f8b9ee](https://github.com/convention-change/convention-change-log/commit/54f8b9ee6092bf93f514c78b2a572d13e3187cec))
+
+* bump codecov/codecov-action from 6.0.1 to 7.0.0 ([c63cb778](https://github.com/convention-change/convention-change-log/commit/c63cb778e3fc6f0b61c2b6a09e512a8cec02766d))
+
+* add docker buildx bake workflows for Docker Hub ([1e43bc46](https://github.com/convention-change/convention-change-log/commit/1e43bc4657af0f694ab665d1322da076d3b14ddd))
+
+* bump github.com/gookit/color from 1.6.0 to 1.6.1 ([edcc3076](https://github.com/convention-change/convention-change-log/commit/edcc307682890fe1f90a3fa65b602ce97c58a582))
+
+* bump github.com/go-git/go-git/v5 from 5.17.2 to 5.19.1 ([95f83160](https://github.com/convention-change/convention-change-log/commit/95f83160e2f26d099e8be4c400c8874badafb74a))
+
+* bump codecov/codecov-action from 5.5.2 to 6.0.1 ([d9ac8339](https://github.com/convention-change/convention-change-log/commit/d9ac8339430d236c90bfe4782eb827f88576adaa))
+
+* change default linters to standard ([02b3063d](https://github.com/convention-change/convention-change-log/commit/02b3063d63ea8863a9a14fed0388f176a8243a15))
+
+* bump github.com/Masterminds/semver/v3 from 3.4.0 to 3.5.0 ([d00e9007](https://github.com/convention-change/convention-change-log/commit/d00e90070b70171b1baf6b5ba795e0d48544f5d5))
+
+* bump dependabot/fetch-metadata from 2 to 3 ([93bcb432](https://github.com/convention-change/convention-change-log/commit/93bcb432174d3515cbd12f2fff590d7cd4944bbb))
+
+* bump github.com/go-git/go-git/v5 from 5.17.0 to 5.17.2 ([1c9345c9](https://github.com/convention-change/convention-change-log/commit/1c9345c990cd5a982fe7528d024e8c539b854fd7))
+
+* bump github.com/go-git/go-git/v5 from 5.16.4 to 5.17.0 ([1d556c2b](https://github.com/convention-change/convention-change-log/commit/1d556c2ba740b0e6f8a3ba60e7598139a8d9171b))
+
+* bump actions/download-artifact from 4 to 8 ([0a842456](https://github.com/convention-change/convention-change-log/commit/0a842456dce2790bf12c899d8cb098c890a2ac85))
+
+* bump actions/upload-artifact from 4 to 7 ([4f0fa545](https://github.com/convention-change/convention-change-log/commit/4f0fa5453910d3990a71dcbda2df412dea108c45))
+
+* bump codecov/codecov-action from 5.5.1 to 5.5.2 ([0366e283](https://github.com/convention-change/convention-change-log/commit/0366e283c54ce7a035117739fc698a0ead6665c5))
+
+* bump github.com/go-git/go-git/v5 from 5.16.3 to 5.16.4 ([46cd6a48](https://github.com/convention-change/convention-change-log/commit/46cd6a4886238b7b0b8ca5901fbeb252a6dd6314))
+
+* bump golangci/golangci-lint-action from 8 to 9 ([ca9bfb3d](https://github.com/convention-change/convention-change-log/commit/ca9bfb3dd303446667a953a14e1c9e89f2f7eba5))
+
+* bump github.com/sebdah/goldie/v2 from 2.7.1 to 2.8.0 ([4cbd854c](https://github.com/convention-change/convention-change-log/commit/4cbd854ca48248d8cb9a05f50ce14e9d925395db))
+
+* bump github.com/go-git/go-git/v5 from 5.16.2 to 5.16.3 ([5efaa12f](https://github.com/convention-change/convention-change-log/commit/5efaa12f067c82a55cc97cea06de5b8f987ae9e3))
+
+* bump codecov/codecov-action from 5.5.0 to 5.5.1 ([70cce6c2](https://github.com/convention-change/convention-change-log/commit/70cce6c279a323920340aa2e70542f4880dd3182))
+
+* bump github.com/stretchr/testify from 1.10.0 to 1.11.1 ([bba7927e](https://github.com/convention-change/convention-change-log/commit/bba7927ee887c7a720ff8450d3a9ad6cfcfe09f4))
+
+* bump codecov/codecov-action from 5.4.3 to 5.5.0 ([2c48f9a0](https://github.com/convention-change/convention-change-log/commit/2c48f9a0f3565d7631657f24e412b9e849d798a7))
+
+* bump github.com/gookit/color from 1.5.4 to 1.6.0 ([76279805](https://github.com/convention-change/convention-change-log/commit/76279805a178d4e01e34db200e0219b49fe85b8b))
+
+* bump github.com/sebdah/goldie/v2 from 2.5.5 to 2.7.1 ([edf633a8](https://github.com/convention-change/convention-change-log/commit/edf633a8b9ef4d3677d1443bb6bfc1407973eaa6))
+
+* bump github.com/go-git/go-git/v5 from 5.16.0 to 5.16.2 ([3e9f657c](https://github.com/convention-change/convention-change-log/commit/3e9f657ca589cd3f591e4216b669836c3554f5e5))
+
+* bump github.com/urfave/cli/v2 from 2.27.6 to 2.27.7 ([735eb780](https://github.com/convention-change/convention-change-log/commit/735eb780ec3cdf478688ab26d278131c3e2b79d3))
+
+* bump github.com/Masterminds/semver/v3 from 3.3.1 to 3.4.0 ([2c3fe7fc](https://github.com/convention-change/convention-change-log/commit/2c3fe7fcf826be02001ac8e67ad3cf2807e2aa13))
+
+* bump codecov/codecov-action from 5.4.2 to 5.4.3 ([10a6e0b1](https://github.com/convention-change/convention-change-log/commit/10a6e0b17dfe1bf534c93be2a455b99d085c9391))
+
+* bump github.com/sinlov-go/go-common-lib ([ef8429ac](https://github.com/convention-change/convention-change-log/commit/ef8429ac9ff9964b672c85015cbda184d9ad46b7))
+
 ## [1.13.2](https://github.com/convention-change/convention-change-log/compare/v1.13.1...v1.13.2) (2025-05-08)
 
 ### 🐛 Bug Fixes
