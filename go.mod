@@ -2,6 +2,8 @@ module github.com/convention-change/convention-change-log
 
 go 1.25.0
 
+toolchain go1.25.11
+
 require (
 	github.com/Masterminds/semver/v3 v3.5.0
 	github.com/aymerick/raymond v2.0.2+incompatible
