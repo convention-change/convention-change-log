@@ -3,6 +3,7 @@ package convention
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/sinlov-go/go-common-lib/pkg/filepath_plus"
 )
 
@@ -20,7 +21,6 @@ const (
 // struct
 // scheme See: https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.2.0/schema.json
 type ConventionalChangeLogSpec struct {
-
 	// Types
 	//
 	Types []Types `json:"types,omitempty"`
@@ -78,11 +78,14 @@ type ConventionalChangeLogSpec struct {
 	// MonoRepoPkgPathList
 	// monorepo package path list
 	MonoRepoPkgPathList []string `json:"monorepo-pkg-path,omitempty"`
+
+	// BranchCheck
+	//	branch name patterns to check when running commands, uses doublestar glob matching
+	// default is ["main"]
+	BranchCheck []string `json:"branch-check,omitempty"`
 }
 
-var (
-	defaultConventionalChangeLogSpec *ConventionalChangeLogSpec
-)
+var defaultConventionalChangeLogSpec *ConventionalChangeLogSpec
 
 // SimplifyConventionalChangeLogSpec
 // return simplify ConventionalChangeLogSpec
@@ -156,6 +159,7 @@ func DefaultConventionalChangeLogSpec() ConventionalChangeLogSpec {
 	defaultConventionalChangeLogSpec.IssueUrlFormat = DefaultIssueUrlFormat
 	defaultConventionalChangeLogSpec.UserUrlFormat = DefaultUserUrlFormat
 	defaultConventionalChangeLogSpec.ReleaseCommitMessageFormat = DefaultReleaseCommitMessageFormat
+	defaultConventionalChangeLogSpec.BranchCheck = []string{"main"}
 
 	return *defaultConventionalChangeLogSpec
 }
@@ -238,6 +242,10 @@ func LoadConventionalChangeLogSpecByData(logSpec []byte) (*ConventionalChangeLog
 		spec.ReleaseCommitMessageFormat = DefaultReleaseCommitMessageFormat
 	}
 
+	if len(spec.BranchCheck) == 0 {
+		spec.BranchCheck = []string{"main"}
+	}
+
 	return &spec, nil
 }
 
@@ -251,11 +259,17 @@ func LoadConventionalChangeLogSpecByPath(specFilePath string) (*ConventionalChan
 	if filepath_plus.PathExistsFast(specFilePath) {
 		specByte, errReadSpec := filepath_plus.ReadFileAsByte(specFilePath)
 		if errReadSpec != nil {
-			return nil, fmt.Errorf("load ConventionalChangeLogSpec by path error: %s", errReadSpec.Error())
+			return nil, fmt.Errorf(
+				"load ConventionalChangeLogSpec by path error: %s",
+				errReadSpec.Error(),
+			)
 		}
 		spec, errReadSpec := LoadConventionalChangeLogSpecByData(specByte)
 		if errReadSpec != nil {
-			return nil, fmt.Errorf("load ConventionalChangeLogSpec by path error: %s", errReadSpec.Error())
+			return nil, fmt.Errorf(
+				"load ConventionalChangeLogSpec by path error: %s",
+				errReadSpec.Error(),
+			)
 		}
 		changeLogSpec = spec
 	} else {

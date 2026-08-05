@@ -3,6 +3,10 @@ package command
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/bar-counter/slog"
 	"github.com/convention-change/convention-change-log/cmd/kit/command/exit_cli"
 	"github.com/convention-change/convention-change-log/cmd/kit/constant"
@@ -12,9 +16,6 @@ import (
 	"github.com/sinlov-go/go-common-lib/pkg/string_tools"
 	"github.com/sinlov-go/go-git-tools/git_info"
 	"github.com/urfave/cli/v2"
-	"os"
-	"path/filepath"
-	"strings"
 )
 
 type GlobalConfig struct {
@@ -41,9 +42,7 @@ type (
 	}
 )
 
-var (
-	cmdGlobalEntry *GlobalCommand
-)
+var cmdGlobalEntry *GlobalCommand
 
 // CmdGlobalEntry
 //
@@ -56,7 +55,6 @@ func CmdGlobalEntry() *GlobalCommand {
 //
 //	do global command exec
 func (c *GlobalCommand) globalExec() error {
-
 	slog.Debug("-> start GlobalAction")
 
 	if c.GenerateConfig.AutoPush {
@@ -66,7 +64,10 @@ func (c *GlobalCommand) globalExec() error {
 
 	_, err := git_info.IsPathGitManagementRoot(c.GitRootPath)
 	if err != nil {
-		return exit_cli.Format("cli run path not git repository root, please check path at: %s", c.GitRootPath)
+		return exit_cli.Format(
+			"cli run path not git repository root, please check path at: %s",
+			c.GitRootPath,
+		)
 	}
 
 	clGenerator := NewChangeLogGenerator(c.GitRootPath)
@@ -80,6 +81,28 @@ func (c *GlobalCommand) globalExec() error {
 	if errCheckRepository != nil {
 		slog.Error("check repository err: %v", errCheckRepository)
 		return errCheckRepository
+	}
+
+	// branch check
+	branchCheckWarning := ""
+	if !c.GenerateConfig.SkipBranchCheck {
+		patterns := ResolveBranchCheckPatterns(c.ChangeLogSpec.BranchCheck)
+		headBranch := clGenerator.GetHeadBranchName()
+		if !MatchBranchPatterns(headBranch, patterns) {
+			if c.DryRun {
+				branchCheckWarning = fmt.Sprintf(
+					"current branch %q does not match branch-check patterns %v, this may not be the intended release branch",
+					headBranch,
+					patterns,
+				)
+			} else {
+				return exit_cli.Format(
+					"current branch %q does not match branch-check patterns %v, please switch to a matching branch or use --skip-branch",
+					headBranch,
+					patterns,
+				)
+			}
+		}
 	}
 
 	if !c.GenerateConfig.SkipWorktreeDirtyCheck {
@@ -118,6 +141,9 @@ func (c *GlobalCommand) globalExec() error {
 
 		if c.DryRun {
 			clGenerator.DryRunChangeVersion()
+			if branchCheckWarning != "" {
+				slog.Warnf("%s", branchCheckWarning)
+			}
 			return nil
 		}
 
@@ -137,6 +163,9 @@ func (c *GlobalCommand) globalExec() error {
 		clGenerator.DryRun()
 		if c.GenerateConfig.SkipWorktreeDirtyCheck {
 			slog.Warnf("skip worktree dirty check, this will let new tag not you want!")
+		}
+		if branchCheckWarning != "" {
+			slog.Warnf("%s", branchCheckWarning)
 		}
 		return nil
 	}
@@ -192,7 +221,10 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 	gitInfoScheme := c.String("git-info-scheme")
 
 	if !string_tools.StringInArr(gitInfoScheme, gitInfoSchemeSupport) {
-		return nil, exit_cli.Format("--git-info-scheme only support %s", strings.Join(gitInfoSchemeSupport, ", "))
+		return nil, exit_cli.Format(
+			"--git-info-scheme only support %s",
+			strings.Join(gitInfoSchemeSupport, ", "),
+		)
 	}
 
 	generateConfig := GenerateConfig{
@@ -210,6 +242,7 @@ func withGlobalFlag(c *cli.Context, cliVersion, cliName string) (*GlobalCommand,
 		AutoPush: isAutoPush,
 
 		SkipWorktreeDirtyCheck: c.Bool("skip-worktree-check"),
+		SkipBranchCheck:        c.Bool("skip-branch"),
 
 		IsOnlyChangeVersion: c.Bool("change-version"),
 
@@ -277,7 +310,11 @@ func GlobalAction(c *cli.Context) error {
 
 	isVerbose := c.Bool("verbose")
 	if isVerbose {
-		slog.Infof("-> start run command: %s, version %s", cmdGlobalEntry.Name, cmdGlobalEntry.Version)
+		slog.Infof(
+			"-> start run command: %s, version %s",
+			cmdGlobalEntry.Name,
+			cmdGlobalEntry.Version,
+		)
 	}
 
 	err := cmdGlobalEntry.globalExec()
@@ -295,7 +332,11 @@ func GlobalAction(c *cli.Context) error {
 func GlobalAfterAction(c *cli.Context) error {
 	isVerbose := c.Bool("verbose")
 	if isVerbose {
-		slog.Infof("-> finish run command: %s, version %s", cmdGlobalEntry.Name, cmdGlobalEntry.Version)
+		slog.Infof(
+			"-> finish run command: %s, version %s",
+			cmdGlobalEntry.Name,
+			cmdGlobalEntry.Version,
+		)
 	}
 	return nil
 }

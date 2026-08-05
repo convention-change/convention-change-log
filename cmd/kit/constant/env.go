@@ -12,6 +12,8 @@ const (
 
 	EnvKeySkipWorktreeCheck = "CLI_SKIP_WORKTREE_CHECK"
 
+	EnvKeySkipBranchCheck = "CLI_SKIP_BRANCH_CHECK"
+
 	// EnvKeyCliTimeoutSecond
 	//	Provides the timeout second flag
 	EnvKeyCliTimeoutSecond = "CLI_CONFIG_TIMEOUT_SECOND"

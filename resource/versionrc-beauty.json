@@ -13,5 +13,6 @@
     {"type": "revert", "section":"⏪ Reverts", "hidden": false}
   ],
   "tag-prefix": "v",
-  "monorepo-pkg-path": []
+  "monorepo-pkg-path": [],
+  "branch-check": ["main"]
 }

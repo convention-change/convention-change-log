@@ -27,5 +27,8 @@
   "monorepo-pkg-path": [
     "foo",
     "bar"
+  ],
+  "branch-check": [
+    "main"
   ]
 }
