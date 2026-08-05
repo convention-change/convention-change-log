@@ -84,12 +84,13 @@ func (c *GlobalCommand) globalExec() error {
 	}
 
 	// branch check
+	branchCheckWarning := ""
 	if !c.GenerateConfig.SkipBranchCheck {
 		patterns := ResolveBranchCheckPatterns(c.ChangeLogSpec.BranchCheck)
 		headBranch := clGenerator.GetHeadBranchName()
 		if !MatchBranchPatterns(headBranch, patterns) {
 			if c.DryRun {
-				slog.Warnf(
+				branchCheckWarning = fmt.Sprintf(
 					"current branch %q does not match branch-check patterns %v, this may not be the intended release branch",
 					headBranch,
 					patterns,
@@ -140,6 +141,9 @@ func (c *GlobalCommand) globalExec() error {
 
 		if c.DryRun {
 			clGenerator.DryRunChangeVersion()
+			if branchCheckWarning != "" {
+				slog.Warnf("%s", branchCheckWarning)
+			}
 			return nil
 		}
 
@@ -159,6 +163,9 @@ func (c *GlobalCommand) globalExec() error {
 		clGenerator.DryRun()
 		if c.GenerateConfig.SkipWorktreeDirtyCheck {
 			slog.Warnf("skip worktree dirty check, this will let new tag not you want!")
+		}
+		if branchCheckWarning != "" {
+			slog.Warnf("%s", branchCheckWarning)
 		}
 		return nil
 	}

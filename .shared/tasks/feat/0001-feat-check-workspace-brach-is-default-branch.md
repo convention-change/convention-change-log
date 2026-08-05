@@ -1,7 +1,7 @@
 ---
 id: 0001-feat-check-workspace-brach-is-default-branch
 title: check workspace brach is default branch
-status: in-progress
+status: done
 owner: "sinlovppt"
 locked_at: ""
 priority: medium
@@ -21,7 +21,7 @@ after v1.14+ , must check branch for `main` branch
   - config setting at `.versionrc` key `branch-check`, will with array of string, if not set, will check `main` branch only
   - match `branch-check` setting use golang package `github.com/bmatcuk/doublestar/v4`
   - default config setting is `["main"]` if not set, will check `main` branch only, and will effect at sub command `init`
-  - `--dry-run` mode will check `branch-check` setting, if not match, will print warning message, but not exit with error code
+  - `--dry-run` mode will check `branch-check` setting, if not match, will append warning message at tail of output, but not exit with error code
 
 ## do task
 
@@ -39,3 +39,4 @@ after v1.14+ , must check branch for `main` branch
   - go vet
 - check new feature with `--dry-run` mode, and check warning message
 - check new feature with `--skip-branch` mode, and check warning message
+

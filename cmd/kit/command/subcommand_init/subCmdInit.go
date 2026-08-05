@@ -1,6 +1,7 @@
 package subcommand_init
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -39,6 +40,7 @@ type InitCommand struct {
 func (n *InitCommand) Exec() error {
 	slog.Debugf("-> Exec subCommand [ %s ]", commandName)
 
+	var branchCheckWarning string
 	// branch check
 	if !n.SkipBranchCheck {
 		branchName, matched, err := command.CheckBranchAtRoot(n.GitRootPath, n.BranchCheckPatterns)
@@ -46,7 +48,7 @@ func (n *InitCommand) Exec() error {
 			slog.Warnf("branch check error: %v", err)
 		} else if !matched {
 			if n.DryRun {
-				slog.Warnf(
+				branchCheckWarning = fmt.Sprintf(
 					"current branch %q does not match branch-check patterns %v, this may not be the intended branch",
 					branchName,
 					n.BranchCheckPatterns,
@@ -60,6 +62,12 @@ func (n *InitCommand) Exec() error {
 			}
 		}
 	}
+
+	defer func() {
+		if branchCheckWarning != "" {
+			slog.Warnf("%s", branchCheckWarning)
+		}
+	}()
 
 	if filepath_plus.PathExistsFast(n.TargetFile) {
 		color.Yellowf("init versionrc file is exists, file: %s\n", n.TargetFile)
