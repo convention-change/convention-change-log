@@ -46,7 +46,7 @@ func (n *InitCommand) Exec() error {
 		branchName, matched, err := command.CheckBranchAtRoot(n.GitRootPath, n.BranchCheckPatterns)
 		if err != nil {
 			slog.Warnf("branch check error: %v", err)
-		} else if !matched {
+		} else if !matched && !filepath_plus.PathExistsFast(n.TargetFile) {
 			if n.DryRun {
 				branchCheckWarning = fmt.Sprintf(
 					"current branch %q does not match branch-check patterns %v, this may not be the intended branch",
