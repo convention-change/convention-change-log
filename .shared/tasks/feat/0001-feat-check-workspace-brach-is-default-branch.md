@@ -16,7 +16,7 @@ created_at: "2026-08-05"
 ### Suggested solution
 
 after v1.14+ , must check branch for `main` branch
-- add flat `--skip-branch` at global flag, to pass check branch
+- add flag `--skip-branch` at global flag, to pass check branch
 - add config `check branch with match list`
   - config setting at `.versionrc` key `branch-check`, will with array of string, if not set, will check `main` branch only
   - match `branch-check` setting use golang package `github.com/bmatcuk/doublestar/v4`
