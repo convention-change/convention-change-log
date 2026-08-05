@@ -95,6 +95,7 @@
             - commit message contains `feat:` will update `MINOR` version
             - commit message not contains `feat:` will update `PATCH` version
     - [x] `--auto-push` flag can auto push tag to remote
+    - [x] `--skip-branch` flag can skip branch check (v1.14+)
     - [x] `--tag-prefix` flag can change tag prefix, default will use `.versionrc` config `tag-prefix`
 - generate from [conventional commits](https://www.conventionalcommits.org) for [semver.org](https://semver.org/)
     - [x] default will update `PATCH` version
@@ -105,6 +106,7 @@
     - [x] project has `package-lock.json` file, will try use `npm install` to update `package-lock.json` file
     - [x] in `.versionrc` has `monorepo-pkg-path` field as string list, will auto update `package.json` file
       in `monorepo-pkg-path` path (v1.5.+)
+- [x] in `.versionrc` has `branch-check` field as string list, will check current branch match patterns, default is `["main"]` (v1.14.+)
 
 ```json
 {
@@ -177,6 +179,8 @@ $ convention-change-log init --dry-init
 $ convention-change-log --dry-run
 # --skip-worktree-check will skip check worktree (v1.8.1+)
 $ convention-change-log --dry-run --skip-worktree-check
+# --skip-branch will skip branch check, branch-check config at .versionrc (v1.14+)
+$ convention-change-log --dry-run --skip-branch
 
 # flat -r to set custom release version
 $ convention-change-log -r 0.1.0 --dry-run

@@ -52,6 +52,8 @@ $ convention-change-log init --dry-init
 $ convention-change-log --dry-run
 # --skip-worktree-check 将跳过检查 worktree (v1.8.1+)
 $ convention-change-log --dry-run --skip-worktree-check
+# --skip-branch 将跳过分支检查，分支检查配置在 .versionrc (v1.14+)
+$ convention-change-log --dry-run --skip-branch
 
 # 设置 -r 自定义发布版本
 $ convention-change-log -r 0.1.0 --dry-run
@@ -110,6 +112,7 @@ Set-Alias -Name ccl -Value convention-change-log
 
 - 请先在远程仓库，设置好 `分支保护规则` 和 `tag 保护规则`，防止误提交，或者删除 tag
 - 生成 CHANGELOG.md 前，最好合并到 主分支, 上面的别名 `gcmpt` 就可以快速切到主分支，并同步到最新信息（包括 tag 同步）
+- 从 v1.14+ 开始，默认会检查当前分支是否匹配 `branch-check` 配置（默认 `["main"]`），如需在非主分支执行可使用 `--skip-branch` 跳过检查
 - 检查当前分支的状态是可以进行固定版本后
 - 执行 `ccl --dry-run` 或者 `ccl --dry-run -r 1.2.3` 指定目标版本，确认 预期生成的 change log 是否是正确的
     - 未设置生成发行版本，则开启自动生成版本规则

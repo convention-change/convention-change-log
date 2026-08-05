@@ -2,10 +2,11 @@ package command
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/convention-change/convention-change-log/cmd/kit/constant"
 	"github.com/convention-change/convention-change-log/convention"
 	"github.com/urfave/cli/v2"
-	"strings"
 )
 
 // MainFlag
@@ -18,8 +19,11 @@ func MainFlag() []cli.Flag {
 		//	Value: "",
 		//},
 		&cli.StringFlag{
-			Name:    "release-as",
-			Usage:   fmt.Sprintf("Specify the release type manually (like npm version <major|minor|patch>) if not setting will use semver by history, if first release will change to %s", convention.DefaultSemverVersion),
+			Name: "release-as",
+			Usage: fmt.Sprintf(
+				"Specify the release type manually (like npm version <major|minor|patch>) if not setting will use semver by history, if first release will change to %s",
+				convention.DefaultSemverVersion,
+			),
 			Aliases: []string{"r"},
 		},
 		&cli.StringFlag{
@@ -89,8 +93,11 @@ func GlobalFlag() []cli.Flag {
 			EnvVars: []string{constant.EnvKeyDryRunDisable},
 		},
 		&cli.StringFlag{
-			Name:    "git-info-scheme",
-			Usage:   fmt.Sprintf("git info scheme, only support: %s", strings.Join(gitInfoSchemeSupport, ", ")),
+			Name: "git-info-scheme",
+			Usage: fmt.Sprintf(
+				"git info scheme, only support: %s",
+				strings.Join(gitInfoSchemeSupport, ", "),
+			),
 			Value:   "https",
 			EnvVars: []string{constant.EnvKeyGitInfoScheme},
 		},
@@ -98,6 +105,11 @@ func GlobalFlag() []cli.Flag {
 			Name:    "skip-worktree-check",
 			Usage:   "skip git worktree dirty check",
 			EnvVars: []string{constant.EnvKeySkipWorktreeCheck},
+		},
+		&cli.BoolFlag{
+			Name:    "skip-branch",
+			Usage:   "skip git branch check (v1.14.+)",
+			EnvVars: []string{constant.EnvKeySkipBranchCheck},
 		},
 	}
 }

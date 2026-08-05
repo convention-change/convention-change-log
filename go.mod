@@ -8,6 +8,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.5.0
 	github.com/aymerick/raymond v2.0.2+incompatible
 	github.com/bar-counter/slog v1.4.1
+	github.com/bmatcuk/doublestar/v4 v4.10.0
 	github.com/elliotchance/orderedmap/v2 v2.7.0
 	github.com/go-git/go-git/v5 v5.19.2
 	github.com/gookit/color v1.6.1

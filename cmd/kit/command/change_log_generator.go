@@ -88,6 +88,7 @@ type GenerateConfig struct {
 	AutoPush bool
 
 	SkipWorktreeDirtyCheck bool
+	SkipBranchCheck        bool
 	IsOnlyChangeVersion    bool
 
 	AppendMonoRepoPath []string

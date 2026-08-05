@@ -24,5 +24,8 @@
   "issueUrlFormat": "{{scheme}}://{{host}}/{{owner}}/{{repository}}/issues/{{id}}",
   "userUrlFormat": "{{scheme}://{{host}}/{{user}}",
   "releaseCommitMessageFormat": "chore(release): {{currentTag}}",
-  "cover-git-info-scheme": "http"
+  "cover-git-info-scheme": "http",
+  "branch-check": [
+    "main"
+  ]
 }
