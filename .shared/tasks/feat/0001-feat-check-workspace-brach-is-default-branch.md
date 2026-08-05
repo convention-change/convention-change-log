@@ -1,6 +1,6 @@
 ---
 id: 0001-feat-check-workspace-brach-is-default-branch
-title: check workspace brach is default branch
+title: check workspace branch is default branch
 status: done
 owner: "sinlovppt"
 locked_at: ""
