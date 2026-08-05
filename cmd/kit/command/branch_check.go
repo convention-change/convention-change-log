@@ -39,9 +39,11 @@ func MatchBranchPatterns(branchName string, patterns []string) bool {
 // CheckBranchAtRoot opens the git repo at rootPath and checks if the current branch matches patterns.
 // Returns (branchName, matched, error).
 func CheckBranchAtRoot(rootPath string, patterns []string) (string, bool, error) {
+	patterns = ResolveBranchCheckPatterns(patterns)
+
 	repo, err := git.NewRepositoryRemoteByPath("origin", rootPath)
 	if err != nil {
-		return "", false, fmt.Errorf("load git repository for branch check error: %s", err)
+		return "", false, fmt.Errorf("load git repository for branch check: %w", err)
 	}
 	branchName, err := repo.HeadBranchName()
 	if err != nil {
