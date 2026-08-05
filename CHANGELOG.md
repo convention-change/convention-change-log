@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.14.0](https://github.com/convention-change/convention-change-log/compare/v1.13.3...v1.14.0) (2026-08-06)
+
+### 🐛 Bug Fixes
+
+* Potential fix for pull request finding ([b76ee418](https://github.com/convention-change/convention-change-log/commit/b76ee418b05eb66c43d6de03eec6da05d9ac427c))
+
+* 🐛 print branch-check warning at tail of dry-run output ([637f0dea](https://github.com/convention-change/convention-change-log/commit/637f0deaf778173c80c20ffe4e2bd0ed292fe1e7))
+
+### ✨ Features
+
+* ✨ add branch check with --skip-branch flag ([d6363e5c](https://github.com/convention-change/convention-change-log/commit/d6363e5c68037bf38109e9aefef1553f33981f8c))
+
+### 📝 Documentation
+
+* fix desc of task ([534c2b4a](https://github.com/convention-change/convention-change-log/commit/534c2b4ad9572dc1982e9394f32f5a80e6f30a99))
+
+* CheckBranchAtRoot returns formatted errors ([66f49781](https://github.com/convention-change/convention-change-log/commit/66f49781c6e540c757f918ae3ec05e6940cac1c4))
+
+* Potential fix for pull request finding ([c07f37d0](https://github.com/convention-change/convention-change-log/commit/c07f37d09c3f3c729a9d26a48f90ebbd8f624024))
+
+* Potential fix for pull request finding ([9858a046](https://github.com/convention-change/convention-change-log/commit/9858a0466ce806fe1cd572bd914ea6792bd9ec83))
+
+* 添加跳过分支检查的全局标志预备文档 ([31fa8fd2](https://github.com/convention-change/convention-change-log/commit/31fa8fd2ecca2f9195224e69eb44fa133b955147))
+
+* 📝 add AGENTS.md for OpenCode agent guidance ([9ce34f68](https://github.com/convention-change/convention-change-log/commit/9ce34f68bd0ae62628eadc1f898eb9268298f605))
+
 ## [1.13.3](https://github.com/convention-change/convention-change-log/compare/v1.13.2...v1.13.3) (2026-08-05)
 
 ### 📝 Documentation
