@@ -20,7 +20,7 @@ Add a `branch-check` key to your `.versionrc` file with an array of glob pattern
 
 - **Default**: `["main"]` if not set
 - **Matching**: Uses [doublestar v4](https://github.com/bmatcuk/doublestar) glob pattern matching
-- Supports patterns like `main`, `release-*`, `{main,master}`, etc.
+- Supports patterns like `main`, `master`, `release-*`, `feature/**`, etc.
 
 ### Global flag `--skip-branch`
 
